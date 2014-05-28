@@ -2,7 +2,7 @@ local Metric = require 'models.metric'
 local inspect = require 'inspect'
 
 local analytics = {
-  _VERSION = "0.0.3"
+  _VERSION = "0.0.2"
 }
 
 
