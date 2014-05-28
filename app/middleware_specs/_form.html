@@ -1,0 +1,40 @@
+<fieldset>
+  <legend>General info</legend>
+  <label>
+    Name
+    <input type="text" ng-model="spec.name" required/>
+  </label>
+
+  <label>
+    Description
+    <textarea ng-model="spec.description"></textarea>
+  </label>
+</fieldset>
+
+<fieldset>
+  <legend>Author</legend>
+
+  <label>Name <input type="text" required ng-model="spec.author.name" /></label>
+  <label>Email <input type="email" ng-model="spec.author.email" /></label>
+  <label>GitHub <input type="text" required ng-model="spec.author.github" /></label>
+</fieldset>
+
+<fieldset>
+  <legend>Middleware</legend>
+
+  <label>
+    Code
+    <textarea ng-model="spec.code" ui-codemirror></textarea>
+  </label>
+
+  <label>
+    Config Specification
+    <textarea ng-model="spec.config_spec" ui-codemirror></textarea>
+  </label>
+
+  <label>
+    Version
+    <input type="text" required ng-model="spec.version"/>
+  </label>
+
+</fieldset>

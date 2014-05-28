@@ -1,0 +1,81 @@
+<aside class="span3" list-filter  filter-title="Traces menu" ng-controller="TracesNavigationCtrl">
+
+  <a rel="external" class="help-link" docs-ref="home"><i class="icon-help"></i></a>
+  <p>
+    Traces are recorded requests and responses made through APItools.
+  </p>
+
+  <p>You can filter traces and store/save them. Or you can select some and let us find similar ones for you.</p>
+
+</aside>
+
+<section class="span9">
+  <div demo-block="service_traces">
+    <h4>Debug your API calls</h4>
+
+    <p>
+      Traces are requests made by your app to an API service, recorded on Apitools.<br/>
+      Here you can see traces of the {{ service.name }} service.
+    </p>
+
+    <ul>
+      <li><i class="icon icon-expand"></i> Click on a trace to expand it's information.</li>
+      <li><i class="icon icon-star"></i> Hovering on each trace will display different actions.</li>
+      <li><i class="icon icon-book"></i> Visit the 'Active docs' to learn about a specific endpoint.</li>
+    </ul>
+  </div>
+
+  <div search-box></div>
+
+  <div control-box></div>
+
+  <load-more>Load {{ search.has_more }} more traces</load-more>
+
+  <ul slug-list infinite-scroll="search.load_more = true" in  finite-scroll-immediate-check="false"
+          infinite-scroll-disabled="!search.infinite()">
+    <li search-loading></li>
+
+    <li slug-item class="trace" ng-click="load(trace)" ng-class="{highlighted: trace.starred}" ng-repeat="trace in search.results track by trace._id">
+      <heading>
+
+        <span toggle-item="trace" />
+
+        <toggle class="main">
+          <h4 class="slug-item-title">
+            <b class="http-method method-{{ trace.req.method | lowercase }}">{{ trace.req.method }}</b>
+            <span class="path" truncate="100">{{ trace.req.uri }}</span>
+          </h4>
+
+          <details>
+            <detail class="status-code label label-{{ trace.res.status | status }}">{{ trace.res.status }}</detail>
+            <detail class="time" tooltip="total: {{ trace.total_time | ms}}, overhead: {{ trace.overhead_time | ms }}">
+              <i class="icon-time"></i> {{ trace.time | ms }}
+            </detail>
+            <detail class="timestamp" am-time-ago="trace._created_at | unix" tooltip="{{ trace._created_at | unix | moment:'LLLL' }}"></detail>
+          </details>
+
+        </toggle>
+
+
+
+        <actions>
+          <action-item><a href action action-call="redo(trace)" icon="icon-refresh" text="Redo" /></action-item>
+          <action-item><a href action ng-click="highlightItems([trace])" icon="icon-star" text="Highlight" /></action-item>
+          <action-item><a href action ng-click="filterItems([trace])" icon="icon-filter" text="Filter" /></action-item>
+          <action-item><a href action docs-link="trace" icon="icon-book" text="Active Docs" /></action-item>
+          <action-item><a href action slug-confirm  ng-click="trashItems([trace])" icon="icon-trash" text="Delete" /></action-item>
+        </actions>
+
+
+      </heading>
+
+      <content>
+        <div class="wrap" ng-if="isOpen || !isCollapsed" slug-trace="trace"></div>
+      </content>
+    </li>
+
+    <li ng-show="search.noResults()" class="no-results"><strong>No results found for</strong> {{ search.json }} </li>
+    <li search-load-more>Load more traces ({{ search.results.length }}/{{ search.count }})</li>
+    <li search-loading="search.loading_more"></li>
+  </ul>
+</section>

@@ -1,0 +1,39 @@
+<!--
+<ul class="middleware-list">
+  <li><h4>GitHub</h4></li>
+
+  <li class="middleware" ng-repeat="middleware in github.middleware">
+        <span>
+          <strong>{{  middleware.name }}</strong> by <span author="middleware.author"/>
+          <em>{{  middleware.description }}</em>
+        </span>
+  </li>
+
+  <li class="middleware control">
+    <span><a href ng-click="moreGitHub()">View More</a></span>
+  </li>
+</ul>
+-->
+
+<ul class="middleware-list local" ng-controller="MiddlewareSpecBarCtrl">
+  <li><h4>Middleware list</h4></li>
+
+  <li class="middleware middleware-pipeline" ng-repeat="spec in specs" draggable="dragOptions">
+    <strong>{{  spec.name | truncate: 20 }}</strong> by <span author="spec.author"/>
+    <div><em>{{  spec.description | truncate: 60 }}</em></div>
+  </li>
+
+  <li class="middleware-controls" ng-show="all_specs.length > 0">
+    <a class="btn" href ng-click="moreLocal()">View More</a>
+    <!-- <a class="btn" href="middlewares/">See All</a> -->
+  </li>
+</ul>
+    <!--
+    This button was replaced by "Empty" middleware
+<ul class="middleware-list controls">
+
+  <li class="middleware control">
+    <span><a ng-click="addEmpty()">Add Empty</a></span>
+  </li>
+</ul>
+    -->

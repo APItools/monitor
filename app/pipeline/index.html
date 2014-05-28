@@ -1,0 +1,55 @@
+<aside class="span3" middleware-navigation></aside>
+
+<section class="span9">
+  <div demo-block="pipeline">
+    <h4>Transform your app's calls to an API service</h4>
+    <p>Transformations can be applied to inbound traffic and outbound responses.</p>
+    <p>
+      Just drag and drop middleware from the right sidebar to the pipeline, edit and save. You can also write your own.
+    </p>
+  </div>
+
+  <div ng-if="pipelineChanged()" class="alert">
+    <button type="button" class="close" data-dismiss="alert"><i class="icon icon-remove-sign"></i></button>
+    The pipeline has been changed.
+    <a ng-click="savePipeline()" href="" class="">Save Pipeline</a> |
+    <a ng-click="revertPipeline()" href="">Revert Changes</a>
+  </div>
+
+  <div class="pipeline-container" ng-class='{edit: selected}'>
+
+    <div class="pipeline-box">
+
+      <h4 class="app">Your APP</h4>
+
+      <div class="pipeline-wrap" ng-class="{ changed: pipelineChanged() }">
+
+        <div class="arrow"><i class="arrow-down"></i></div>
+
+        <div class="pipeline">
+          <ol class="middleware-list" ng-model="middlewares.array" ui-sortable="sortOptions">
+            <li middleware ng-repeat="middleware in middlewares.array"></li>
+          </ol>
+
+          <div class="drag-middleware" ng-hide="is_dragged || middlewares > 0">
+            <span>Drag middlewares from the list here.</span>
+          </div>
+
+          <button class="cta new-middleware" ng-click="addEmptyMiddleware()"><i class="icon-plus"></i> New Middleware</button>
+
+        </div>
+
+        <div class="arrow"><i class="arrow-up"></i></div>
+
+      </div>
+
+      <h4 class="service"><i class="icon icon-cloud"></i> {{ service.name }}</h4>
+
+    </div>
+
+    <div class="middleware-stack" ng-include="'/middlewares/spec/_bar.html'"></div>
+
+  </div>
+
+  <ui-view/>
+</section>

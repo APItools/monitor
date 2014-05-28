@@ -1,0 +1,167 @@
+<form class="modal-fill-flex chart-edit form-horizontal" name="form" ng-submit="save()">
+  <div class="modal-header">
+    <input ng-show="editTitle" placeholder="Name" type="text" id="chart_name" name="name" ng-model="chart.name" required/>
+    <h3 ng-show="!editTitle" >{{ chart.name }}</h3>
+    <a href ng-click="editTitle = !editTitle" ><i ng-class="{ 'icon-pencil': !editTitle, 'icon-ok': editTitle }"></i></a>
+    <a class="close" ng-click="close()">&times;</a>
+  </div>
+
+  <div class="modal-body">
+
+    <div class="preview" rickshaw="analytics"></div>
+
+    <fieldset class="row-fluid">
+      <div class="span3">
+        <h4>Time</h4>
+      </div>
+
+      <div class="span9">
+        <div class="control-group">
+          <label class="control-label">Time range</label>
+          <div class="controls">
+            <div class="btn-group">
+              <button ng-repeat="range in available.ranges" type="button" class="btn btn-small"
+                      ng-class="{active: query.range.relative.start == range.length}"
+                      tooltip-placement="bottom" tooltip="{{ range.title }}" tooltip-append-to-body="true"
+                      ng-click="query.range.relative.start = range.length">{{ range.label }}</button>
+            </div>
+            <span class="help-block">From <b>{{ startDate(query.range.relative.start) | date:'short' }}</b> until <b>now</b></span>
+          </div>
+        </div>
+
+        <div class="control-group">
+          <label class="control-label">Granularity</label>
+          <div class="controls">
+            <div class="btn-group">
+              <button type="button" class="btn btn-small" name="granularity" required
+                      ng-repeat="option in available.granularities"
+                      tooltip-placement="bottom" tooltip="{{ option.tooltip }}" tooltip-append-to-body="true"
+                      ng-class="{active: query.range.granularity == option.granularity}"
+                      ng-click="query.range.granularity = option.granularity">{{ option.label }}</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </fieldset>
+
+    <fieldset class="row-fluid" ng-controller="ChartConditionsCtrl">
+      <div class="span3">
+        <h4>Metrics</h4>
+      </div>
+
+      <div class="span9">
+        <div class="control-group"  ng-class="{ error: form.projections.$invalid }">
+          <label class="control-label">Metric</label>
+          <div class="controls" ng-controller="ChartProjectionsCtrl">
+            <div class="btn-group">
+              <button type="button" class="btn btn-small" name="metric" required
+                      ng-repeat="metricType in available.metrics"
+                      tooltip-placement="bottom" tooltip="{{ metricType.tooltip }}" tooltip-append-to-body="true"
+                      ng-class="{ active: query.metric == metricType.key }"
+                      ng-click="query.metric = metricType.key">{{ metricType.desc }}</button>
+            </div>
+            <div class="help-block">
+              <label ng-repeat="projection in availableProjections()" class="checkbox inline">
+                <input type="checkbox" name="projections"
+                       ng-model="query.projections[projection]" ng-required="noProjectionsAreChecked()">
+                {{ projection }}
+              </label>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </fieldset>
+
+    <fieldset class="row-fluid" ng-controller="ChartConditionsCtrl">
+      <div class="span3">
+        <h4>Methods</h4>
+      </div>
+
+      <div class="span9">
+        <div class="control-group" ng-class="{ error: form.methods.$invalid }">
+          <div class="controls" >
+            <label class="checkbox inline" ng-repeat="method in used_methods.methods">
+              <input type="checkbox" name="methods" ng-checked="isMethodChecked(method)" ng-required="noMethodsAreChecked()" ng-model="query.methods[method]" ng-checked="isMethodChecked(method)"> {{ method }}
+            </label>
+          </div>
+        </div>
+        <div class="control-group">
+          <div class="controls" >
+            <label class="checkbox"><input type="checkbox" ng-model="query.group_by.methods"> One line per method.</label></p>
+          </div>
+        </div>
+      </div>
+    </fieldset>
+
+    <fieldset class="row-fluid" ng-controller="ChartConditionsCtrl" ng-if="query.metric == 'status'">
+      <div class="span3">
+        <h4>Statuses</h4>
+      </div>
+
+      <div class="span9">
+        <div class="control-group" ng-class="{ error: form.statuses.$invalid }">
+          <div class="controls" >
+            <ul class="analytics-list">
+              <li ng-repeat="status in query.statuses"
+                  ng-form="status_form"
+                  class="control-group"
+                  ng-class="{ error: status_form.status.$invalid }">
+                <input type="number" required ng-model="status.value" name="status" />
+                <a class="" ng-click="remove(query.statuses, status)"><i class="icon-remove"></i></a>
+              </li>
+            </ul>
+            <a class="btn btn-small" ng-click="add(query.statuses)">&plus; add status</a>
+          </div>
+        </div>
+        <div class="control-group">
+          <div class="controls" >
+            <label class="checkbox"><input type="checkbox" ng-model="query.group_by.statuses"> One line per status.</label></p>
+          </div>
+        </div>
+      </div>
+    </fieldset>
+
+
+    <fieldset class="row-fluid" ng-controller="ChartConditionsCtrl">
+      <div class="span3">
+        <h4>Paths</h4>
+      </div>
+
+      <div class="span9">
+        <div class="control-group">
+          <label class="control-label"></label>
+          <div class="controls">
+            <ul class="analytics-list">
+              <li ng-repeat="path in query.paths"
+                  ng-form="path_form"
+                  class="control-group"
+                  ng-class="{ error: path_form.path.$invalid }">
+                <input type="text"
+                       required
+                       ng-model="path.value"
+                       typeahead="match as match.path for match in getAutocompletePaths | filter:$viewValue | limitTo:8"
+                       typeahead-template-url="/dashboards/path_autocomplete_item.html"
+                       name="path" />
+                <a class="" ng-click="remove(query.paths, path)"><i class="icon-remove"></i></a>
+              </li>
+            </ul>
+            <a class="btn btn-small" ng-click="add(query.paths)">&plus; add path</a>
+
+            <p ng-show="query.paths.length == 0">If you don't specify which paths to list we will list all of them.</p>
+            <label class="checkbox"><input type="checkbox" ng-model="query.group_by.paths"> One line per path.</label>
+
+          </div>
+        </div>
+      </div>
+    </fieldset>
+  </div>
+
+  <div class="modal-footer">
+    <button ng-disabled="chart.$new" class="btn pull-left" ng-click="delete()"><i class="icon-trash"></i> Remove</button>
+    <button type="button" class="btn pull-left" ng-click="close()"><i class="icon-remove"></i> Cancel</button>
+    <button type="button" class="btn" ng-click="preview()"><i class="icon-preview"></i> Preview</button>
+    <button type="submit" class="btn btn-primary"><i class="icon-save"></i> Save</button>
+  </div>
+</form>

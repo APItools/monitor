@@ -1,0 +1,19 @@
+<h1>Setup GitHub integration</h1>
+
+<form class="edit-middleware" name="form" ng-submit="save(spec)">
+  <fieldset>
+    <label>
+      Owner
+      <input type="text" ng-model="github.owner" required/>
+    </label>
+
+    <label>
+      Repository
+      <input type="text" ng-model="github.repo" required/>
+    </label>
+
+  </fieldset>
+
+  <button class="btn" ng-disabled="form.$invalid">Save {{ spec.name }} GitHub integration</button>
+  <button class="btn" ng-disabled="form.$dirty" ng-click="push(spec)">Push {{ spec.name }} to GitHub</button>
+</form>

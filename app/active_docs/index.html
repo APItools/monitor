@@ -1,0 +1,31 @@
+<aside class="span3">
+  <div class="help-block">
+    <a rel="external" class="help-link" docs-ref="active_docs"><i class="icon-help"></i></a>
+    <p>
+      Active docs is automatically generated documentation for calls made through the APItools.
+    </p>
+    <p>You can see and make calls out of what APItools learnt from previous calls to a given API.</p>
+  </div>
+</aside>
+
+<section class="span9">
+
+  <div demo-block="active-docs">
+    <h4>Interactive and auto generated documentation</h4>
+    Apitools generates documentation - using <a href="https://helloreverb.com/developers/swagger">Swagger</a>- based on how your app uses the API service. The more traffic it is generated, the more accurate the results will be.
+  </div>
+
+  <div class="btn-toolbar container-fluid" class="download-json">
+    <div class="btn-group pull-right">
+      <a rel="external" href="/api/services/{{service._id}}/docs/download" class="btn">
+        <i class="icon icon-download"></i> Download Json</a>
+    </div>
+  </div>
+
+  <link rel="stylesheet" type="text/css" href="/assets/api-docs.css" media="screen"/>
+
+  <script prevent-docs-load="/active-docs/application.js"></script>
+
+  <div active-docs="resource"></div>
+
+</section>

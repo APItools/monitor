@@ -1,0 +1,55 @@
+require('spec.util.fakerestyredis')
+require('spec.util.fakerestylock')
+
+inspect = require 'inspect'
+pinspect = function(x) print(inspect(x)) end
+ngx = (require 'spec.util.fakengx').new()
+
+local Event = require 'models.event'
+
+describe("Event", function()
+  describe(":create", function()
+    it("fails if one of the parameters are missing", function()
+      assert.error(function() Event:create() end)
+      assert.error(function() Event:create({}) end)
+      assert.error(function() Event:create({channel = 'foo'}) end)
+      assert.error(function() Event:create({channel = 'foo', level='log'}) end)
+      Event:create({channel = 'foo', level='log', msg='msg'})
+    end)
+    it("fails if the level is not valid", function()
+      Event:create({channel = 'foo', level='log', msg='msg'})
+      Event:create({channel = 'foo', level='debug', msg='msg'})
+      Event:create({channel = 'foo', level='info', msg='msg'})
+      Event:create({channel = 'foo', level='warn', msg='msg'})
+      Event:create({channel = 'foo', level='error', msg='msg'})
+      assert.error(function() Event:create({channel = 'foo', level='foo', msg='msg'}) end)
+    end)
+  end)
+
+
+  describe(":delete", function()
+             it('deletes old', function()
+                  Event:create({channel = 'foo', level='log', msg='msg'})
+                  Event:create({channel = 'foo', level='debug', msg='msg'})
+                  Event:create({channel = 'foo', level='info', msg='msg'})
+                  Event:create({channel = 'foo', level='warn', msg='msg'})
+                  Event:create({channel = 'foo', level='error', msg='msg'})
+                  Event:delete_expired(5)
+                  assert.truthy(Event:find({level = 'log'}))
+                  Event:delete_expired(4)
+                  assert.falsy(Event:find({level = 'log'}))
+                  assert.truthy(Event:find({level = 'debug'}))
+                  Event:delete_expired(3)
+                  assert.falsy(Event:find({level = 'debug'}))
+                  assert.truthy(Event:find({level = 'info'}))
+                  Event:delete_expired(2)
+                  assert.falsy(Event:find({level = 'info'}))
+                  assert.truthy(Event:find({level = 'warn'}))
+                  Event:delete_expired(1)
+                  assert.falsy(Event:find({level = 'warn'}))
+                  assert.truthy(Event:find({level = 'error'}))
+             end)
+  end)
+
+
+end)

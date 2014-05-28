@@ -1,0 +1,108 @@
+<div class="row-fluid">
+
+  <div class="span2 small-dashboard-boxes">
+
+    <div class="row-fluid">
+      <a href="services" id="services-count" class="dashboard-box dashboard-box-mini">
+        <span class="number" ng-bind="services.length"></span>
+        <span class="box-label">Services</span>
+      </a>
+    </div>
+
+    <div class="row-fluid">
+      <a href="notifications?filter=errors" class="dashboard-box dashboard-box-mini" tooltip="in last one hour">
+        <span class="number" ng-bind="middleware_errors.document_count"
+              ng-class="middleware_errors.document_count == 0 ? 'ok' : 'error'"></span>
+        <span class="box-label">Middleware Errors</span>
+      </a>
+    </div>
+
+    <div class="row-fluid">
+      <a href="traces?filter=errors" class="dashboard-box dashboard-box-mini" tooltip="in last one hour">
+        <span class="number" ng-bind="request_errors.document_count"
+              ng-class="request_errors.document_count == 0 ? 'ok' : 'error'"></span>
+        <span class="box-label">Request Errors</span>
+      </a>
+    </div>
+
+  </div>
+
+  <div class="span10">
+    <div class="dashboard-box">
+      <div class="dashboard-chart-picker">
+        <select required ng-model="selected_dashboard"
+                ng-change="selectDashboard(selected_dashboard)"
+                ng-options="key as dash.title for (key, dash) in dashboards.available">
+        </select>
+      </div>
+
+      <div ng-switch="last_stats.document_count">
+
+        <div ng-switch-when="0" class="no-records">
+          <p ng-show="services.length > 0" >No recent data available. Run your app or make a request to see analytics here.</p>
+          <p ng-show="services.length == 0">Add your first service (API your app uses) to start getting statistics.<br>
+            <a id=add-service class="new-service btn btn-primary " href="services/new">Add a service</a>
+          </p>
+        </div>
+
+        <div ng-switch-default
+             class="selected-dashboard"
+             id="dashboard-{{ selected_dashboard }}"
+             rickshaw="dashboard"
+             rickshaw-renderer="area"
+             rickshaw-color="{{ color }}"
+             rickshaw-stroke-width="3"
+        ></div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<div class="row-fluid">
+
+  <div class="dashboard-box dashboard-box-small span6" id="dashboard-notifications">
+    <h4 class="dashboard-box-title">Latest notifications <small><a href="notifications">(View all)</a></small></h4>
+
+    <div ng-if="last_notifications.length == 0">
+      <span class="no-records">
+        No recent data available. Add a service and/ or transform your pipeline to see notifications here.<br/>
+        <a class="new-service btn btn-primary" href="services/new">Add a service</a>
+      </span>
+    </div>
+
+    <ol>
+      <li ng-repeat="notification in last_notifications"
+          class="level-{{ notification.level }}">
+        <a class='notification-link' ng-href="notifications?filter=notifications&select={{notification._id }}">
+          <span class="cell" log-level="notification.level"/>
+          <span class="cell channel channel-{{ notification.channel | lowercase }}">{{ notification.channel }}</span>
+          <span class="cell" tooltip="{{ notification.msg }}">{{ notification.msg | truncate:50 }}</span>
+        </a>
+      </li>
+    </ol>
+  </div>
+
+  <div class="dashboard-box dashboard-box-small  span6"  id="dashboard-traces">
+    <h4 class="dashboard-box-title">Latest traces <small><a href="traces">(View all)</a></small></h4>
+
+    <div ng-if="last_traces.length == 0">
+      <span class=" cell no-records">
+        No recent data available. Add a service and/ or run your app to see <br/>traces here.
+        <a class="new-service btn btn-primary" href="services/new">Add a service</a>
+      </span>
+    </div>
+
+    <ol>
+      <li ng-repeat="trace in last_traces">
+        <a class='trace-link' ng-href="traces?select={{trace._id }}">
+          <span class="cell label-{{ trace.res.status | status }}">{{ trace.res.status }}</span>
+          <b class="cell http-method method-{{ trace.req.method | lowercase }}">{{
+            trace.req.method }}</b>
+          <span class="path cell">{{ trace.req.uri | truncate:40 }}</span>
+        </a>
+      </li>
+    </ol>
+  </div>
+
+</div>

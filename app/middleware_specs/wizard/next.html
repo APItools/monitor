@@ -1,0 +1,7 @@
+<ng-include src="current_template" ng-animate="slideAnimation"></ng-include>
+
+<div class="control-group">
+  <div class="controls">
+    <button type="submit" class="btn btn-primary" ng-disabled="form.$invalid">{{ last_step ? 'Submit' : 'Next' }}</button>
+  </div>
+</div>

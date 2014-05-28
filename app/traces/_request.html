@@ -1,0 +1,27 @@
+<dl class="trace-request">
+  <dt>{{request.method}}</dt>
+  <dd>{{request.endpoint}}{{request.uri_relative}}</dd>
+
+  <dt>Headers</dt>
+  <dd trace-headers="request.headers"></dd>
+
+  <dt ng-if="request.body">Body</dt>
+  <dd ng-if="request.body" ng-controller="TraceBodyCtrl" ng-init="body = request.body">
+    <button class="btn-link" ng-click="showRequest = !showRequest">Toggle Body
+      <i ng-class="{ 'icon-collapse-top': showRequest, 'icon-expand': !showRequest }"></i>
+    </button>
+
+    <button class="btn-link" ng-show="showRequest" ng-click="togglePrettyBody()">
+      Pretty Print
+      <i class="icon icon-code"></i>
+    </button>
+
+    <div collapse="!showRequest">
+      <pre highlight="body" highlight-content-type="contentType"
+           highlight-refresh />
+    </div>
+  </dd>
+
+  <dt><button class="btn btn-link" ng-click="hideFullRequest = !hideFullRequest">Toggle Full Info <i ng-class="{ 'icon-collapse-top': hideFullRequest, 'icon-expand': !hideFullRequest }"></i></button></dt>
+  <dd collapse="!hideFullRequest"><pretty-print value="request" class="trace" lang="json"/></dd>
+</dl>

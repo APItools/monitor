@@ -1,0 +1,13 @@
+<div ng-controller="MiddlewareSpecWizardCtrl">
+  <div class="wizard">
+    <ul class="steps">
+      <li ng-repeat="step in steps" ng-class="stepState($index)"><span class="badge">{{$index + 1}}</span>{{ step }} <span class="chevron"></span></li>
+    </ul>
+  </div>
+
+  <div>
+    <form class="form-horizontal middlewares" name="service_form" ng-submit="next()">
+      <div ng-include="'/middleware_specs/wizard/next.html'"></div>
+    </form>
+  </div>
+</div>

@@ -1,0 +1,96 @@
+<div class="row-fluid">
+  <aside class="span3">
+
+    <p>
+      By adding a new service- an API your app is using- you will be able to track, transform, and analyze the traffic between your app and this API on Apitools.
+    </p>
+    <a rel="external" class="help-link" docs-ref="getting_started"><i class="icon-help"></i></a>
+    <p>
+      Substitute the <a tooltip="like: http://api.github.com">URL of the API</a> by your <a tooltip="like myapi-myinstance.apitools.com">Apitools URL</a> service URL to make the requests through our servers and stay in absolute control.
+    </p>
+  </aside>
+
+  <div class="span9">
+
+    <a name="service-form"></a>
+
+    <div demo-block="service">
+      <h4>Adding a service (API you are using)</h4>
+      <ul>
+        <li><i class="icon icon-link"></i> Pick a name and indicate the URL of the API your app is using.</li>
+        <li><i class="icon icon-rocket"></i> Your Apitools URL will proxy your app API calls.</li>
+        <li><i class="icon icon-twitter"></i> Just testing out? Try one of the API examples below.</li>
+      </ul>
+    </div>
+
+    <form class="form-horizontal" name="form" ng-submit="save()" ng-controller="ServiceEditCtrl">
+      <fieldset>
+        <div class="control-group" ng-class="{error: form.name.$invalid}">
+          <label class="control-label" for="service_name">Name</label>
+          <div class="controls">
+            <input id="service_name" type="text" name="name" ng-model="service.name" required>
+            <p>Choose a meaningful description for your service. For example, Twitter API or Facebook API</p>
+          </div>
+        </div>
+      </fieldset>
+
+      <fieldset ng-repeat="endpoint in service.endpoints">
+        <div class="control-group" ng-form="endpoint_form" ng-class="{error: endpoint_form.url.$invalid}">
+          <label class="control-label">API URL</label>
+
+          <div class="controls">
+            <input type="text" name="url" required ng-change="resetDemo()" require type="url" pattern='^(https?:\/\/.+|\*)$' ng-model="endpoint.url">
+            <p>For example https://api.github.com</p>
+          </div>
+        </div>
+
+        <div class="control-group" ng-form="endpoint_form"
+             ng-controller="ServiceEndpointCtrl" ng-class="{error: endpoint_form.code.$invalid}">
+          <label class="control-label">Apitools URL</label>
+
+          <div class="controls">
+            <span ng-hide="editing">
+              <pre class="endpoint">{{ endpoint.code }}-{{ suffix }}</pre>
+              <button type="button" class="btn-link" ng-click="edit()">Edit</button>
+            </span>
+
+            <span ng-show="editing">
+              <pre class="endpoint"><input type="text" required name="code" ng-pattern="/^[a-z0-9]+$/" ng-model="endpoint.code"/>-{{ suffix }}</pre>
+
+              <button type="button" class="btn-link" ng-disabled="endpoint_form.$invalid" ng-click="apply()">Apply</button> |
+              <button type="button" class="btn-link" ng-click="cancel()">Cancel</button>
+
+              <span class="help-inline" ng-show="endpoint_form.code.$error.pattern">Code has to be lowercase and contain just letters or numbers.</span>
+            </span>
+          </div>
+        </div>
+      </fieldset>
+
+      <fieldset>
+        <div class="control-group">
+          <div class="controls">
+            <button type="submit" class="btn btn-primary">Save</button>
+          </div>
+        </div>
+      </fieldset>
+
+    </form>
+
+    <div ng-show="demos">
+      <h2>Some API examples:</h2>
+
+      <ul class="demo-services">
+        <li ng-repeat="(key, demo) in demos" class="demo-service" data-demo="{{key}}">
+          <a class="pull-left" rel-href="#service-form" ng-click="useDemo(demo)">
+            <img class="demo-service-logo" ng-src="/assets/images/{{demo.img}}" alt="{{demo.name}} logo"/>
+          </a>
+          <div class="demo-service-body">
+            <h4 class="demo-service-heading"><a rel-href="#service-form" ng-click="useDemo(demo)">{{demo.name}}</a></h4>
+            <p>{{demo.description}} <button ng-click="useDemo(demo)" class="demo-service-action">Use {{demo.name}} API</button></p>
+
+          </div>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>

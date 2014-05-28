@@ -1,0 +1,43 @@
+<div class="search-box">
+
+  <div class="search-tokens">
+
+    <input class="search-input" ng-show="search.type == 'advanced'"  type="text" class="" readonly ng-model="search.json" required>
+
+    <token-input tokens="search.filter.tokens"></token-input>
+    <div class="token-suggestions" ng-show="suggestions.length > 0">
+      <p>Click suggested filters to use them:</p>
+      <token-suggestions suggestions="suggestions" tokens="search.filter.tokens"></token-suggestions>
+    </div>
+
+  </div>
+
+  <div class="controls">
+
+    <div class="btn-group">
+      <button tabindex="-1" class="btn search" ng-class='{"btn-primary": search.wasChanged()}' ng-click="search.do()">Search</button>
+      <button tabindex="-1" data-toggle="dropdown" class="btn dropdown-toggle">
+        <span class="caret"></span>
+      </button>
+
+      <ul class="dropdown-menu pull-right">
+        <li ng-class="{disabled: !search.using_filter || search.using_filter.builtin}" ><a href="" class="show-menu" ng-click="saveFilter()">Save</a></li>
+        <li><a href="" class="show-menu" ng-click="saveFilterAs()">Save As</a></li>
+        <li class="divider"></li>
+        <li><a href ng-click="search.clear()">Clear</a></li>
+      </ul>
+    </div>
+
+    <!--<div class="switch">
+      <input id="search_basic" type="radio" ng-model="search.type" name="search-type" value="basic" checked>
+      <label for="search_basic">Basic</label>
+
+      <input id="search_advanced" type="radio" ng-model="search.type" name="search-type" value="advanced">
+      <label for="search_advanced">Advanced</label>
+
+      <span class="slide-button"></span>
+    </div>-->
+
+  </div>
+
+</div>

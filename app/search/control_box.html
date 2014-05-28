@@ -1,0 +1,28 @@
+<div class="control-box btn-toolbar">
+  <span toggle-all-items />
+
+  <div class="group btn-group">
+    <a class="action btn" ng-class="{ disabled: !hasSelected() }" ng-click="highlightItems(selected)"><i class="icon-white icon-star"></i> Highlight</a>
+    <a class="action btn disabled"><i class="icon-white icon-share-alt"></i> Share</a>
+    <a class="action btn" ng-class="{ disabled: !hasSelected() }" ng-click="filterItems(selected)"><i class="icon-white icon-filter"></i> Suggest filters</a>
+  </div>
+
+  <div class="group btn-group">
+    <a class="action btn" ng-class="{ disabled: !hasSelected() }" ng-click="trashItems(selected)"><i class="icon-white icon-trash"></i> Delete</a>
+  </div>
+
+  <a class="help" tooltip="Please select some items to highlight/filter/delete them."> <i class="icon-help"></i></a>
+
+  <div class="dropdown btn-group pull-right">
+    <a class="dropdown-toggle btn" data-toggle="dropdown" href="">
+      <span ng-show="search.reversed">Newest first</span>
+      <span ng-hide="search.reversed">Oldest first</span>
+      <b class="caret"></b>
+    </a>
+
+    <ul class="dropdown-menu">
+      <li ng-class="{disabled: search.reversed}"><a href="" ng-click="search.reverse()">Newest first</a></li>
+      <li ng-class="{disabled: !search.reversed}"><a href="" ng-click="search.reverse()">Oldest first</a></li>
+    </ul>
+  </div>
+</div>

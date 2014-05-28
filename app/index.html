@@ -1,0 +1,50 @@
+<!DOCTYPE HTML>
+<html lang="en" ng-app="slug">
+  <head>
+    <meta charset="UTF8">
+    <title apitools>APItools Traffic Monitor {{name}}</title>
+    <meta name="viewport"content="width=device-width, initial-scale=1.0"/>
+
+    <link href="/assets/all.css" rel="stylesheet" media="screen"/>
+    <link href="/assets/v2.css" rel="stylesheet" media="screen"/>
+
+    <base href="/app/">
+
+    <script src="/assets/vendor.js"></script>
+    <script type="text/javascript">
+      var analytics=analytics||[];(function(){var e=["identify","track","trackLink","trackForm","trackClick","trackSubmit","page","pageview","ab","alias","ready","group"],t=function(e){return function(){analytics.push([e].concat(Array.prototype.slice.call(arguments,0)))}};for(var n=0;n<e.length;n++)analytics[e[n]]=t(e[n])})(),analytics.load=function(e){var t=document.createElement("script");t.type="text/javascript",t.async=!0,t.src=("https:"===document.location.protocol?"https://":"http://")+"d2dq2ahtl5zl1z.cloudfront.net/analytics.js/v1/"+e+"/analytics.min.js";var n=document.getElementsByTagName("script")[0];n.parentNode.insertBefore(t,n)};
+      if(window.location.hostname !== 'localhost') analytics.load("q1dkkb5fkd");
+    </script>
+    <script src="/assets/app.js"></script>
+
+    <script>ZeroClipboard.setDefaults( { moviePath: '/zeroclipboard/ZeroClipboard.swf' } );</script>
+  </head>
+
+  <body ng-controller="AppController">
+    <div id="wrap">
+        <header id="header" ng-hide="hideMenu()" navigation>
+            <div ng-include="'/navigation/main.html'" class="main-menu"></div>
+            <div service-submenu></div>
+        </header>
+
+        <div flash-alert active-class="in alert" class="slug-alert fade">
+          <!-- <strong class="alert-heading">{{ flash.type }}</strong> -->
+          <span class="alert-message">{{flash.message}}</span>
+        </div>
+
+        <section id="content" class="container" ui-view></section>
+    </div>
+
+    <footer id="footer">
+      <div class="container-fluid">
+        <ul class="inline">
+          <li><a href="/"><img ng-src="/assets/images/logo-footer.png" /></a></li>
+          <li>2014 3SCALE: API MANAGEMENT SOLUTIONS. All Rights Reserved.</li>
+          <li><a href="https://apitools.uservoice.com/forums/229502-apitools/">Feedback</a></li>
+          <li><a href="http://3scale.net/">3scale API Management</a></li>
+        </ul>
+      </div>
+    </footer>
+
+  </body>
+</html>

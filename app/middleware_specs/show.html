@@ -1,0 +1,127 @@
+<h2>Middlewares / {{spec.name}}</h2>
+<a href="middlewares/"><i class="icon-arrow-left"></i>  Go Back</a>
+
+<form class="form-horizontal middleware-form" name="form" ng-submit="save()">
+
+  <tabset class="">
+    <tab heading="General">
+
+        <div class="control-group">
+          <label class="control-label" for="spec_name">Name</label>
+          <div class="controls">
+            <input id="spec_name" type="text" ng-model="spec.name" required>
+            <p>Eg. Twitter API Caching layer</p>
+          </div>
+        </div>
+
+        <div class="control-group">
+          <label class="control-label" for="spec_description">Description</label>
+          <div class="controls">
+            <textarea id="spec_description" ng-model="spec.description"></textarea>
+          </div>
+        </div>
+    </tab>
+
+    <tab heading="Author">
+
+        <div class="control-group">
+          <label class="control-label" for="spec_author_name">Name</label>
+          <div class="controls">
+            <input id="spec_author_name" type="text" ng-model="spec.author.name" required>
+          </div>
+        </div>
+        <div class="control-group">
+          <label class="control-label" for="spec_author_email">Email</label>
+          <div class="controls">
+            <input id="spec_author_email" type="email" ng-model="spec.author.email" required>
+          </div>
+        </div>
+
+        <div class="control-group">
+          <label class="control-label" for="spec_author_github">GitHub</label>
+          <div class="controls">
+            <input id="spec_author_github" type="text" ng-model="spec.author.github" required>
+          </div>
+        </div>
+    </tab>
+
+    <tab heading="Code" select="active = true">
+      <textarea id="middleware_code" ng-model="spec.code" ui-codemirror ui-refresh="active"></textarea>
+    </tab>
+
+    <!--
+    <tab heading="Config" class="config">
+      <div class="control-group">
+
+        <label class="control-label">Field 1 </label>
+
+        <div class="controls">
+          <input type="text" placeholder="Name" />
+
+          <select>
+            <option>Type</option>
+          </select>
+
+          <textarea placeholder="Description"></textarea>
+
+
+          <label class="checkbox">
+            <input type="checkbox" />Required ?
+          </label>
+
+        </div>
+      </div>
+
+
+      <div class="controls">
+        <hr>
+        <a class="btn" href="#" >Add Field</a>
+      </div>
+    </tab>
+    -->
+
+    <!--
+    <tab heading="GitHub">
+
+      <form class="form-horizontal" name="form" ng-submit="setUpIntegration()" ng-controller="MiddlewareSpecGithubCtrl">
+
+        <div class="control-group">
+          <div class="controls">
+            <input type="text" class="github-owner" ng-model="github.owner"> /
+            <input type="text" class="github-repo" ng-model="github.repo" />
+          </div>
+        </div>
+
+        <div class="control-group text-info">
+          <div class="controls">
+            <ul>
+              <li ng-class='"text-" + message.level' ng-repeat="message in messages.messages">
+                <span ng-if="message.confirm">
+                  <input id="message_confirm_{{ $index }}" required type="checkbox" ng-model="message.confirmed">
+                </span>
+
+                <label for="message_confirm_{{ $index }}" ng-bind-html-unsafe="message.text"></label>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="controls">
+          <hr/>
+
+          <a class="btn btn-primary" ng-click="validate()" ng-hide="valid">Verify GitHub Integration</a>
+          <button class="btn btn-primary" ng-show="valid" ng-disabled="form.$invalid">Set Up GitHub Integration</button>
+        </div>
+
+      </form>
+    </tab>
+    -->
+  </tabset>
+
+
+  <div class="controls">
+    <hr/>
+
+    <button class="btn btn-primary" ng-disabled="form.$invalid">Save Middleware Spec</button>
+  </div>
+</form>

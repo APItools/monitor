@@ -1,0 +1,19 @@
+<h1>Search</h1>
+
+<form ng-submit="search()">
+  <input class="span9" name="query" ng-model="query"/>
+  <button type="submit"class="btn btn-primary">Search</button>
+  <a ng-show="results.length>0" ng-click="clear()"><i class="icon-trash icon-2x" style="background-image: none;"></i></a>
+</form>
+
+
+<p ng-show="results.length == 0">queries are json style, for instance: {} for all, {"status": 200, "time": {"$lt": 0.25}} for all requests that returned a 200 and request time is < 0.25s, etc.</p>
+
+<div ng-repeat="trace in results">
+  <div class="container">
+    <a ng-click="delete(trace)"><i class="icon-trash" style="background-image: none;"></i></a>
+    <a ng-href="traces/{{trace._id}}"><i class="icon-edit" style="background-image: none;"></i></a>
+  </div>
+
+  <pretty-print value="trace" lang="json" class="trace"/>
+</div>

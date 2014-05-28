@@ -1,0 +1,74 @@
+<div class="modal-header">
+  <h3>Edit Saved Analytic {{ analytic.name }}</h3>
+</div>
+
+<div class="modal-body">
+  <label>
+    Name
+    <input type="text" ng-model="analytic.name"/>
+  </label>
+
+  <label>
+    Icon
+    <input type="text" ng-model="analytic.icon"/>
+  </label>
+
+  <h4>Range</h4>
+  <label>
+    Start
+    <input type="number" ng-model="analytic.range.start"/>
+  </label>
+
+  <label>
+    End
+    <input type="number" ng-model="analytic.range.end" ng-disabled="analytic.range.end == 'now'"/>
+
+    <label>
+      Now
+      <input type="checkbox" ng-model="analytic.range.end" ng-true-value="now" />
+    </label>
+  </label>
+
+  <label>
+    Granularity
+    <input type="number" ng-model="analytic.range.granularity"/>
+  </label>
+
+  <h4>Metrics</h4>
+
+  <h5>Methods <button class="btn" ng-click="addMethod()">&plus;</button></h5>
+  <ul>
+    <li ng-repeat="method in analytic.methods">
+      <input type="text" required ng-model="method.name"/>
+      <button class="btn" ng-click="removeMethod(method)">&minus;</button>
+    </li>
+  </ul>
+
+  <h5>Paths <button class="btn" ng-click="addPath()">&plus;</button></h5>
+  <ul>
+    <li ng-repeat="path in analytic.paths">
+      <input type="text" required ng-model="path.name"/>
+      <button class="btn" ng-click="removePath(path)">&minus;</button>
+    </li>
+  </ul>
+
+  <h5>Metrics <button class="btn" ng-click="addMetric()">&plus;</button></h5>
+  <ul>
+    <li ng-repeat="metric in analytic.metrics">
+      <input type="text" required ng-model="metric.name"/>
+      <button class="btn" ng-click="removeMetric(metric)">&minus;</button>
+    </li>
+  </ul>
+
+  <h4>Projections <button class="btn" ng-click="addProjection()">&plus;</button></h4>
+  <ul>
+    <li ng-repeat="projection in analytic.projections">
+      <input type="text" required ng-model="projection.name"/>
+      <button class="btn" ng-click="removeProjection(projection)">&minus;</button>
+    </li>
+  </ul>
+</div>
+
+<div class="modal-footer">
+  <button ng-click="close()" class="btn btn-primary" >Close</button>
+</div>

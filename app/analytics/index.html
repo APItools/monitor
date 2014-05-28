@@ -1,0 +1,32 @@
+<aside class="span3" analytics-navigation></aside>
+
+<div class="span9">
+
+  <div demo-block="analytics">
+    <h4>Analyze flows to detect peaks and problems</h4>
+    <p>
+      Analytics graphs Apitools default metrics. You can also choose which metrics to graph, including those generated in middleware.
+    </p>
+    <p>
+      Click on edit to change graph settings like time, metrics, methods, statuses, or paths.  Or, create a new dashboard using the link in the left sidebar.
+    </p>
+  </div>
+
+  <ul ng-if="current_dashboard" class="charts" ng-controller="CurrentDashboardCtrl">
+
+    <li class="{{ blueprint.type }}" ng-repeat="window in windows" ng-controller="ChartController">
+      <a ng-hide="chart" class="chart new" ng-click="addChart($index, config)"><i class="icon-plus"></i> Add Chart</a>
+
+      <div ng-if="chart" class="chart">
+        <div class="caption">
+          <h4>{{ chart.name }}</h4>
+          <button type="button" ng-click="editChart(chart)" class="btn-link edit-chart"><i class="icon-pencil"></i> Edit</button>
+        </div>
+
+        <div class="plot">
+          <div rickshaw="stats"></div>
+        </div>
+      </div>
+    </li>
+  </ul>
+</div>

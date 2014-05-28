@@ -1,0 +1,32 @@
+<div class="modal-header">
+  <h3>Edit Saved Search {{ search.name }}</h3>
+</div>
+
+<form class="modal-body form-horizontal">
+  
+  <div class="control-group">
+    <label class="control-label">Name</label>
+    <div class="controls">
+      <input type="text" ng-model="search.name"/>
+    </div>
+  </div>
+
+  <div class="control-group">
+    <label class="control-label">Icon</label>
+    <div class="controls">
+      <input type="text" ng-model="search.icon"/>
+    </div>
+  </div>
+
+  <div class="control-group">
+    <label class="control-label">Query</label>
+    <div class="controls">
+      <input type="text" ng-model="search.query"/>
+    </div>
+  </div>
+
+</form>
+
+<div class="modal-footer">
+  <button ng-click="close()" class="btn btn-primary" >Close</button>
+</div>

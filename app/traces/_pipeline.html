@@ -1,0 +1,13 @@
+<ol class="trace-pipeline">
+  <li ng-repeat="trace in pipeline">
+    <span class="counter"></span>
+    <h4>Middleware:<b> {{ trace.middleware }}</b> </h4>
+    <dl>
+      <dt><h5>Request</h5></dt>
+      <dd trace-request="trace.req"></dd>
+
+      <dt ng-if="hasResponse(trace.res)"><h5>Response</h5></dt>
+      <dd ng-if="hasResponse(trace.res)"><div trace-response="trace.res"/></dd>
+    </dl>
+  </li>
+</ol>

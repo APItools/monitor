@@ -1,0 +1,24 @@
+<li>
+    <a ng-class="{ active: $state.is('service.show') }" class="subnav-action" id="service-overview"
+       ng-href="services/{{ submenu.service._id }}">Overview</a>
+</li>
+
+<li>
+    <a ng-class="{ active: $state.includes('service.traces') }" class="subnav-action"
+       ng-href="services/{{ submenu.service._id }}/traces"><i class="icon icon-eye-open"></i> Traces</a>
+</li>
+
+<li>
+    <a  ng-class="{ active: $state.includes('service.middleware') }" class="subnav-action"
+       ng-href='services/{{ submenu.service._id }}/middlewares'><i class="icon icon-code"></i> Pipeline</a>
+</li>
+
+<li>
+    <a ng-class="{ active: $state.includes('service.analytics') }" class="subnav-action"
+       ng-href="services/{{ submenu.service._id }}/analytics"><i class="icon icon-bar-chart"></i> Analytics</a>
+</li>
+
+<li>
+    <a ng-class="{ active: $state.includes('service.docs') }"  class="subnav-action"
+       ng-href='services/{{ submenu.service._id }}/docs'><i class="icon icon-book"></i> Active Docs</a>
+</li>

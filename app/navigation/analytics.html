@@ -1,0 +1,50 @@
+<ul class="side-menu" id="">
+ <!-- <li ng-repeat="analytic in filters">
+    <a href="" ng-click="apply(analytic)"><i class="icon-{{ analytic.icon }}"></i> {{ analytic.name }}</a>
+    <a class="show-menu edit" href="" ng-click="edit(analytic)"><i class="icon-pencil"></i></a>
+  </li>
+
+  <li><hr/></li>
+  <li><a href="" ng-click="addNew()"><i class="icon-plus-sign"></i> Add Custom</a></li>
+  -->
+  <li class="header">Dashboards</li>
+
+  <li ng-repeat="dashboard in dashboards"
+      ng-class="{ active: current_dashboard === dashboard, editing: isEditing(dashboard), new: !dashboard._id }" class="side-menu-filter editable">
+    <edit-filter ng-submit="save(dashboard)" placeholder="new dashboard"></edit-filter>
+    <a ng-hide="isEditing(dashboard)" ng-click="select(dashboard)" href><i class="icon-dashboard"></i> {{ dashboard.name }}</a>
+
+    <span class="controls select-mode">
+     <a href class="edit-button" ng-click="edit(dashboard)"><i class="icon-pencil"></i></a>
+     <a slug-confirm action icon="icon-trash" ng-click="delete(dashboard)" ng-hide="!dashboard._id"></a>
+    </span>
+
+    <span class="controls edit-mode">
+      <a href ng-click="save(dashboard)"><i class="icon-ok"></i></a>
+      <a href ng-click="abort(dashboard)"><i class="icon-remove"></i></a>
+    </span>
+  </li>
+
+  <li class="divider"></li>
+
+  <li><a href ng-click="addEmptyDashboard()"><i class="icon-plus-sign"></i> Add Dashboard</a></li>
+
+  <li class="divider"></li>
+
+</ul>
+
+<a rel="external" class="help-link" docs-ref="home"><i class="icon-help"></i></a>
+<p>
+  You can use this Analytics view to manage <em>Dashboards</em>. A dashboard is made of one or more <em>charts</em>.
+</p>
+
+<p>Each chart is a group of lines displaying one or more <em>projections</em> about <em>properties</em> of traces during a period of <em>time</em>. It's possible to filter and aggregate this data in various ways.</p>
+
+<p>Some examples of graphs could be:</p>
+<ul>
+  <li>Show the average time of all the requests to the service</li>
+  <li>Display the same thing, but only for the requests that returned errors</li>
+  <li>Restrict the previous graph to the requests with a generic path like /users/{user_id}.xml </li>
+</ul>
+
+

@@ -1,0 +1,28 @@
+<ul class="side-menu">
+  <!--<li class="header">{{ listFilterTitle }}</li>-->
+  <li class="side-menu-filter" ng-repeat="filter in filters"
+      ng-class="{active: search.using_filter == filter, editing: isEditing(filter), editable: canEdit(filter)}">
+	    <edit-filter ng-submit="save(filter)" placeholder="new filter"></edit-filter>
+	    <a ng-hide="isEditing(filter)" ng-click="apply(filter)" href=""><i class="icon-{{ filter.icon }}"></i> {{ filter.name }}</a>
+
+	    <span class="controls select-mode">
+        <a href class="edit-button" ng-hide="filter.builtin" ng-click="edit(filter)" title="Edit/delete this filter"><i class="icon-pencil"></i></a>
+	    	<a action icon="icon-trash" slug-confirm ng-show="canDelete(filter)" ng-click="delete(filter)"></a>
+        <a href class="active-button" ng-click="off(filter)" title="Clear (stop using) this filter"><i class="icon-remove"></i></a>
+	    </span>
+
+      <span class="controls edit-mode">
+	    	<a href ng-click="save(filter)" title="Save"><i class="icon-ok"></i></a>
+	    	<a href ng-click="abort(filter)" title="Do not save (cancel)"><i class="icon-remove"></i></a>
+
+	    </span>
+  </li>
+
+  <li class="divider"></li>
+  <li><a href ng-click="addNew()"><i class="icon icon-plus-sign"></i> Add Custom</a></li>
+  <li><a href ng-click="clear()"><i class="icon icon-remove"></i> Clear Search</a></li>
+  <li><a href ng-click="wipe()" slug-confirm><i class="icon icon-eraser"></i> Wipe All</a></li>
+</ul>
+
+<div ng-transclude></div>
+

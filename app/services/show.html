@@ -1,0 +1,60 @@
+<aside class="span3">
+  <ul class="side-menu">
+    <li class="header">Service menu</li>
+    <li><a ng-href="services/{{ service._id }}/edit"><i class="icon icon-pencil"></i> Edit {{ service.name }}</a></li>
+    <li class="divider"></li>
+  </ul>
+
+  <a rel="external" class="help-link" docs-ref="getting_started"><i class="icon-help"></i></a>
+  <p>
+    Your Apitools URL for this service is <b>{{ service.host() }}</b>.
+      <span ng-switch="integration">
+        <span ng-switch-when="normal">
+          Use this URL to send traffic from your application. Check out the <a rel="external" docs-ref="getting_started">documentation</a> to learn more about how it works.
+        </span>
+      </span>
+
+  </p>
+
+</aside>
+
+<div class="span9">
+  <div demo-block="overview">
+    <h4>
+      Track, transform and analyze the traffic between your app and this API. 
+    </h4>
+    <ul>
+      <li><strong>Track</strong> your app's outgoing API traffic.</li>
+      <li><strong>Transform</strong> your calls and keep your app's code clean.</li>
+      <li><strong>Analyze</strong> flows to detect peaks and problems.</li>
+    </ul>
+  </div>
+
+  <h2>Your service is ready.</h2>
+  Apitools URL: <span class="new-endpoint"><strong ng-bind="proxy_url" zeroclipboard/></span>
+  <h3>Step 1</h3>
+  <p>
+    In your app, substitute the original API URL <span class="original-endpoint" ng-bind="service.endpoints[0].url"/> by your Apitools URL.
+  </p>
+  <h3>Step 2</h3>
+  <p>
+    Run your app and check the 'Traces' tab.
+  </p>
+  <p>
+    Or try one of these example calls:
+  </p>
+  <div class="service-demo" ng-if="demo">
+    <ul class="demo-calls">
+      <li ng-repeat="call in demo.calls" demo-call="call" demo-service="service" class="demo-call"></li>
+    </ul>
+  </div>
+
+  <p>
+    The <a href="http://curl.haxx.se/">curl</a> command to use from the terminal (you will need to add credentials on private APIs) is:
+  </p>
+
+  <div class="endpoint-example" data-service-code="{{ service.code() }}">
+    <pre class="well-small" zeroclipboard>curl -v -X GET {{ proxy_url }}</pre>
+  </div>
+
+</div>

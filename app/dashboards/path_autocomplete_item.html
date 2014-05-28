@@ -1,0 +1,6 @@
+<a tabindex="-1">
+  <span bind-html-unsafe="match.label | typeaheadHighlight:query" />
+  <span ng-repeat="method in match.model.methods">
+    <span class="label label-important">{{ method }}</span>
+  </span>
+</a>

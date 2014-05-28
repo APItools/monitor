@@ -1,0 +1,40 @@
+<aside class="span3">
+  <ul class="side-menu">
+    <li class="header">Service menu</li>
+    <li><a ng-href="services/{{ service._id }}/edit">Edit {{ service.name }}</a></li>
+    <li class="divider"></li>
+  </ul>
+
+  <div class="help-block">
+    <div class="short">
+      <p>
+        If you don't have an application ready to run, make a call and see the result on Apitools, you can use our prepared examples to test it out.
+      </p>
+        <!-- <a ng-show="!isCollapsed" ng-click="isCollapsed = !isCollapsed"> more...</a></p> -->
+
+      <button ng-click="isCollapsed = !isCollapsed"><i class="icon-help"></i></button>
+    </div>
+
+  </div>
+</aside>
+
+<div class="span9">
+
+  <div class="service-demo" ng-if="demo">
+    <div demo-block="demo-calls">
+      <h4>Try an example call</h4>
+      <p>Here you have some example calls for the {{ service.name }} API. Click on one to see how it's debugged and showed by Apitools.</p>
+
+    </div>
+    <h2>{{ demo.name }} demo</h2>
+
+    <p>{{ demo.description }}</p>
+
+    <p class="lead">See some example calls below:</p>
+
+    <ul class="demo-calls">
+      <li ng-repeat="call in demo.calls" demo-call="call" demo-service="service" class="demo-call"></li>
+    </ul>
+  </div>
+
+</div>

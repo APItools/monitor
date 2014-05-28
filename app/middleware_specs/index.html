@@ -1,0 +1,88 @@
+
+<!--
+<a ng-href="{{ result.integration.url }}">Integrate with GitHub</a>
+-->
+
+<section class="middlewares">
+
+<!-- <h1>Middlewares</h1> -->
+
+  <!--
+  <div ng-controller="MiddlewareSubscriptionCtrl" class=" github">
+    <h2>GitHub</h2>
+   <!-- <form ng-submit="load()">
+      <input type="text" ng-model="spec.user" required>/<input type="text" ng-model="spec.repo" required>
+      <button>Get</button>
+    </form> //-/->
+    <button class="btn pull-right" ng-click="isCollapsed = !isCollapsed"><i class="icon icon-collapse-top"></i> </button>
+    <form ng-submit="search()" class="form-search">
+      <input type="text" ng-model="query" class="input-medium search-query">
+      <button class="btn"><i class="icon icon-search"></i> Search</button>
+    </form>
+
+
+
+    <ul class="thumbnails results" collapse="isCollapsed">
+        <li class="result"  ng-repeat="result in results">
+        <div class="thumbnail">
+          <div class="caption">
+            <h3>{{ result.spec.name }}<em class="version">v{{ result.spec.version }}</em></h3>
+            <p class="author"> by <a ng-href="//result.com/{{ result.spec.author.github }}" title="{{ result.spec.author.name }}"><i class="icon-github-alt"></i>  {{ result.spec.author.github }}</a> <span class="timestamp" am-time-ago="result.info.created_at"/> (updated <span class="timestamp" am-time-ago="result.info.updated_at"/>) </p>
+
+            <div class="rating"><i ng-repeat="item in rating(spec)" ng-class="item.icon"></i></div>
+
+            <p><span class="badge" ng-show="result.info.fork"><i class="icon icon-code-fork"></i> is fork</span></p>
+
+            <p><span class="badge badge-info" ><i class=""></i> {{ result.info.size }} kb</span> <span class="badge badge-info"><i class="icon icon-code-fork"></i><b>{{ result.info.forks }}</b> forks </span> <span class="badge badge-info"><i class="icon icon-star"></i><b>{{ result.info.watchers }}</b> Stars </p>
+
+            <p truncate="40">{{ result.info.description.substring(0, 30) }}...</p>
+
+            <hr>
+            <p align="right">
+              <a  class="btn "><i class="icon icon-code-fork"></i> Fork</a>
+              <a  class="btn btn-primary"><i class="icon icon-plus"></i> Add</a>
+            </p>
+
+          </div>
+        </div>
+        </li>
+      </ul>
+  </div>
+  -->
+
+  <!-- <div class="stack"> -->
+    <h1>Local Middlewares</h1>
+      <p class="lead">Middlewares are pieces of code that modify the requests and/or petitions that enter brainslug. At his heart, a middleware is a Lua function with the signature <code>function(req, next_middleware)</code>, where req is a Lua table representing the request and next_middleware is a function that will pass the flow on to the next middleware, and will return the response (another table) .</p>
+    </div>
+
+    <ul class="thumbnails">
+      <li class="spec"  ng-repeat="spec in specs">
+        <div class="thumbnail">
+          <div class="caption">
+            <h3><a ng-href="middlewares/{{spec._id}}">{{ spec.name }}</a><em class="version">v{{ spec.version }}</em></h3>
+            <p class="author"> by <a href="#"><i class="icon-github-alt"></i>  {{ spec.author.github }}</a></p>
+
+            <!--
+            <div class="rating"><i ng-repeat="item in rating(spec)" ng-class="item.icon"></i></div>
+            <p><span class="badge" ng-repeat="badge in badges(spec)"><i ng-class="badge.icon"></i> {{ badge.name }}</span> <span class="badge badge-info"><i class="icon-code-fork"></i><b>11</b> forks </span> <span class="badge badge-info"><i class="icon-eye-open"></i><b>17</b> watchers </p>
+            -->
+
+            <p>{{ spec.description | truncate:150 }}</p>
+
+            <div class="controls">
+              <a ng-href="middlewares/{{spec._id}}/destroy" class="btn btn-warning">Delete</a>
+              <a ng-href="middlewares/{{spec._id}}" class="btn btn-primary">Edit</a>
+            </div>
+          </div>
+        </div>
+      </li>
+
+      <li class="spec new">
+        <a href="middlewares/new" class="thumbnail"><i class="icon-cog"></i> New Middleware</a>
+      </li>
+    </ul>
+
+
+  <!-- </div> -->
+
+</section>

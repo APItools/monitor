@@ -1,0 +1,40 @@
+<div class="services">
+
+<p class="lead">
+  This is where the APIs you use are listed.
+</p>
+
+	<ul class="thumbnails">
+
+	  <li ng-repeat="service in dashboard.services" ng-controller="ServiceDashboardCtrl">
+      <div class="thumbnail">
+        <div class="caption">
+          <h3><a ng-href="services/{{ service._id }}">{{ service.name }}</a></h3>
+        </div>
+
+        <div class="plot">
+          <div rickshaw='stats.chart' rickshaw-height="150" rickshaw-color="#317eac"></div>
+        </div>
+
+        <div class="caption">
+          <p>{{ service.description | truncate: 30 }}</p>
+          <p>
+            <span tooltip-placement="top" tooltip="{{ stats.status.message }}"
+                  class="service-status-{{ stats.status.status }}">{{ stats.status.status }}</span>
+            <span class="label-info" tooltip="Requests per hour">{{ stats.rate }} r/h</span>
+          </p>
+        </div>
+        <div class="controls">
+          <a ng-href="services/{{service._id}}/destroy" class="btn btn-warning" ><i class="icon-trash"></i> Delete</a>
+          <a ng-href="services/{{service._id}}/edit" class="btn"><i class="icon-pencil"></i> Edit</a>
+          <a ng-href="services/{{service._id}}"  class="btn btn-primary pull-right"><i class="icon-eye-open"></i> View</a>
+        </div>
+      </div>
+	  </li>
+
+
+	  <li class="new">
+	  		<a href="services/new" class="thumbnail"><i class="icon-cloud"></i> Add new service</a>
+	  </li>
+	</ul>
+</div>

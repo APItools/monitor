@@ -1,0 +1,23 @@
+<fieldset>
+  <legend>General info</legend>
+
+  <div class="control-group">
+	  <label class="control-label" for="spec_name">Name</label>
+	  <div class="controls">
+	    <input id="spec_name" type="text" ng-model="spec.name" required>
+	  </div>
+	</div>
+  <div class="control-group">
+	  <label class="control-label" for="spec_description">Description</label>
+	  <div class="controls">
+	    <textarea id="spec_description" ng-model="spec.description"></textarea>
+	  </div>
+	</div>
+
+  <div class="control-group">
+    <label class="control-label" for="spec_version">Version</label>
+    <div class="controls">
+      <input type="text" id="spec_version" required ng-model="spec.version"/>
+    </div>
+  </div>
+</fieldset>
