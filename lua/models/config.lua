@@ -1,4 +1,3 @@
-local m = require 'model_helpers'
 local inspect = require 'inspect'
 local jor = require 'jor'
 
@@ -9,13 +8,16 @@ local lock = require "lock"
 local Model = require 'model'
 local Config  =  Model:new()
 
+local uuid = require 'uuid'
+
 Config.collection = 'config'
 Config.localhost = '127.0.0.1:7071' -- used by brain.lua and consumers/mail.lua
 
-Config.update = function(config)
-  Config.get() -- create config if it does not exist
-  config.slug_name = nil
-  return m.update(Config.collection, {}, config)
+Config.update_except_slug_name = function(self, changes)
+  changes.slug_name = nil
+
+  local config = Config.get()
+  return Config:update({_id = config._id}, changes)
 end
 
 Config.update_missing = function(changes)
@@ -37,26 +39,26 @@ Config.update_missing = function(changes)
     end
   end
 
-  return Config.update(update)
+  Config:update_except_slug_name(update)
 end
 
 Config.update_missing = lock.wrapper('update_missing', Config.update_missing)
 
 Config.default = function()
-
   return {
-    csrf_secret = Config.csrf_secret()
+    csrf_secret = Config.csrf_secret(),
+    uuid        = uuid.getUUID()
   }
 end
 
 Config.get = function()
-  local config =  m.all(Config.collection, {})[1]
-  config = config or m.create(Config.collection, { Config.default() })
+  local config =  Config:all({})[1]
+  config = config or Config:create(Config.default())
   return config
 end
 
 Config.reset = function()
-  m.delete(Config.collection, { Config.default() })
+  Config:delete(Config.default())
   return Config.get()
 end
 
@@ -90,11 +92,21 @@ Config.get_slug_name = function(no_jor)
 end
 
 Config.set_slug_name = function(str)
-  Config.get() -- create config if it does not exist
-  return m.update(Config.collection, {slug_name}, { slug_name = str})
-
+  local c = Config.get() -- create config if it does not exist
+  return Config:update({_id = c._id}, {slug_name = str})
 end
 
+Config.get_uuid = function()
+  return Config.get().uuid
+end
 
+Config.get_link_key = function()
+  return Config.get().link_key
+end
+
+Config.set_link_key = function(key)
+  local c = Config.get()
+  return Config:update({_id = c._id}, {link_key = key})
+end
 
 return Config

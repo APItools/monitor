@@ -1,33 +1,29 @@
-local proxy_location = "/___http_call"
 local fun = require('functional')
+
+local http = {}
 
 local map = fun.map
 local each = fun.each
 
--- keep compat with socket.url, just in case
-local url = {
-  escape =  function(s)
-    return (string.gsub(s, "([^A-Za-z0-9_])",
-                        function(c)
-                          return string.format("%%%02x", string.byte(c))
-                        end))
-  end
+local PROXY_LOCATION = "/___http_call"
+local METHODS = {
+  ["GET"]      = ngx.HTTP_GET,
+  ["HEAD"]     = ngx.HTTP_HEAD,
+  ["PATCH"]    = ngx.HTTP_PATCH,
+  ["PUT"]      = ngx.HTTP_PUT,
+  ["POST"]     = ngx.HTTP_POST,
+  ["DELETE"]   = ngx.HTTP_DELETE,
+  ["OPTIONS"]  = ngx.HTTP_OPTIONS
 }
 
-local inspect = require 'inspect'
-
-local methods = {
-  ["GET"] = ngx.HTTP_GET,
-  ["HEAD"] = ngx.HTTP_HEAD,
-  ["PATCH"] = ngx.HTTP_PATCH,
-  ["PUT"] = ngx.HTTP_PUT,
-  ["POST"] = ngx.HTTP_POST,
-  ["DELETE"] = ngx.HTTP_DELETE,
-  ["OPTIONS"] = ngx.HTTP_OPTIONS
-}
-local set_proxy_location = function(loc)
-  proxy_location = loc
+local char_escape = function(c)
+  return string.format("%%%02x", string.byte(c))
 end
+
+local url_escape = function(s)
+  return string.gsub(s, "([^A-Za-z0-9_])", char_escape)
+end
+
 local encode_query_string = function(t, sep)
   if sep == nil then
     sep = "&"
@@ -38,9 +34,9 @@ local encode_query_string = function(t, sep)
     if type(k) == "number" and type(v) == "table" then
       k, v = v[1], v[2]
     end
-    buf[i + 1] = url.escape(k)
+    buf[i + 1] = url_escape(k)
     buf[i + 2] = "="
-    buf[i + 3] = url.escape(v)
+    buf[i + 3] = url_escape(v)
     buf[i + 4] = sep
     i = i + 4
   end
@@ -48,35 +44,67 @@ local encode_query_string = function(t, sep)
   return table.concat(buf)
 end
 
-local simple = function(req, body)
+local init_headers = function(req)
+  local headers = req.headers or {}
+
+  local uagent = headers['User-Agent'] or 'APITools'
+  local host = headers.Host or headers.host
+
+  headers.host = host or string.match(req.url, "^.+://([^/]+)")
+  headers.Host = nil
+
+  headers['User-Agent'] = uagent
+
+  return headers
+end
+
+local init_req = function(r)
+  each(assert, {r.url, r.method})
+
+  r.headers = headers(r)
+  r.method = METHODS[r.method]
+  r.body = r.body or ''
+
+  if type(r.body) == 'table' then
+    r.body = encode_query_string(r.body)
+    r.headers["Content-type"] = "application/x-www-form-urlencoded"
+    r.headers["content-length"] = #r.body
+  end
+  r.ctx = {
+    headers = r.headers
+  }
+  r.vars = { _url = r.url }
+
+  return {PROXY_LOCATION, r}
+end
+
+-------------------------
+
+function http.set_proxy_location(loc)
+  PROXY_LOCATION = loc
+end
+
+function http.simple(req, body)
   if type(req) == "string" then
-    req = {
-      url = req
-    }
+    req = { url = req }
   end
 
-  req.headers = req.headers or {}
-
-  local host = req.headers.Host or req.headers.host
-  local uagent = req.headers['User-Agent'] or 'APITools'
+  req.headers = init_headers(req)
 
   if body then
     req.method = "POST"
     req.body = body
     req.headers["content-length"] = #body
   end
+
   if type(req.body) == "table" then
     req.body = encode_query_string(req.body)
     req.headers["Content-type"] = "application/x-www-form-urlencoded"
     req.headers["content-length"] = #req.body
   end
 
-  req.headers.host = host or string.match(req.url, "^.+://([^/]+)")
-  req.headers.Host = nil
-  req.headers['User-Agent'] = uagent
-
-  local res = ngx.location.capture(proxy_location, {
-    method = methods[req.method or "GET"],
+  local res = ngx.location.capture(PROXY_LOCATION, {
+    method = METHODS[req.method or "GET"],
 
     body = req.body,
     ctx = {
@@ -91,38 +119,12 @@ local simple = function(req, body)
   return res.body, res.status, res.header
 end
 
-local function multi(reqs)
-
-  local function prep_req(r)
-    each(assert, {r.url, r.method})
-    r.headers = r.headers or {}
-
-    local host = r.headers.Host or r.headers.host
-    local uagent = r.headers['User-Agent'] or 'Apitools'
-
-    r.method = methods[r.method]
-    r.body = r.body or ''
-
-    if type(r.body) == 'table' then
-      r.body = encode_query_string(r.body)
-      r.headers["Content-type"] = "application/x-www-form-urlencoded"
-      r.headers["content-length"] = #r.body
-    end
-    r.ctx = {
-      headers = r.headers
-    }
-    r.vars = { _url = r.url }
-
-    return {proxy_location, r}
-  end
-
-  local prepared_reqs = map(prep_req, reqs)
-
-  return ngx.location.capture_multi(prepared_reqs)
+function http.multi(reqs)
+  local initialized_reqs = map(init_req, reqs)
+  return { ngx.location.capture_multi(initialized_reqs) }
 end
 
-local request
-request = function(url, str_body)
+function http.request(url, str_body)
   local return_res_body
   local req
   if type(url) == "table" then
@@ -145,8 +147,8 @@ request = function(url, str_body)
     ltn12.pump.all(req.source, sink)
     body = table.concat(buff)
   end
-  local res = ngx.location.capture(proxy_location, {
-    method = methods[req.method],
+  local res = ngx.location.capture(PROXY_LOCATION, {
+    method = METHODS[req.method],
     body = body,
     ctx = {
       headers = req.headers
@@ -166,8 +168,8 @@ request = function(url, str_body)
   end
   return out, res.status, res.header
 end
-local ngx_replace_headers
-ngx_replace_headers = function(new_headers)
+
+function http.ngx_replace_headers(new_headers)
   if new_headers == nil then
     new_headers = nil
   end
@@ -189,10 +191,8 @@ ngx_replace_headers = function(new_headers)
   end
 end
 
-return {
-  request = request,
-  simple = simple,
-  multi = multi,
-  set_proxy_location = set_proxy_location,
-  ngx_replace_headers = ngx_replace_headers
-}
+function http.is_success(status)
+  return status >= 200 and status < 300
+end
+
+return http

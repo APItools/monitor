@@ -1,8 +1,9 @@
-local Metric = require 'models.metric'
-local inspect = require 'inspect'
+local Metric   = require 'models.metric'
+local Trace    = require 'models.trace'
+local inspect  = require 'inspect'
 
 local analytics = {
-  _VERSION = "0.0.2"
+  _VERSION = "0.2.0"
 }
 
 
@@ -362,7 +363,7 @@ end
 
 function analytics.get_brain_report(service_id)
   local minute                    = 60
-  local period                    = 10*minute
+  local period                    = 5*minute
   local period_start, period_end  = normalize_period(period, 'now', 5)
   local period_conditions         = {["$gte"]= period_start, ["$lt"]= period_end}
   local all_docs                  = { max_documents= -1 }
@@ -373,10 +374,10 @@ function analytics.get_brain_report(service_id)
     service_id    = service_id
   }, all_docs)
 
-  local sum_time, count = 0, 0
+  local total_response_time, request_count = 0, 0
   for _,metric in ipairs(metrics_by_time) do
-    sum_time = sum_time + metric.projections.sum
-    count    = count + metric.projections.len
+    total_response_time = total_response_time + metric.projections.sum
+    request_count       = request_count       + metric.projections.len
   end
 
   local erroneous_metrics = Metric:all({
@@ -387,22 +388,32 @@ function analytics.get_brain_report(service_id)
   }, all_docs)
 
   local status, error_rate = 'ok', 0
-  local count_errors = 0
+  local error_count = 0
 
   for _,metric in ipairs(erroneous_metrics) do
-    count_errors = count_errors + metric.projections.count
+    error_count = error_count + metric.projections.count
   end
 
-  if count_errors > 0 then
+  if error_count > 0 then
     status = 'errors'
-    error_rate = count / count_errors
+    error_rate = request_count / error_count
   end
+
+  local last_trace = Trace:find({_id = Trace:get_last_id()})
+  local last_request_at = os.date("!%Y-%m-%dT%TZ", last_trace._created_at)
 
   return {
-    rps           = count / period,
-    response_time = sum_time / period,
-    status        = status,
-    error_rate    = error_rate
+    version              = analytics._VERSION,
+    request_count        = request_count,
+    error_count          = error_count,
+    total_response_time  = total_response_time,
+    last_request_at      = last_request_at,
+
+    -- v1 fields
+    rps                  = request_count / period,
+    response_time        = total_response_time / period,
+    status               = status,
+    error_rate           = error_rate
   }
 end
 

@@ -195,6 +195,8 @@ router:delete( '/api/services/:service_id/dashboards/:id'    , r('dashboards.del
 router:get(    '/api/brain'                                  , r('brain.url'))
 router:post(   '/api/brain/report'                           , r('brain.report'))
 router:post(   '/api/brain/register'                         , r('brain.register'))
+router:post(   '/api/brain/link'                             , r('brain.link'))
+router:post(   '/api/brain/unlink'                           , r('brain.unlink'))
 
 router:get(    '/api/jor/dump/export'                        , r('backups.export'))
 router:post(   '/api/jor/dump/import'                        , r('backups.import'))

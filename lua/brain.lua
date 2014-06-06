@@ -3,6 +3,7 @@ local Pipeline   = require 'models.pipeline'
 local Config     = require 'models.config'
 local analytics  = require 'analytics'
 local cjson      = require 'cjson'
+local json      = require 'json'
 local http       = require 'http'
 local resty_http = require 'resty.http'
 
@@ -42,12 +43,6 @@ local extract_service = function(service)
   }
 end
 
-local get_encoded_slug_info = function()
-  -- TODO: send different params when on premise
-  local slug_info = { slug_id = 'some slug', account_name = 'some name' }
-  return cjson.encode(slug_info)
-end
-
 local post_json_to_brain = function(path, payload)
   local body = cjson.encode(payload)
   local options = {
@@ -58,7 +53,7 @@ local post_json_to_brain = function(path, payload)
       ['Content-Type'] = 'application/json'
     }
   }
-  return assert(http.simple(options, body))
+  return http.simple(options, body)
 end
 
 Brain.trigger_report = function()
@@ -72,13 +67,17 @@ end
 
 Brain.make_report = function()
   local slug_name = Config.get_slug_name()
+  local uuid      = Config.get_uuid()
 
   if not slug_name then
     ngx.log(ngx.WARN, 'skipping brain report because there is no slug name')
     return
   end
 
-  local report = { slug = slug_name, services = {} }
+  local report = { version = 1,
+                   uuid = uuid,
+                   slug = slug_name,
+                   services = {} }
 
   local services = Service:all()
   for i, service in ipairs(services) do
@@ -101,18 +100,46 @@ Brain.send_report = function(report)
 end
 
 Brain.register = function()
-  local res = post_json_to_brain('/api/register', get_encoded_slug_info())
-  return cjson.decode(res.body)
+  local uuid = Config.get_uuid()
+  local body, status = post_json_to_brain('/api/on_premise/register', {uuid = uuid})
+  if http.is_success(status) then
+    Config.set_slug_name(uuid)
+    return json.decode(body)
+  else
+    error({status=status, message=body})
+  end
 end
 
-Brain.configure  = function(config)
-  -- FIXME: the request body will probably contain different info than register
-  local res = post_json_to_brain('/api/configure', get_encoded_slug_info())
-  return cjson.decode(res.body)
+Brain.link = function(key)
+  if not key then error({status=400, message='key parameter missing'}) end
+
+  local uuid = Config.get_uuid()
+
+  local body, status = post_json_to_brain('/api/on_premise/link', {uuid = uuid, key = key})
+  if http.is_success(status) then
+    Config.set_link_key(key)
+    ngx.log(0, inspect(body))
+    return json.decode(body)
+  else
+    error({status=status, message=body})
+  end
 end
 
-Brain.use_keys = function(key_pair)
-  Config.update({ keys = key_pair })
+Brain.unlink = function()
+  local uuid = Config.get_uuid()
+  local key  = Config.get_link_key()
+
+  if not key then
+    error({status=400, message='the slug is not linked; can not unlink'})
+  end
+
+  local body, status = post_json_to_brain('/api/on_premise/unlink', {uuid = uuid, key = key})
+
+  if http.is_success(status) then
+    return json.decode(body)
+  else
+    error({status=status, message=body})
+  end
 end
 
 return Brain

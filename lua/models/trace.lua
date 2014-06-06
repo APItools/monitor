@@ -117,7 +117,7 @@ end
 function Trace:redo(trace)
   local query = {
     method = trace.req.method,
-    url = "http://127.0.0.1:10002" .. trace.req.uri,
+    url = "http://127.0.0.1:10002" .. trace.req.uri_relative,
     headers = trace.req.headers
   }
   query.headers.Host = trace.req.host

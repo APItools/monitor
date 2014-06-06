@@ -11,7 +11,7 @@ local config = {
   end,
 
   update = function(params)
-    h.send_json(Config.update(h.request_json()))
+    h.send_json(Config:update_except_slug_name(h.request_json()))
   end,
 
   clear = function(params)
