@@ -1,0 +1,49 @@
+<div id="setup-modal">
+  <div id="setup-dialog" class="container">
+    <div class="hero-unit">
+
+      <h1>Set up your APItools Traffic Monitor</h1>
+
+      <p>Congratulations! You got it up and running.</p>
+      
+      <p>
+        Check out our <a href="https://docs.apitools.com/docs/on-premise/">documentation</a>
+        for different ways of installation, DNS configuration and other guides.
+      </p>
+    </div>
+
+    <form class="form-horizontal" name='setup_form' ng-submit="saveSetup()">
+      <fieldset>
+        <div class="control-group" ng-class="{error: form.name.$invalid}">
+          <label class="control-label" for="report_usage">Anonymously report usage</label>
+
+          <div class="controls">
+            <input id="report_usage" type="checkbox" name="report_usage"
+                   ng-model="setup.report_usage">
+
+            <p>
+              We collect anonymous data about what services you use and how they perform.
+              This will allow us to do performance analysis of various APIs, predict performance issues
+              or just tell you if it is broken just for you or everyone else.</p>
+            <p>
+              Read our <a href="https://docs.apitools.com/legal/terms-and-conditions/" target="_blank">Terms and Conditions</a>
+              and <a href="https://docs.apitools.com/legal/privacy-policy/" target="_blank">Privacy Policy</a>
+              to learn more about how we handle these data.<br/>
+              By running APItools Traffic Monitor you accept these Terms and Conditions and Privacy Policy.
+            </p>
+          </div>
+        </div>
+      </fieldset>
+
+      <fieldset>
+        <div class="control-group">
+          <div class="controls">
+            <button type="submit" class="btn btn-primary btn-large">Save</button>
+          </div>
+        </div>
+      </fieldset>
+
+    </form>
+  </div>
+</div>
+

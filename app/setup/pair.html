@@ -1,0 +1,24 @@
+<h1>Pair your Traffic Monitor with the Global Dashboard</h1>
+
+<form class="form-horizontal" name='pair_form' ng-submit="pair()">
+
+  <fieldset>
+    <div class="control-group" ng-class="{error: pair_form.pairing_key.$invalid}">
+      <label class="control-label" for="pairing_key">Your Pairing Key:</label>
+      <div class="controls">
+        <input id="pairing_key" type="text" name="pairing_key" ng-model="setup.pairing_key" required>
+      </div>
+    </div>
+  </fieldset>
+
+  <fieldset>
+    <div class="control-group">
+      <div class="controls">
+        <button type="submit" class="btn btn-primary">Pair!</button>
+      </div>
+      <div class="controls">
+        <a ng-href="{{get_key}}">Get new key</a>
+      </div>
+    </div>
+  </fieldset>
+</form>
