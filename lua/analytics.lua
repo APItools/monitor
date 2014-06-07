@@ -400,7 +400,7 @@ function analytics.get_brain_report(service_id)
   end
 
   local last_trace = Trace:find({_id = Trace:get_last_id()})
-  local last_request_at = os.date("!%Y-%m-%dT%TZ", last_trace._created_at)
+  local last_request_at = last_trace and os.date("!%Y-%m-%dT%TZ", last_trace._created_at)
 
   return {
     version              = analytics._VERSION,
