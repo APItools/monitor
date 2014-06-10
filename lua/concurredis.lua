@@ -31,8 +31,8 @@ local expand_gmatch = function(text, match)
   return result
 end
 
-concurredis.host = os.getenv('DB_PORT_6379_TCP_ADDR') or os.getenv("SLUG_REDIS_HOST")
-concurredis.port = os.getenv('DB_PORT_6379_TCP_PORT') or os.getenv("SLUG_REDIS_PORT")
+concurredis.host = os.getenv('DB_PORT_6379_TCP_ADDR') or os.getenv("SLUG_REDIS_HOST") or '127.0.0.1'
+concurredis.port = os.getenv('DB_PORT_6379_TCP_PORT') or os.getenv("SLUG_REDIS_PORT") or 6379
 
 ngx.log(ngx.NOTICE, "Using redis server: " .. tostring(concurredis.host) .. ":" .. tostring(concurredis.port))
 
