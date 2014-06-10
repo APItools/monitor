@@ -11,7 +11,7 @@ local ten_minutes, five_seconds = 60*10, 5
 
 local Brain = {}
 
-Brain.host = os.getenv("SLUG_BRAIN_HOST")
+Brain.host = os.getenv("SLUG_BRAIN_HOST") or 'https://www.apitools.com'
 Brain.url = function(path)
   return Brain.host .. (path or '')
 end
@@ -85,11 +85,6 @@ Brain.make_report = function()
   end
 
   return report
-end
-
-Brain.url = function(path)
-  local host = os.getenv('SLUG_BRAIN_HOST')
-  return host .. path
 end
 
 Brain.send_report = function(report)
