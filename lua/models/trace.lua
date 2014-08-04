@@ -1,13 +1,11 @@
-local ngxex    = require 'ngxex'
 local Model    = require 'model'
 local Service  = require 'models.service'
 local Event    = require 'models.event'
 local fn       = require 'functional'
 local http     = require 'http'
-local rack     = require 'rack'
 local inspect  = require 'inspect'
 
-local Trace =  Model:new()
+local Trace = Model:new()
 
 -- Class methods
 
@@ -18,13 +16,8 @@ Trace.keep = 1000
 
 Trace_mt = {__index = Trace}
 
-function Trace:new()
+function Trace:new(req)
   Model:check_dots(self, Trace, 'new')
-
-  local req   = rack.current_request()
-  req.headers = ngx.req.get_headers(100, true)
-  req.body    = ngxex.req_get_all_body_data()
-
   return { req = req }
 end
 
@@ -41,7 +34,7 @@ end
 
 function Trace:setRes(trace, res)
   Model:check_dots(self, Trace, 'setRes')
-	trace.starred = false
+  trace.starred = false
   trace.res = {
     status = res.status,
     body   = res.body,
@@ -58,9 +51,18 @@ function Trace:setRes(trace, res)
 end
 
 function Trace:setError(trace, err)
+  err = tostring(err)
+
   Model:check_dots(self, Trace, 'setError')
-	trace.starred = false
-  trace['error'] = tostring(err)
+  trace.starred     = false
+
+  trace.res         = trace.res         or {}
+  trace.res.headers = trace.res.headers or {}
+  trace.res.status  = trace.res.status  or 500
+  trace.res.body    = trace.res.body    or err
+
+  trace['error']    = err
+
   Event:create({
     channel  = "middleware",
     level    = "error",

@@ -12,10 +12,10 @@
     </p>
   </div>
 
-  <ul ng-if="current_dashboard" class="charts" ng-controller="CurrentDashboardCtrl">
+  <ul ng-if="current_dashboard" class="charts current-dashboard" ng-controller="CurrentDashboardCtrl">
 
     <li class="{{ blueprint.type }}" ng-repeat="window in windows" ng-controller="ChartController">
-      <a ng-hide="chart" class="chart new" ng-click="addChart($index, config)"><i class="icon-plus"></i> Add Chart</a>
+      <a ng-hide="chart" href class="chart new" ng-click="addChart($index, config)"><i class="icon-plus"></i> Add Chart</a>
 
       <div ng-if="chart" class="chart">
         <div class="caption">
@@ -25,6 +25,7 @@
 
         <div class="plot">
           <div rickshaw="stats"></div>
+          <a rickshaw-maximizer />
         </div>
       </div>
     </li>

@@ -7,13 +7,12 @@
 
   <a rel="external" class="help-link" docs-ref="getting_started"><i class="icon-help"></i></a>
   <p>
-    Your Apitools URL for this service is <b>{{ service.host() }}</b>.
-      <span ng-switch="integration">
-        <span ng-switch-when="normal">
-          Use this URL to send traffic from your application. Check out the <a rel="external" docs-ref="getting_started">documentation</a> to learn more about how it works.
-        </span>
+    Your APItools URL for this service is <a href="{{ proxy_url }}">this one</a>.
+    <span ng-switch="integration">
+      <span ng-switch-when="normal">
+        Use this URL to send traffic from your application. Check out the <a rel="external" docs-ref="getting_started">documentation</a> to learn more about how it works.
       </span>
-
+    </span>
   </p>
 
 </aside>
@@ -21,7 +20,7 @@
 <div class="span9">
   <div demo-block="overview">
     <h4>
-      Track, transform and analyze the traffic between your app and this API. 
+      Track, transform and analyze the traffic between your app and this API.
     </h4>
     <ul>
       <li><strong>Track</strong> your app's outgoing API traffic.</li>
@@ -31,10 +30,10 @@
   </div>
 
   <h2>Your service is ready.</h2>
-  Apitools URL: <span class="new-endpoint"><strong ng-bind="proxy_url" zeroclipboard/></span>
+  APItools URL: <span class="new-endpoint"><strong ng-bind="proxy_url" zeroclipboard/></span>
   <h3>Step 1</h3>
   <p>
-    In your app, substitute the original API URL <span class="original-endpoint" ng-bind="service.endpoints[0].url"/> by your Apitools URL.
+    In your app, substitute the original API URL <span class="original-endpoint" ng-bind="service.endpoints[0].url"/> by your APItools URL.
   </p>
   <h3>Step 2</h3>
   <p>

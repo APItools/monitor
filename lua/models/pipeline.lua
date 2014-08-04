@@ -1,27 +1,18 @@
-local m            = require 'model_helpers'
 local inspect      = require 'inspect'
 local rack_module  = require 'rack'
 local sandbox      = require 'sandbox'
-local tracer       = require 'middlewares.tracer'
 local Trace        = require 'models.trace'
 local Event        = require 'models.event'
-local shared_dict  = require 'shared_dict'
-local http         = require 'http'
-local luajson      = require 'json'
+local http         = require 'http_mw'
 local cjson        = require 'cjson'
 local brainslug    = require 'middlewares.brainslug'
 local statsd       = require 'statsd_wrapper'
 local sanitizer    = require 'middlewares.sanitizer'
-local mailer       = require 'consumers.mail'
 local collector    = require 'collector'
 local Console      = require 'console'
 local Bucket       = require 'bucket'
 local Model        = require 'model'
-local Queue        = require 'shared_queue'
 local xml          = require 'lxp'
-
-require 'sha2'
-require 'hmac.sha2'
 
 local Pipeline = Model:new()
 Pipeline.collection = 'pipelines'
@@ -112,7 +103,14 @@ local use_middleware = function(rack, middleware, trace, service_id)
   local time =   { seconds = ngx.time, http = ngx.http_time, now = ngx.now }
   local bucket = { middleware = middleware_bucket, service = service_bucket }
 
-  local hmac = { sha256 = hmac.sha256 }
+  local hmac_sha256 = function(str, key)
+    local resty_hmac   = require 'resty.hmac'
+    local hmac = resty_hmac:new()
+    local digest = hmac:digest('sha256', tostring(key), tostring(str))
+    return digest
+  end
+
+  local hmac = { sha256 = hmac_sha256 }
 
   local env  = {
     console           = console,
@@ -146,9 +144,13 @@ end
 
 Pipeline.execute = function(pipeline, endpoint_url)
 
-  local rack       = rack_module:new()
   local start_time = ngx.now()
-  local trace      = Trace:new()
+
+  local rack       = rack_module.new()
+  local req        = rack:create_initial_request()
+  _ = req.body -- force the reading of the request body
+
+  local trace      = Trace:new(req)
 
   trace.service_id = pipeline.service_id
 
@@ -156,17 +158,19 @@ Pipeline.execute = function(pipeline, endpoint_url)
     endpoint = string.match(endpoint_url, "://([^/]+)")
   })
 
-  for _,middleware in ipairs(get_active_sorted_middlewares(pipeline)) do
-    use_middleware(rack, middleware, trace, pipeline.service_id)
-  end
+  local ok, res = pcall(function()
+    for _,middleware in ipairs(get_active_sorted_middlewares(pipeline)) do
+      use_middleware(rack, middleware, trace, pipeline.service_id)
+    end
 
-  rack:use(brainslug, {
-    trace         = trace,
-    service_id    = pipeline.service_id,
-    endpoint_url  = endpoint_url
-  })
+    rack:use(brainslug, {
+      trace         = trace,
+      service_id    = pipeline.service_id,
+      endpoint_url  = endpoint_url
+    })
 
-  local ok, res = pcall(rack.run, rack, trace.req)
+    return rack:run(req)
+  end)
 
   Trace:async_save(trace, function()
     if ok then

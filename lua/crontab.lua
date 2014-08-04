@@ -12,11 +12,6 @@ local month  = 30*day
 
 local crontab = {}
 
-local has_slug_name = function()
-  local Config = require 'models.config'
-  return Config.get_slug_name()
-end
-
 -- private functions
 
 local TIMERS = {
@@ -38,7 +33,6 @@ local TIMERS = {
   },
   { id = 'async_traces',
     every = 1,
-    runs_without_slug_name = true,
     action = function()
       local Trace = require 'models.trace'
       local consumed = Trace:consume()
@@ -46,7 +40,6 @@ local TIMERS = {
   },
   { id = 'async_swagger',
     every = 1,
-    runs_without_slug_name = true,
     action = function()
       local AutoswaggerHost = require 'models.autoswagger_host'
       local consumed = AutoswaggerHost:consume()
@@ -297,8 +290,6 @@ crontab.initialize = function()
   end)
 end
 
-crontab.disabled = os.getenv('SLUG_DISABLE_CRON')
-
 crontab.flush = function()
   for _,timer in ipairs(TIMERS) do
     crontab.run(timer, 'forced')
@@ -311,13 +302,22 @@ crontab.timer = function(id)
   end
 end
 
+local has_slug_name = function()
+  local Config = require 'models.config'
+  return Config.get_slug_name()
+end
+
+crontab.disabled = os.getenv('SLUG_DISABLE_CRON')
+crontab.forced = os.getenv('SLUG_CRON_FORCED')
+
+crontab.enabled = function()
+  return not crontab.disabled and (crontab.forced or has_slug_name())
+end
+
 crontab.run = function(timer, job_id)
   ngx.log(ngx.INFO, '[cron] running ' .. timer.id .. ' job  ' .. job_id)
 
-  if job_id == 'forced' or
-     timer.runs_without_slug_name or
-     has_slug_name()
-  then
+  if job_id == 'forced' or crontab.enabled() then
     -- it locks cron, so initialize can't be run
     crontab.lock(function()
       statsd.timer('cron.' .. timer.id, function()

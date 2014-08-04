@@ -1,0 +1,16 @@
+<dl class="trace-request">
+  <dt>{{request.method}}</dt>
+  <dd>{{request.endpoint}}{{request.uri_relative}}</dd>
+
+  <dt>Headers</dt>
+  <dd trace-headers="request.headers"></dd>
+
+  <dt ng-if="request.body">Body</dt>
+  <dd ng-if="request.body" ng-controller="TraceBodyCtrl" ng-init="body = request.body">
+    <pre highlight="body" highlight-content-type="contentType"
+         highlight-refresh />
+  </dd>
+
+  <dt>Full request</dt>
+  <dd><pretty-print value="request" class="trace" lang="json"/></dd>
+</dl>

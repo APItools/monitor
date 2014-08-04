@@ -150,7 +150,6 @@ function _M.set(self, cookie)
     if not cookie_str then
         return nil, err
     end
-    print(cookie_str)
     ngx.header['Set-Cookie'] = cookie_str
     return true
 end

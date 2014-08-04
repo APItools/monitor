@@ -55,7 +55,7 @@ local services = {
     local service = Service:create(h.request_json())
 
     MiddlewareSpec:ensure_defaults_exist()
-    local mw_spec = MiddlewareSpec:find_or_error({name = 'Accept-Encoding header remover'})
+    local mw_spec = MiddlewareSpec:find_or_error({name = 'Set Accept-Encoding = identity'})
 
     m.create("pipelines", {
       service_id = service._id,

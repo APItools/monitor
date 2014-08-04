@@ -36,7 +36,6 @@
       <li search-loading></li>
 
       <li slug-item="trace" ng-repeat="trace in search.results track by trace._id"
-          slug-item-expanded="trace._id == selected_trace"
           ng-click="load(trace)" class="trace" ng-class="{highlighted: trace.starred}">
         <heading>
 
@@ -44,9 +43,11 @@
 
           <toggle class="main">
             <h4 class="slug-item-title">
-              <span class="service-code">{{ serviceCode(trace) }}</span>
-              <b class="http-method method-{{ trace.req.method | lowercase }}">{{ trace.req.method }}</b>
-              <span class="path" truncate="100">{{ trace.req.uri }}</span>
+              <a class='trace-link' ng-href="traces/{{ trace._id }}" ng-click="$event.preventDefault()">
+                <span class="service-code">{{ serviceCode(trace) }}</span>
+                <b class="http-method method-{{ trace.req.method | lowercase }}">{{ trace.req.method }}</b>
+                <span class="path" truncate="100">{{ trace.req.uri }}</span>
+              </a>
             </h4>
 
             <details>
@@ -59,6 +60,7 @@
           </toggle>
 
           <actions>
+            <action-item><a href action ng-href="traces/{{ trace._id }}" icon="icon-link" text="Link" /></action-item>
             <action-item><a href action action-call="redo(trace)" icon="icon-refresh" text="Redo" /></action-item>
             <action-item><a href action ng-click="highlightItems([trace])" icon="icon-star" text="Highlight" /></action-item>
             <action-item><a href action ng-click="filterItems([trace])" icon="icon-filter" text="Filter" /></action-item>

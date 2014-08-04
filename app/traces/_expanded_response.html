@@ -1,0 +1,18 @@
+<dl class="trace-response">
+  <dt ng-if="response.status">Status</dt>
+  <dd ng-if="response.status"><span class="label-{{ response.status | status }} ">{{ response.status }}</span></dd>
+
+  <dt ng-if="hasHeaders(response)">Headers</dt>
+  <dd ng-if="hasHeaders(response)" trace-headers="response.headers"></dd>
+
+  <dt ng-if="response.body">Body</dt>
+  <dd ng-if="response.body" ng-controller="TraceBodyCtrl" ng-init="body = response.body">
+    <button class="btn-link" ng-click="togglePrettyBody()">
+      Pretty Print
+      <i class="icon icon-code"></i>
+    </button>
+
+    <pre highlight="body" highlight-content-type="contentType"
+         highlight-refresh />
+  </dd>
+</dl>

@@ -47,14 +47,18 @@
 
         <div ng-switch-default
              class="selected-dashboard"
-             id="dashboard-{{ selected_dashboard }}"
-             rickshaw="dashboard"
-             rickshaw-renderer="area"
-             rickshaw-color="{{ color }}"
-             rickshaw-stroke-width="3"
-        ></div>
-      </div>
+             id="dashboard-{{ selected_dashboard }}">
+          <div class="plot">
+            <div rickshaw="dashboard"
+                 rickshaw-renderer="area"
+                 rickshaw-color="{{ color }}"
+                 rickshaw-stroke-width="3">
+            </div>
+            <a rickshaw-maximizer />
+          </div>
+        </div>
 
+      </div>
     </div>
   </div>
 </div>
@@ -95,7 +99,7 @@
 
     <ol>
       <li ng-repeat="trace in last_traces">
-        <a class='trace-link' ng-href="traces?select={{trace._id }}">
+        <a class='trace-link' ng-href="traces/{{ trace._id }}">
           <span class="cell label-{{ trace.res.status | status }}">{{ trace.res.status }}</span>
           <b class="cell http-method method-{{ trace.req.method | lowercase }}">{{
             trace.req.method }}</b>

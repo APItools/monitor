@@ -165,18 +165,37 @@ end
 ]]
 }
 
+-- FIXME this middleware is now unused, but was used in previous versions of APItools. Remove once we are
+-- sure that we don't need it any more
 local RemoveAcceptEncodingHeader={
-  -- Warning: this name is used in services_controller.lua, too. Update in both
   name = 'Accept-Encoding header remover',
   author = {
     name = "3scale",
     github = "3scale"
   },
   version = "0.1",
-  description = "removes the `Accept-Encoding` header, deactivating response compression in most cases. This middleware is inserted by default in all new services.",
+  description = "removes the `Accept-Encoding` header, deactivating response compression in most cases.",
   code = [[
 return function (request, next_middleware)
   request.headers['Accept-Encoding'] = nil
+  return next_middleware()
+end
+]]
+
+}
+
+local SetAcceptEncodingToIdentity={
+  -- Warning: this name is used in services_controller.lua, too. Update in both
+  name = 'Set Accept-Encoding = identity',
+  author = {
+    name = "3scale",
+    github = "3scale"
+  },
+  version = "0.1",
+  description = "sets the `Accept-Encoding` header to `identity`. This deactivates gzipped responses. This middleware is inserted by default in all new services.",
+  code = [[
+return function (request, next_middleware)
+  request.headers['Accept-Encoding'] = 'identity'
   return next_middleware()
 end
 ]]
@@ -191,5 +210,6 @@ return {
   BasicAddKeys,
   Anonymizer,
   RemoveAcceptEncodingHeader,
+  SetAcceptEncodingToIdentity,
   AddingArgsMiddleware
 }

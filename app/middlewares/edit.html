@@ -1,6 +1,6 @@
 <header class="modal-header">
   <input ng-show="editTitle"  ng-keyup="saveMetaOnEnter('editTitle', $event.keyCode)" placeholder="Name" type="text" id="middleware_name" ng-model="middleware.name" required/>
-  <h3 class='inline-title' ng-show="!editTitle" >{{ middleware.name }}</h3>
+  <h3 class='middleware-edit-title' ng-show="!editTitle" >{{ middleware.name }}</h3>
   <!-- <a ng-href="middlewares/{{ middleware.spec_id }}" ng-show="hasSpec">go to spec</a> -->
   <a href ng-click="editTitle = !editTitle" ><i ng-class="{ 'icon-pencil': !editTitle, 'icon-ok': editTitle }"></i></a>
   <a class="close" ng-click="close()">&times;</a>
@@ -8,168 +8,157 @@
 
 <form class="modal-body" name="form" ng-submit="save(middleware)">
   <div class="middleware-metadata">
-    <textarea ng-keyup="saveMetaOnEnter('editDescription', $event.keyCode)" class="input-xxlarge" ng-show="editDescription" ng-model="middleware.description"></textarea>
-    <p class="description inline-title" ng-show="!editDescription">{{ middleware.description }}</p>
-    <a href ng-click="editDescription = !editDescription" ><i ng-class="{ 'icon-pencil': !editDescription, 'icon-ok': editDescription }"></i></a>
+    <textarea ng-keyup="saveMetaOnEnter('editDescription', $event.keyCode)" class="middleware-edit-description is-input" ng-show="editDescription" ng-model="middleware.description"></textarea>
+    <p class="middleware-edit-description" ng-show="!editDescription">{{ middleware.description }}</p>
+    <a href class="middleware-edit-action" ng-click="editDescription = !editDescription" ><i ng-class="{ 'icon-pencil': !editDescription, 'icon-ok': editDescription }"></i></a>
   </div>
 
-  <tabset>
-    <tab heading="Code" class="middleware-form-edit-tab">
 
-      <div class="code-wrap">
-        <div class="code"><textarea id="middleware_code" ng-model="middleware.code" ui-codemirror="codemirror" ui-refresh="active"></textarea></div>
+    <div class="code-wrap">
+      <div class="code"><textarea id="middleware_code" ng-model="middleware.code" ui-codemirror="codemirror" ui-refresh="active"></textarea></div>
 
-        <div class="docs">
-          <h4>Middleware API</h4>
+      <div class="docs">
+        <h4>Middleware API</h4>
 
-            <p><b>request</b> is the request that originated the trace. Fields:</p>
-            <ul>
-              <li><b>request.scheme</b>  ('http', 'https', ...)</li>
-              <li><b>request.method</b> ('get', 'post', ...)</li>
-              <li><b>request.args</b> (a parsed query string, like {foo='123', bar='blahblah'})</li>
-              <li><b>request.host</b> ('yourhost.com')</li>
-              <li><b>request.uri</b>, <b>request.uri_relative</b> and <b>request.uri_full</b> ('yourhost.com/foo', '/foo' and 'http://yourhost.com/foo', respectively)</li>
-              <li><b>request.headers</b> (a Lua table containing the headers, such as { Accept = 'text/plain' }</li>
-              <li><b>request.body</b> (a string containing the body of the request, such as submitted form)</li>
-            </ul>
-
-          <p><b>next_middleware</b> is the function you have to call
-            to proceed with the request. It will call the next
-            middleware in the stack. The last middleware will make the
-            request to the API backend, and will return a table
-            response with the following fields </p>
+          <p><b>request</b> is the request that originated the trace. Fields:</p>
           <ul>
-            <li><b>response.body</b> (the response body. Should be a string.)</li>
-            <li><b>response.status</b> (the response status code. Should be a number. Initially empty)</li>
-            <li><b>response.headers</b> (a header table. Similar to request.headers)</li>
+            <li><b>request.scheme</b>  ('http', 'https', ...)</li>
+            <li><b>request.method</b> ('get', 'post', ...)</li>
+            <li><b>request.args</b> (a parsed query string, like {foo='123', bar='blahblah'})</li>
+            <li><b>request.host</b> ('yourhost.com')</li>
+            <li><b>request.uri</b>, <b>request.uri_relative</b> and <b>request.uri_full</b> ('yourhost.com/foo', '/foo' and 'http://yourhost.com/foo', respectively)</li>
+            <li><b>request.headers</b> (a Lua table containing the headers, such as { Accept = 'text/plain' }</li>
+            <li><b>request.body</b> (a string containing the body of the request, such as submitted form)</li>
           </ul>
 
-          <p>You can use Lua to modify the request or the response in your middleware.</p>
+        <p><b>next_middleware</b> is the function you have to call
+          to proceed with the request. It will call the next
+          middleware in the stack. The last middleware will make the
+          request to the API backend, and will return a table
+          response with the following fields </p>
+        <ul>
+          <li><b>response.body</b> (the response body. Should be a string.)</li>
+          <li><b>response.status</b> (the response status code. Should be a number. Initially empty)</li>
+          <li><b>response.headers</b> (a header table. Similar to request.headers)</li>
+        </ul>
 
-         <h4>Lua API</h4>
-            <p>Also you can use following APIs in the Lua code.</p>
-            <dl>
-                <dt>console</dt>
-                <dd>
-                    Show information in logging console (and notifications).
-                    <ul>
-                        <li><b>console.log(...)</b></li>
-                        <li><b>console.debug(...)</b></li>
-                        <li><b>console.warn(...)</b></li>
-                        <li><b>console.error(...)</b></li>
-                    </ul>
-                </dd>
+        <p>You can use Lua to modify the request or the response in your middleware.</p>
 
-                <dt>base64</dt>
-                <dd>
-                    <ul>
-                        <li><b>base64.encode(str)</b></li>
-                        <li><b>base64.decode(str)</b></li>
-                    </ul>
-                </dd>
-
-                <dt>hmac</dt>
-                <dd>
-                    <ul>
-                        <li><b>hmac.sha256(message, key)</b></li>
-                    </ul>
-                </dd>
-
-                <dt>http</dt>
-                <dd>
-                    <ul>
-                        <li><b>http.simple(url, body)</b></li>
-                            <i>if there's body, assume POST method</i>.
-                        <li>
-                            <b>http.simple(table, body)</b><br>
-                            <i>table</i> can have key <i>method</i>, <i>url</i>, <i>headers</i>.
-                        </li>
-                        <li><i>returns 3 values <b>body, status, headers</b></i>. NOT a table</li>
-                        <li><a href="https://gist.github.com/kidd/11261680" target="_blank" >Examples</a></li>
-                    </ul>
-
-                </dd>
-
-                <dt>time</dt>
-                <dd>
-                    <ul>
-                        <li><b>time.now()</b> returns seconds float</li>
-                        <li><b>time.http(seconds)</b> format seconds to http header time string</li>
-                        <li><b>time.seconds()</b> returns seconds integer</li>
-                    </ul>
-                </dd>
-
-                <dt>inspect</dt>
-                <dd><b>inspect(table)</b> returns string</dd>
-
-                <dt>json</dt>
-                <dd>
-                    <ul>
-                        <li><b>json.decode(str)</b></li>
-                        <li><b>json.encode(obj)</b></li>
-                    </ul>
-                </dd>
-
-                <dt>xml</dt>
-                <dd>
+       <h4>Lua API</h4>
+          <p>Also you can use following APIs in the Lua code.</p>
+          <dl>
+              <dt>console</dt>
+              <dd>
+                  Show information in logging console (and notifications).
                   <ul>
-                    <li><b>xml.new(options)</b> returns a lua-expat parser.
-                    <br />Check the <a target="_blank" href="http://matthewwild.co.uk/projects/luaexpat/manual.html#parser">lua-expat parser manual</a> for options.
-                    </li>
+                      <li><b>console.log(...)</b></li>
+                      <li><b>console.debug(...)</b></li>
+                      <li><b>console.warn(...)</b></li>
+                      <li><b>console.error(...)</b></li>
                   </ul>
-                </dd>
+              </dd>
 
-                <dt>metric</dt>
-                <dd>
-                    <ul>
-                        <li><b>metric.count(name, value)</b></li>
-                        <li><b>metric.set(name, value)</b></li>
-                    </ul>
-                </dd>
+              <dt>base64</dt>
+              <dd>
+                  <ul>
+                      <li><b>base64.encode(str)</b></li>
+                      <li><b>base64.decode(str)</b></li>
+                  </ul>
+              </dd>
 
-                <dt>bucket</dt>
-                <dd>
-                    Persists data between requests. Service one is shared between all middlewares of one service.
-                    <ul>
-                        <li><b>bucket.middleware.get(key)</b></li>
-                        <li><b>bucket.middleware.set(key, value)</b></li>
-                        <li><b>bucket.service.get(key)</b></li>
-                        <li><b>bucket.service.set(key, value)</b></li>
-                    </ul>
-                </dd>
+              <dt>hmac</dt>
+              <dd>
+                  <ul>
+                      <li><b>hmac.sha256(message, key)</b></li>
+                  </ul>
+              </dd>
 
-                <dt>send</dt>
-                <dd>
-                    <ul>
-                        <li><b>send.mail(to, subject, message)</b></li>
-                        <li><b>send.event(table)</b></li>
-                        <li><b>send.notification(table)</b> to middlewares channel</li>
-                    </ul>
-                </dd>
-            </dl>
-        </div>
+              <dt>http</dt>
+              <dd>
+                  <ul>
+                      <li><b>http.simple(url, body)</b></li>
+                          <i>if there's body, assume POST method</i>.
+                      <li>
+                          <b>http.simple(table, body)</b><br>
+                          <i>table</i> can have key <i>method</i>, <i>url</i>, <i>headers</i>.
+                      </li>
+                      <li><i>returns 3 values <b>body, status, headers</b></i>. NOT a table</li>
+                      <li><a href="https://gist.github.com/kidd/11261680" target="_blank" >Examples</a></li>
+                  </ul>
+
+              </dd>
+
+              <dt>time</dt>
+              <dd>
+                  <ul>
+                      <li><b>time.now()</b> returns seconds float</li>
+                      <li><b>time.http(seconds)</b> format seconds to http header time string</li>
+                      <li><b>time.seconds()</b> returns seconds integer</li>
+                  </ul>
+              </dd>
+
+              <dt>inspect</dt>
+              <dd><b>inspect(table)</b> returns string</dd>
+
+              <dt>json</dt>
+              <dd>
+                  <ul>
+                      <li><b>json.decode(str)</b></li>
+                      <li><b>json.encode(obj)</b></li>
+                  </ul>
+              </dd>
+
+              <dt>xml</dt>
+              <dd>
+                <ul>
+                  <li><b>xml.new(options)</b> returns a lua-expat parser.
+                  <br />Check the <a target="_blank" href="http://matthewwild.co.uk/projects/luaexpat/manual.html#parser">lua-expat parser manual</a> for options.
+                  </li>
+                </ul>
+              </dd>
+
+              <dt>metric</dt>
+              <dd>
+                  <ul>
+                      <li><b>metric.count(name, value)</b></li>
+                      <li><b>metric.set(name, value)</b></li>
+                  </ul>
+              </dd>
+
+              <dt>bucket</dt>
+              <dd>
+                  Persists data between requests. Service one is shared between all middlewares of one service.
+                  <ul>
+                      <li><b>bucket.middleware.get(key)</b></li>
+                      <li><b>bucket.middleware.set(key, value)</b></li>
+                      <li><b>bucket.service.get(key)</b></li>
+                      <li><b>bucket.service.set(key, value)</b></li>
+                  </ul>
+              </dd>
+
+              <dt>send</dt>
+              <dd>
+                  <ul>
+                      <li><b>send.mail(to, subject, message)</b></li>
+                      <li><b>send.event(table)</b></li>
+                      <li><b>send.notification(table)</b> to middlewares channel</li>
+                  </ul>
+              </dd>
+          </dl>
       </div>
+    </div>
 
-      <ul class="log-console logs" collapse="isLogCollapse"
-          ng-class="{'is-log-open' : !isLogCollapse, 'is-empty' : logs.length == 0}">
+    <ul class="log-console logs" collapse="isLogCollapse"
+        ng-class="{'is-log-open' : !isLogCollapse, 'is-empty' : logs.length == 0}">
 
-          <li class="log-empty" ng-show="logs.length == 0">
-              <p>Use <b>console.log(...)</b> in the middleware code to print to this log console.</p>
-          </li>
+        <li class="log-empty" ng-show="logs.length == 0">
+            <p>Use <b>console.log(...)</b> in the middleware code to print to this log console.</p>
+        </li>
 
-          <li ng-repeat="log in logs track by log._id" class="log-{{log.level}}">
-              <pre>{{log.msg}}</pre>
-          </li>
-      </ul>
-
-    </tab>
-
-    <!--
-    <tab heading="Settings">
-    </tab>
-    -->
-
-  </tabset>
+        <li ng-repeat="log in logs track by log._id" class="log-{{log.level}}">
+            <pre>{{log.msg}}</pre>
+        </li>
+    </ul>
 </form>
 
 <footer class="modal-footer">

@@ -53,9 +53,9 @@ model_helpers.all = function(collection, conditions, options)
   return {}
 end
 
-model_helpers.find = function(collection, conditions)
+model_helpers.find = function(collection, conditions, options)
   check_collection(collection)
-  return jor:find_first(collection, process_conditions_not_empty(conditions))
+  return jor:find_first(collection, process_conditions_not_empty(conditions), options)
 end
 
 model_helpers.find_or_error = function(collection, conditions, error_message)

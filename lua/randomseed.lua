@@ -11,7 +11,7 @@
 local randomseed = {}
 
 randomseed.seed = function()
-  ngx.log(ngx.ALERT, 'running randomseed ', ngx.get_phase())
+  ngx.log(ngx.DEBUG, 'running randomseed ', ngx.get_phase())
   math.randomseed(ngx.now())
   math.seeded = true
 

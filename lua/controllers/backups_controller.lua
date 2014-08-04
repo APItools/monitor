@@ -1,15 +1,8 @@
-local ltn12    = require "ltn12"
 local concurredis    = require "concurredis"
 local crontab  = require "crontab"
 local redis = require 'resty.redis'
 
 local backups = {}
-
-local function copy_file(source_path, destination_path)
-  ltn12.pump.all(
-    ltn12.source.file(assert(io.open(source_path, "rb"))),
-    ltn12.sink.file(assert(io.open(destination_path, "wb"))))
-end
 
 function backups.export()
   concurredis.save()

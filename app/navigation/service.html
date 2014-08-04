@@ -1,9 +1,4 @@
 <li>
-    <a ng-class="{ active: $state.is('service.show') }" class="subnav-action" id="service-overview"
-       ng-href="services/{{ submenu.service._id }}">Overview</a>
-</li>
-
-<li>
     <a ng-class="{ active: $state.includes('service.traces') }" class="subnav-action"
        ng-href="services/{{ submenu.service._id }}/traces"><i class="icon icon-eye-open"></i> Traces</a>
 </li>
@@ -21,4 +16,8 @@
 <li>
     <a ng-class="{ active: $state.includes('service.docs') }"  class="subnav-action"
        ng-href='services/{{ submenu.service._id }}/docs'><i class="icon icon-book"></i> Active Docs</a>
+</li>
+<li>
+  <a ng-class="{ active: $state.is('service.show') }" class="subnav-action" id="service-integration"
+     ng-href="services/{{ submenu.service._id }}/integration"><i class="icon icon-info"></i> Integration</a>
 </li>
