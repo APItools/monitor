@@ -3,16 +3,13 @@
 # Install Guide
 You can find the full Install Guide in [our documentation](https://docs.apitools.com/docs/on-premise/).
 
+
 ## Debian/Ubuntu
 
-* For Ubuntu > 13.04 you can use `https://s3.amazonaws.com/apitoolsrepo/packages/ubuntu/13.04/latest`  
-* For Ubuntu 12.04 `https://s3.amazonaws.com/apitoolsrepo/packages/ubuntu/12.04/latest`  
-* For Debian `https://s3.amazonaws.com/apitoolsrepo/packages/debian/7.2/latest`  
+See https://packagecloud.io/APItools/monitor/install how to add our repositories.
+Then you can use `apt-get install apitools-monitor` to install APItools Monitor.
 
-```
-wget https://s3.amazonaws.com/apitoolsrepo/packages/ubuntu/12.04/latest -O apitools.deb
-dpkg -i apitools.deb
-```
+We recommend installing `supervisor` and `redis-server` packages to make it work on one machine.
 
 ## OSX
 
@@ -31,6 +28,8 @@ luarocks install luajson sha2 luaexpat
 ```bash
 nginx -p /path/to/folder -c config/nginx.conf
 ```
+
+And APItools will start listening on port 7071 and 10002.
 
 ## OSX
 
