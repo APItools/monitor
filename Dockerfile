@@ -1,4 +1,4 @@
-FROM quay.io/3scale/openresty:1.5.12.1
+FROM quay.io/3scale/openresty:1.7.2.1
 
 MAINTAINER Michal Cichra <michal@3scale.net> # 2014-02-24
 
