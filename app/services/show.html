@@ -1,9 +1,4 @@
 <aside class="span3">
-  <ul class="side-menu">
-    <li class="header">Service menu</li>
-    <li><a ng-href="services/{{ service._id }}/edit"><i class="icon icon-pencil"></i> Edit {{ service.name }}</a></li>
-    <li class="divider"></li>
-  </ul>
 
   <a rel="external" class="help-link" docs-ref="getting_started"><i class="icon-help"></i></a>
   <p>
@@ -29,7 +24,7 @@
     </ul>
   </div>
 
-  <h2>Your service is ready.</h2>
+  <h2>Your service <span class="service-name">{{service.name}}</span> is ready.</h2>
   APItools URL: <span class="new-endpoint"><strong ng-bind="proxy_url" zeroclipboard/></span>
   <h3>Step 1</h3>
   <p>

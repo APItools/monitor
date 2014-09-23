@@ -44,12 +44,6 @@ end
 
 local function check_response(status, body)
   rack_assert(status, "Rack returned with no status. Ensure that you set res.status to something in at least one of your middlewares.")
-
-  -- If we have a 5xx or a 3/4xx and no body entity, exit allowing nginx config
-  -- to generate a response.
-  if status >= 500 or (status >= 300 and body == nil) then
-    ngx.exit(status)
-  end
 end
 
 local function copy(src, dest)

@@ -31,7 +31,7 @@
 
   <load-more>Load {{ search.has_more }} more traces</load-more>
 
-  <ul slug-list infinite-scroll="search.load_more = true" in  finite-scroll-immediate-check="false"
+  <ul slug-list infinite-scroll="search.load_more = true" infinite-scroll-immediate-check="false"
           infinite-scroll-disabled="!search.infinite()">
     <li search-loading></li>
 
@@ -50,7 +50,7 @@
 
           <details>
             <detail class="status-code label label-{{ trace.res.status | status }}">{{ trace.res.status }}</detail>
-            <detail class="time" tooltip="total: {{ trace.total_time | ms}}, overhead: {{ trace.overhead_time | ms }}">
+            <detail class="time" tooltip="+ {{ trace.overhead_time | ms }} APItools overhead">
               <i class="icon-time"></i> {{ trace.time | ms }}
             </detail>
             <detail class="timestamp" am-time-ago="trace._created_at | unix" tooltip="{{ trace._created_at | unix | moment:'LLLL' }}"></detail>
@@ -81,4 +81,11 @@
     <li search-load-more>Load more traces ({{ search.results.length }}/{{ search.count }})</li>
     <li search-loading="search.loading_more"></li>
   </ul>
+
+  <dl class="listing-actions">
+    <dt>Download as JSON:</dt>
+    <dd><a ng-href='/api/services/{{service._id}}/traces?download=1&{{search.encodedParams()}}' download='{{ service.name }} traces.json' >Shown Traces</a></dd>
+    <dd><a ng-href="/api/services/{{service._id}}/traces?download=1&{{search.encodedParams(true)}}" download="filtered {{ service.name }} traces.json">Filtered Traces</a></dd>
+    <dd><a ng-href="/api/services/{{service._id}}/traces?download=1" download="all {{ service.name }} traces.json">All Traces</a></dd>
+  </dl>
 </section>

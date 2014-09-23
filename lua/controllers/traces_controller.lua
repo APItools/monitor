@@ -19,6 +19,11 @@ local traces = {
     h.send_json({document_count = count})
   end,
 
+  uuid = function(params)
+    local trace = Trace:find_or_error({uuid = params.uuid}, NOT_FOUND)
+    h.send_json(trace)
+  end,
+
   index = function(params)
     params.last_id = params.last_id or Trace:get_last_id()
     local conditions, options = h.jor_conditions_and_options(params)

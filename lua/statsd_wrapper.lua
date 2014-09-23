@@ -16,7 +16,7 @@ local function get_instance()
     if statsd_server then
       local statsd_port = os.getenv('SLUG_STATSD_PORT')
       local Config      = require 'models.config'
-      local instance_id = Config.get_slug_name(true) or 'no_host'
+      local instance_id = Config and Config.get_slug_name(true) or 'no_host'
       local env         = os.getenv('SLUG_ENV') or 'dev'
       local namespace   = 'brainslug.' .. env .. '.' .. instance_id
 

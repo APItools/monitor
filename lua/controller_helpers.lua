@@ -28,7 +28,34 @@ end
 
 helpers.send_json = function(object_to_serialize, status)
   ngx.status = status or ngx.HTTP_OK
-  helpers.print(helpers.json_response(object_to_serialize))
+
+  if ngx.var.arg_download then
+    ngx.header['Content-Disposition'] = 'attachment; filename=' ..
+        tostring(ngx.var.arg_filename or "")
+  end
+
+  if type(object_to_serialize) == 'function' then
+    helpers.stream(object_to_serialize)
+  else
+    helpers.print(helpers.json_response(object_to_serialize))
+  end
+end
+
+helpers.stream = function(iterator)
+  local head_request = ngx.req.get_method() == 'HEAD'
+
+  ngx.header['Transfer-Encoding'] = 'chunked'
+
+  if head_request then
+    return ngx.eof()
+  end
+
+  ngx.print('[')
+  for line in iterator do
+    ngx.print(line)
+  end
+  ngx.print(']')
+  ngx.eof()
 end
 
 helpers.json_response = function(object_to_serialize, status)
@@ -36,6 +63,8 @@ helpers.json_response = function(object_to_serialize, status)
 
   if type(object_to_serialize) == 'table' and (next(object_to_serialize) == nil) then
     return '[]'
+  elseif type(object_to_serialize) == 'string' then
+     return object_to_serialize
   else
     return luajson.encode(object_to_serialize, {preProcess = remove_binary_strings})
   end
@@ -54,8 +83,12 @@ helpers.jor_options = function(params)
   local per_page = params and tonumber(params.per_page) or 20
   local max_per_page = 100
 
-  options.reversed = not not params.reversed
-  options.max_documents = per_page > max_per_page and max_per_page or per_page
+  if params.download then
+    options.iterator = true
+  else
+    options.reversed = not not params.reversed
+    options.max_documents = per_page > max_per_page and max_per_page or per_page
+   end
 
   return options
 end
@@ -64,8 +97,12 @@ helpers.jor_conditions_and_options = function(params, ordering)
   local conditions = helpers.decode_json_or_error(params.query or '{}')
   local options = helpers.jor_options(params)
   local last_id = params.last_id
+  local first_id = params.first_id
+  local download = params.download
 
-  if last_id then
+  if last_id and first_id then
+    conditions._id = { ['$gte'] = tonumber(first_id), ['$lte'] = tonumber(last_id) }
+  elseif last_id and not download then
     ordering = ordering or options.reversed and '$lt' or '$gt'
     conditions._id = { [ordering] = tonumber(last_id) }
   end

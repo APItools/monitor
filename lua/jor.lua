@@ -70,6 +70,8 @@ add_jor_timed_method('find', function(self, collection, doc, options)
 
   local results =  jor.driver:find(collection, doc, options or {})
 
+  if type(results) == 'function' then return results end
+
   if not results or #results == 1 and results[1] == 'null' or results[1] == 'none'  then
     return {}
   end

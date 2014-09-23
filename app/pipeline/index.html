@@ -10,7 +10,7 @@
   </div>
 
   <div ng-if="pipelineChanged()" class="alert">
-    <button type="button" class="close" data-dismiss="alert"><i class="icon icon-remove-sign"></i></button>
+    <button type="button" class="close" data-dismiss="alert" ng-click="revertPipeline()"><i class="icon icon-remove-sign"></i></button>
     The pipeline has been changed.
     <a ng-click="savePipeline()" href="" class="">Save Pipeline</a> |
     <a ng-click="revertPipeline()" href="">Revert Changes</a>
@@ -47,7 +47,7 @@
 
     </div>
 
-    <div class="middleware-stack" ng-include="'/middlewares/spec/_bar.html'"></div>
+    <div class="middleware-stack"  ng-controller="MiddlewareSpecBarCtrl" ng-include="'/middlewares/spec/_bar.html'"></div>
 
   </div>
 

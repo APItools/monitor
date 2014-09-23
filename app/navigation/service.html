@@ -17,7 +17,14 @@
     <a ng-class="{ active: $state.includes('service.docs') }"  class="subnav-action"
        ng-href='services/{{ submenu.service._id }}/docs'><i class="icon icon-book"></i> Active Docs</a>
 </li>
+
 <li>
   <a ng-class="{ active: $state.is('service.show') }" class="subnav-action" id="service-integration"
      ng-href="services/{{ submenu.service._id }}/integration"><i class="icon icon-info"></i> Integration</a>
 </li>
+
+<li class="pull-right">
+  <a ng-class="{ active: $state.includes('service.edit') }"  class="subnav-action"
+     ng-href='services/{{ submenu.service._id }}/edit'><i class="icon icon-cog"></i> Settings</a>
+</li>
+

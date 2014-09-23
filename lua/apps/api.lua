@@ -97,6 +97,7 @@ router:get(    '/api/services/:service_id/pipeline'          , r('pipelines.show
 router:post(   '/api/services/:service_id/pipeline'          , r('pipelines.update'))
 
 router:get(    '/api/traces'                                 , r('traces.index'))
+router:get(    '/api/traces/:uuid/find'                      , r('traces.uuid'))
 router:get(    '/api/traces/search'                          , r('traces.search'))
 router:get(    '/api/traces/search_for_index'                , r('traces.search_for_index'))
 router:get(    '/api/traces/last_id'                         , r('traces.last_id'))
@@ -112,9 +113,11 @@ router:get(    '/api/traces/saved'                           , r('traces.index_s
 
 router:get(    '/api/traces/count'                           , r('traces.count'))
 
+router:get(    '/api/services/:service_id/traces'            , r('service_traces.index'))
 router:get(    '/api/services/:service_id/traces/search'     , r('service_traces.search'))
 router:get(    '/api/services/:service_id/traces/search_for_index'     , r('service_traces.search_for_index'))
 router:get(    '/api/services/:service_id/traces/count'      , r('service_traces.count'))
+router:post(   '/api/services/:service_id/traces/:id/redo'   , r('traces.redo'))
 router:delete( '/api/services/:service_id/traces/:id'        , r('traces.delete'))
 router:delete( '/api/services/:service_id/traces/all'        , r('service_traces.delete_all'))
 
@@ -197,6 +200,9 @@ router:post(   '/api/brain/report'                           , r('brain.report')
 router:post(   '/api/brain/register'                         , r('brain.register'))
 router:post(   '/api/brain/link'                             , r('brain.link'))
 router:post(   '/api/brain/unlink'                           , r('brain.unlink'))
+
+router:get(    '/api/brain/middleware_specs/search/'         , r('brain_middleware_specs.search'))
+router:get(    '/api/brain/middleware_specs/:id/'            , r('brain_middleware_specs.show'))
 
 router:get(    '/api/jor/dump/export'                        , r('backups.export'))
 router:post(   '/api/jor/dump/import'                        , r('backups.import'))

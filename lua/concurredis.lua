@@ -68,8 +68,32 @@ concurredis.execute = function(f)
   end
 end
 
+concurredis.disable_bgsave = function(fun)
+  return concurredis.execute(function(red)
+    local save = red:config('get', 'save')
+
+    local res, err = pcall(fun, red)
+
+    assert(red:config('set', unpack(save)))
+    assert(res, err)
+  end)
+
+end
+
 concurredis.save = function()
-  concurredis.execute(function(red) assert(red:save()) end)
+  concurredis.disable_bgsave(function(red)
+    local backoff = 0.01
+    local total = 0
+
+    while not red:save() do
+      total = total + backoff
+      ngx.sleep(backoff)
+
+      if total > 15 then
+        assert(red:save())
+      end
+    end
+  end)
 end
 
 concurredis.config = function(key, value)

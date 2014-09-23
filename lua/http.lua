@@ -24,7 +24,7 @@ local url_escape = function(s)
   return string.gsub(s, "([^A-Za-z0-9_])", char_escape)
 end
 
-local encode_query_string = function(t, sep)
+http.encode_query_string = function(t, sep)
   if sep == nil then
     sep = "&"
   end
@@ -66,7 +66,7 @@ local init_req = function(r)
   r.body = r.body or ''
 
   if type(r.body) == 'table' then
-    r.body = encode_query_string(r.body)
+    r.body = http.encode_query_string(r.body)
     r.headers["Content-type"] = "application/x-www-form-urlencoded"
     r.headers["content-length"] = #r.body
   end
@@ -98,7 +98,7 @@ function http.simple(req, body)
   end
 
   if type(req.body) == "table" then
-    req.body = encode_query_string(req.body)
+    req.body = http.encode_query_string(req.body)
     req.headers["Content-type"] = "application/x-www-form-urlencoded"
     req.headers["content-length"] = #req.body
   end

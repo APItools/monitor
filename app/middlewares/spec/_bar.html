@@ -1,39 +1,25 @@
-<!--
-<ul class="middleware-list">
-  <li><h4>GitHub</h4></li>
 
-  <li class="middleware" ng-repeat="middleware in github.middleware">
-        <span>
-          <strong>{{  middleware.name }}</strong> by <span author="middleware.author"/>
-          <em>{{  middleware.description }}</em>
-        </span>
-  </li>
+<form class="middleware-search-form" ng-submit="search.find()">
+  <input name="search" class="middleware-search" type="search" placeholder="Search..." ng-model="search.query"/>
+  <button name="search-submit" type="submit" class="btn middleware-search-submit"><i class="icon-search"></i></button>
+</form>
 
-  <li class="middleware control">
-    <span><a href ng-click="moreGitHub()">View More</a></span>
-  </li>
-</ul>
--->
+<h4 ng-show="search.query && search.page == 0 && !search.loading">Hit 'enter' to search</h4>
 
-<ul class="middleware-list local" ng-controller="MiddlewareSpecBarCtrl">
-  <li><h4>Middleware list</h4></li>
+<div class="middleware-list-wrap">
 
-  <li class="middleware middleware-pipeline" ng-repeat="spec in specs" draggable="dragOptions">
-    <strong>{{  spec.name | truncate: 20 }}</strong> by <span author="spec.author"/>
-    <div><em>{{  spec.description | truncate: 60 }}</em></div>
-  </li>
+  <ul class="middleware-list local">
 
-  <li class="middleware-controls" ng-show="all_specs.length > 0">
-    <a class="btn" href ng-click="moreLocal()">View More</a>
-    <!-- <a class="btn" href="middlewares/">See All</a> -->
-  </li>
-</ul>
-    <!--
-    This button was replaced by "Empty" middleware
-<ul class="middleware-list controls">
+    <li class="middleware middleware-pipeline" ng-repeat="spec in search.specs" draggable="dragOptions">
+      <strong>{{  spec.name | truncate: 20 }}</strong> by <author github="spec.github_user" name="spec.author"/>
+      <div><em>{{  spec.description | truncate: 60 }}</em></div>
+    </li>
+  </ul>
 
-  <li class="middleware control">
-    <span><a ng-click="addEmpty()">Add Empty</a></span>
-  </li>
-</ul>
-    -->
+  <div class="middleware-loading loading btn-large" ng-show="search.loading">
+    <i class="icon-refresh icon-spin"></i> <span>Loading...</span>
+  </div>
+
+</div>
+<a ng-show="!search.loading && !search.done" class=" middleware-control btn" href ng-click="search.loadMore()">View More</a>
+<a ng-show="search.done" href disabled class="middleware-control search-done btn">No more results</a>

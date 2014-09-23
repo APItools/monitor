@@ -3,7 +3,9 @@ local Service  = require 'models.service'
 local Event    = require 'models.event'
 local fn       = require 'functional'
 local http     = require 'http'
+local uuid4    = require 'uuid'
 local inspect  = require 'inspect'
+local Config   = require 'models.config'
 
 local Trace = Model:new()
 
@@ -14,11 +16,25 @@ Trace.excluded_fields_to_index = {res = { body = true  } }
 
 Trace.keep = 1000
 
-Trace_mt = {__index = Trace}
+local function link(uuid)
+  local slug_name = Config.get_slug_name()
+  return "https://" .. slug_name .. ".my.apitools.com/app/traces/find/" .. uuid
+end
+
+local Trace_mt = {
+  __index = function(table, key)
+    if key == 'link' then
+      return link(table.uuid)
+    else
+      return rawget(table, key)
+    end
+  end
+}
 
 function Trace:new(req)
   Model:check_dots(self, Trace, 'new')
-  return { req = req }
+  local trace = { req = req, uuid = uuid4.getUUID() }
+  return setmetatable(trace, Trace_mt)
 end
 
 function Trace:delete_expired(to_keep)

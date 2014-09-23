@@ -282,6 +282,50 @@ local function _add_index(collection, path, id)
   end)
 end
 
+local function _load_documents(collection, ids)
+  return redis.execute(function(red)
+
+    red:init_pipeline()
+    for _, id in ipairs(ids) do
+      red:get(_doc_key(collection, tonumber(id)))
+    end
+    local res, err = red:commit_pipeline()
+    if not res then return nil, err end
+
+    local docs = {}
+
+    for i=1, #res do
+      -- ngx.null is equivalent to null and can't be decoded to json
+      if ngx.null == res[i] then
+        table.insert(docs, 'null')
+      else
+        table.insert(docs, luajson.decode(res[i]))
+      end
+    end
+
+    return docs
+  end)
+end
+
+local function _documents_iterator(collection, ids)
+  local i = 0
+  local n = table.getn(ids)
+  return function ()
+    return redis.execute(function(red)
+      i = i + 1
+      if i <= n then
+        local id = ids[i]
+        local res = red:get(_doc_key(collection, tonumber(id)))
+
+        if res == ngx.null then
+          return 'null'
+        else
+          return res
+        end
+      end
+    end)
+  end
+end
 
 function ngxjor.get_doc_paths(self, path, doc)
   if type(path) == 'string' then
@@ -743,28 +787,12 @@ function ngxjor.find_with_options(self, collection, doc, options)
     return ids
   end
 
-  return redis.execute(function(red)
 
-    red:init_pipeline()
-    for _, id in ipairs(ids) do
-      red:get(_doc_key(collection, tonumber(id)))
-    end
-    local res, err = red:commit_pipeline()
-    if not res then return nil, err end
-
-    local docs = {}
-
-    for i=1, #res do
-      -- ngx.null is equivalent to null and can't be decoded to json
-      if ngx.null == res[i] then
-        table.insert(docs, 'null')
-      else
-        table.insert(docs, luajson.decode(res[i]))
-      end
-    end
-
-    return docs
-  end)
+  if options.iterator then
+    return _documents_iterator(collection, ids)
+  else
+    return _load_documents(collection, ids)
+  end
 end
 
 -- Used only in tests

@@ -44,16 +44,16 @@ function Console_methods:error(...)
   log(self, 'error', ...)
 end
 
-function Console_methods:get_latest_messages(how_many)
+function Console_methods:get_latest_messages(since_when)
   local mt = getmetatable(self)
 
   local events = Event:all({
     channel         = 'middleware',
     service_id      = mt.service_id,
-    middleware_uuid = mt.middleware_uuid
+    middleware_uuid = mt.middleware_uuid,
+    _created_at     = { ['$gt'] = since_when }
   }, {
-    reversed = true,
-    max_documents = how_many
+    reversed = true
   })
 
   local messages = {}

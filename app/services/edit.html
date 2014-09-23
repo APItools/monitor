@@ -1,8 +1,11 @@
 <div class="row-fluid">
   <aside class="span3">
 
-    <p>
+    <p ng-show="service_new">
       By adding a new service- an API your app is using- you will be able to track, transform, and analyze the traffic between your app and this API on Apitools.
+    </p>
+    <p ng-show="service_edit">
+      You can change the name of your service as well as delete it from here.
     </p>
     <a rel="external" class="help-link" docs-ref="getting_started"><i class="icon-help"></i></a>
     <p>
@@ -14,7 +17,7 @@
 
     <a name="service-form"></a>
 
-    <div demo-block="service">
+    <div demo-block="service" ng-show="service_new">
       <h4>Adding a service (API you are using)</h4>
       <ul>
         <li><i class="icon icon-link"></i> Pick a name and indicate the URL of the API your app is using.</li>
@@ -36,31 +39,31 @@
 
       <fieldset ng-repeat="endpoint in service.endpoints">
         <div class="control-group" ng-form="endpoint_form" ng-class="{error: endpoint_form.url.$invalid}">
-          <label class="control-label">API URL</label>
+          <label for="api_endpoint" class="control-label">API URL</label>
 
           <div class="controls">
-            <input type="text" name="url" required ng-change="resetDemo()" require type="url" pattern='^(https?:\/\/.+|\*)$' ng-model="endpoint.url">
+            <input type="text" id="api_endpoint" name="url" required ng-change="resetDemo()" require type="url" pattern='^(https?:\/\/.+|\*)$' ng-model="endpoint.url">
             <p>For example https://api.github.com</p>
           </div>
         </div>
 
         <div class="control-group" ng-form="endpoint_form"
              ng-controller="ServiceEndpointCtrl" ng-class="{error: endpoint_form.code.$invalid}">
-          <label class="control-label">Apitools URL</label>
+          <label for="service_endpoint" class="control-label">Apitools URL</label>
 
           <div class="controls">
             <span ng-hide="editing">
               <pre class="endpoint">{{ endpoint.code }}-{{ suffix }}</pre>
-              <button type="button" class="btn-link" ng-click="edit()">Edit</button>
+              <button id="service_endpoint_edit" type="button" class="btn-link" ng-click="edit()">Edit</button>
             </span>
 
             <span ng-show="editing">
-              <pre class="endpoint"><input type="text" required name="code" ng-pattern="/^[a-z0-9]+$/" ng-model="endpoint.code"/>-{{ suffix }}</pre>
+              <pre class="endpoint"><input id="service_endpoint" type="text" required name="code" ng-pattern="/^[a-z0-9\-]+$/" ng-model="endpoint.code"/>-{{ suffix }}</pre>
 
               <button type="button" class="btn-link" ng-disabled="endpoint_form.$invalid" ng-click="apply()">Apply</button> |
               <button type="button" class="btn-link" ng-click="cancel()">Cancel</button>
 
-              <span class="help-inline" ng-show="endpoint_form.code.$error.pattern">Code has to be lowercase and contain just letters or numbers.</span>
+              <span class="help-inline" ng-show="endpoint_form.code.$error.pattern">Code has to be lowercase and contain just letters, numbers or dashes (-).</span>
             </span>
           </div>
         </div>
@@ -75,6 +78,21 @@
       </fieldset>
 
     </form>
+
+    <div ng-hide="service_new" class="action-block action-block-danger"
+         ng-controller="ServiceDestroyCtrl">
+      <h4 class="action-block-title">Delete Service </h4>
+      <p><strong>WARNING:</strong> By deleting this service you will remove all
+        of its traces, analytics, and pipeline. Your APItools URL won't be
+        available anymore, so if you're calling it from an app you will need to
+        change it there too. Are you sure you want to proceed?</p>
+
+      <button slug-confirm slug-confirm-text="'Yes, delete this service'"
+              slug-cancel-text="'Cancel'"
+              class="btn btn-danger" ng-click="destroy()">Delete</button>
+
+
+    </div>
 
     <div ng-show="demos">
       <h2>Some API examples:</h2>

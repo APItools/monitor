@@ -7,6 +7,8 @@ local json      = require 'json'
 local http       = require 'http'
 local resty_http = require 'resty.http'
 
+local inspect = require'inspect'
+
 local ten_minutes, five_seconds = 60*10, 5
 
 local Brain = {}
@@ -14,6 +16,32 @@ local Brain = {}
 Brain.host = os.getenv("SLUG_BRAIN_HOST") or 'https://www.apitools.com'
 Brain.url = function(path)
   return Brain.host .. (path or '')
+end
+
+
+local get = function(url, params)
+  if params then
+    url = string.format("%s%s?%s", Brain.host, url, ngx.encode_args(params))
+  else
+    url = string.format("%s%s", Brain.host, url)
+  end
+  print(url)
+  return http.simple(url)
+end
+
+
+Brain.search_middleware = function(endpoint, query, per_page, page)
+  return get('/api/middleware/search', {
+      endpoint = endpoint,
+      query = query,
+      per_page = per_page,
+      page = page
+
+  })
+end
+
+Brain.show_middleware = function(id)
+  return get(string.format('/api/middleware/%s', id))
 end
 
 local extract_middlewares = function(service)

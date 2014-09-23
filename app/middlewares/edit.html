@@ -1,172 +1,108 @@
-<header class="modal-header">
-  <input ng-show="editTitle"  ng-keyup="saveMetaOnEnter('editTitle', $event.keyCode)" placeholder="Name" type="text" id="middleware_name" ng-model="middleware.name" required/>
-  <h3 class='middleware-edit-title' ng-show="!editTitle" >{{ middleware.name }}</h3>
-  <!-- <a ng-href="middlewares/{{ middleware.spec_id }}" ng-show="hasSpec">go to spec</a> -->
-  <a href ng-click="editTitle = !editTitle" ><i ng-class="{ 'icon-pencil': !editTitle, 'icon-ok': editTitle }"></i></a>
-  <a class="close" ng-click="close()">&times;</a>
-</header>
+<div class="modal-content">
+<div class="modal-row">
+  <header class="modal-header">
+    <input ng-show="editTitle" ng-keyup="saveMetaOnEnter('editTitle', $event.keyCode)"
+           placeholder="Name" type="text" id="middleware_name" ng-model="middleware.name"
+           required/>
 
-<form class="modal-body" name="form" ng-submit="save(middleware)">
-  <div class="middleware-metadata">
-    <textarea ng-keyup="saveMetaOnEnter('editDescription', $event.keyCode)" class="middleware-edit-description is-input" ng-show="editDescription" ng-model="middleware.description"></textarea>
-    <p class="middleware-edit-description" ng-show="!editDescription">{{ middleware.description }}</p>
-    <a href class="middleware-edit-action" ng-click="editDescription = !editDescription" ><i ng-class="{ 'icon-pencil': !editDescription, 'icon-ok': editDescription }"></i></a>
-  </div>
+    <h3 class='middleware-edit-title' ng-show="!editTitle">{{ middleware.name }}</h3>
+    <!-- <a ng-href="middlewares/{{ middleware.spec_id }}" ng-show="hasSpec">go to spec</a> -->
+    <a href ng-click="editTitle = !editTitle"><i
+        ng-class="{ 'icon-pencil': !editTitle, 'icon-ok': editTitle }"></i></a>
+    <a class="close" ng-click="close()">&times;</a>
 
+    <div class="middleware-metadata">
+      <textarea ng-keyup="saveMetaOnEnter('editDescription', $event.keyCode)"
+                class="middleware-edit-description is-input" ng-show="editDescription"
+                ng-model="middleware.description"></textarea>
 
-    <div class="code-wrap">
-      <div class="code"><textarea id="middleware_code" ng-model="middleware.code" ui-codemirror="codemirror" ui-refresh="active"></textarea></div>
+      <p class="middleware-edit-description" ng-show="!editDescription">{{ middleware.description
+        }}</p>
+      <a href class="middleware-edit-action" ng-click="editDescription = !editDescription"><i
+          ng-class="{ 'icon-pencil': !editDescription, 'icon-ok': editDescription }"></i></a>
+      <a class="middleware-documentation" docs-ref="middlewares" target="_blank">Documentation</a>
+    </div>
+  </header>
+</div>
 
-      <div class="docs">
-        <h4>Middleware API</h4>
+<div class="modal-row modal-center">
+  <form class="modal-body middleware-edit" name="form" ng-submit="save(middleware)">
+    <div split-panes="horizontal">
+      <div pane-set-height split-panes="vertical" pane-min-size="20%" pane-max-size="80%">
+        <div  pane-min-size="20%" pane-max-size="80%" >
+          <textarea id="middleware_code" ng-model="middleware.code"
+                                                 ui-codemirror="codemirror"
+                                                 ui-refresh="active"></textarea>
+        </div>
 
-          <p><b>request</b> is the request that originated the trace. Fields:</p>
-          <ul>
-            <li><b>request.scheme</b>  ('http', 'https', ...)</li>
-            <li><b>request.method</b> ('get', 'post', ...)</li>
-            <li><b>request.args</b> (a parsed query string, like {foo='123', bar='blahblah'})</li>
-            <li><b>request.host</b> ('yourhost.com')</li>
-            <li><b>request.uri</b>, <b>request.uri_relative</b> and <b>request.uri_full</b> ('yourhost.com/foo', '/foo' and 'http://yourhost.com/foo', respectively)</li>
-            <li><b>request.headers</b> (a Lua table containing the headers, such as { Accept = 'text/plain' }</li>
-            <li><b>request.body</b> (a string containing the body of the request, such as submitted form)</li>
+        <div pane-min-size="20%" pane-max-size="80%">
+          <ul pane-set-height class="log-console logs">
+            <li class="log-console-actions" ng-show="logs.length > 0">
+              <a href ng-click="clear_console()">Clear Console</a>
+            </li>
+            <li class="log-empty" ng-show="logs.length == 0">
+              <p>Use <b>console.log(...)</b> in the middleware code to print to this log console.</p>
+            </li>
+
+            <li ng-repeat="log in logs track by log._id" class="log-{{log.level}}">
+              <pre highlight="log.msg" highlight-content-type="'text/x-lua'"></pre>
+            </li>
           </ul>
+        </div>
+      </div>
 
-        <p><b>next_middleware</b> is the function you have to call
-          to proceed with the request. It will call the next
-          middleware in the stack. The last middleware will make the
-          request to the API backend, and will return a table
-          response with the following fields </p>
-        <ul>
-          <li><b>response.body</b> (the response body. Should be a string.)</li>
-          <li><b>response.status</b> (the response status code. Should be a number. Initially empty)</li>
-          <li><b>response.headers</b> (a header table. Similar to request.headers)</li>
-        </ul>
+      <div class="last-trace" ng-controller="LastTraceController">
+        <div pane-set-height split-panes="vertical" class="last-trace-container">
+          <div class='last-trace-request' ng-show="last_trace">
+            <div class="last-trace-call-box">
+              <h4 class="last-trace-call">{{ last_trace.req.method }} {{ last_trace.req.uri }}</h4>
 
-        <p>You can use Lua to modify the request or the response in your middleware.</p>
+              <div class="last-trace-actions">
+                <a class="last-trace-action" href ng-click="load_last_trace()"
+                   tooltip-append-to-body=true tooltip="reload last trace"><i class="icon icon-refresh"></i></a>
+                <a class="last-trace-action" href ng-click="redo(last_trace)"
+                   tooltip-append-to-body=true tooltip="redo call"><i class="icon icon-play"></i></a>
+              </div>
+            </div>
+            <div trace-headers="last_trace.req.headers"></div>
+            <pre highlight="last_trace.req.body" ng-if="has_body(last_trace.req)"
+                 highlight-content-type="content_type(last_trace.req)"></pre>
+          </div>
 
-       <h4>Lua API</h4>
-          <p>Also you can use following APIs in the Lua code.</p>
-          <dl>
-              <dt>console</dt>
-              <dd>
-                  Show information in logging console (and notifications).
-                  <ul>
-                      <li><b>console.log(...)</b></li>
-                      <li><b>console.debug(...)</b></li>
-                      <li><b>console.warn(...)</b></li>
-                      <li><b>console.error(...)</b></li>
-                  </ul>
-              </dd>
+          <div class='last-trace-response'>
+            <div ng-if="!loading">
+              <h4>Response Status: {{ last_trace.res.status }}</h4>
+              <div trace-headers="last_trace.res.headers"></div>
+              <pre highlight="last_trace.res.body" ng-if="has_body(last_trace.res)"
+                 highlight-content-type="content_type(last_trace.res)"></pre>
+            </div>
 
-              <dt>base64</dt>
-              <dd>
-                  <ul>
-                      <li><b>base64.encode(str)</b></li>
-                      <li><b>base64.decode(str)</b></li>
-                  </ul>
-              </dd>
+            <div class="last-trace-loading loading btn-large" ng-show="loading">
+              <i class="icon-refresh icon-spin"></i> <span>Loading...</span>
+            </div>
+          </div>
 
-              <dt>hmac</dt>
-              <dd>
-                  <ul>
-                      <li><b>hmac.sha256(message, key)</b></li>
-                  </ul>
-              </dd>
-
-              <dt>http</dt>
-              <dd>
-                  <ul>
-                      <li><b>http.simple(url, body)</b></li>
-                          <i>if there's body, assume POST method</i>.
-                      <li>
-                          <b>http.simple(table, body)</b><br>
-                          <i>table</i> can have key <i>method</i>, <i>url</i>, <i>headers</i>.
-                      </li>
-                      <li><i>returns 3 values <b>body, status, headers</b></i>. NOT a table</li>
-                      <li><a href="https://gist.github.com/kidd/11261680" target="_blank" >Examples</a></li>
-                  </ul>
-
-              </dd>
-
-              <dt>time</dt>
-              <dd>
-                  <ul>
-                      <li><b>time.now()</b> returns seconds float</li>
-                      <li><b>time.http(seconds)</b> format seconds to http header time string</li>
-                      <li><b>time.seconds()</b> returns seconds integer</li>
-                  </ul>
-              </dd>
-
-              <dt>inspect</dt>
-              <dd><b>inspect(table)</b> returns string</dd>
-
-              <dt>json</dt>
-              <dd>
-                  <ul>
-                      <li><b>json.decode(str)</b></li>
-                      <li><b>json.encode(obj)</b></li>
-                  </ul>
-              </dd>
-
-              <dt>xml</dt>
-              <dd>
-                <ul>
-                  <li><b>xml.new(options)</b> returns a lua-expat parser.
-                  <br />Check the <a target="_blank" href="http://matthewwild.co.uk/projects/luaexpat/manual.html#parser">lua-expat parser manual</a> for options.
-                  </li>
-                </ul>
-              </dd>
-
-              <dt>metric</dt>
-              <dd>
-                  <ul>
-                      <li><b>metric.count(name, value)</b></li>
-                      <li><b>metric.set(name, value)</b></li>
-                  </ul>
-              </dd>
-
-              <dt>bucket</dt>
-              <dd>
-                  Persists data between requests. Service one is shared between all middlewares of one service.
-                  <ul>
-                      <li><b>bucket.middleware.get(key)</b></li>
-                      <li><b>bucket.middleware.set(key, value)</b></li>
-                      <li><b>bucket.service.get(key)</b></li>
-                      <li><b>bucket.service.set(key, value)</b></li>
-                  </ul>
-              </dd>
-
-              <dt>send</dt>
-              <dd>
-                  <ul>
-                      <li><b>send.mail(to, subject, message)</b></li>
-                      <li><b>send.event(table)</b></li>
-                      <li><b>send.notification(table)</b> to middlewares channel</li>
-                  </ul>
-              </dd>
-          </dl>
+        </div>
       </div>
     </div>
+  </form>
+</div>
 
-    <ul class="log-console logs" collapse="isLogCollapse"
-        ng-class="{'is-log-open' : !isLogCollapse, 'is-empty' : logs.length == 0}">
+<div class="modal-row">
+  <footer class="modal-footer">
+    <button type=button ng-click="delete()" class="pull-left btn"><i class="icon-trash"></i>
+      Remove
+    </button>
 
-        <li class="log-empty" ng-show="logs.length == 0">
-            <p>Use <b>console.log(...)</b> in the middleware code to print to this log console.</p>
-        </li>
+    <button type=button ng-click="saveAndDeploy()" class="btn"
+            tooltip="Save & keep working on this middleware" tooltip-append-to-body="true"><i
+        class="icon-magic"></i> Apply
+    </button>
 
-        <li ng-repeat="log in logs track by log._id" class="log-{{log.level}}">
-            <pre>{{log.msg}}</pre>
-        </li>
-    </ul>
-</form>
-
-<footer class="modal-footer">
-  <button type=button ng-click="delete()" class="pull-left btn"><i class="icon-trash"></i> Remove</button>
-  <button  type=button ng-click="isLogCollapse = !isLogCollapse" class="pull-left btn"><i class="icon-code"></i> <span ng-show="isLogCollapse"> Show</span><span ng-show="!isLogCollapse">Hide</span> logging console</button>
-  <!-- <button type=button ng-hide="hasSpec" ng-disabled="!canBeShared(middleware)" ng-click="share(middleware)" class="btn"><i class="icon-github"></i> Share</button> -->
-
-  <button type=button ng-click="saveAndDeploy()" class="btn" tooltip="Save & keep working on this middleware" tooltip-append-to-body="true"><i class="icon-magic"></i> Apply</button>
-
-  <button class="btn btn-primary" ng-click="save(middleware)" tooltip="Save & return to the Pipeline" tooltip-placement='left'><i class="icon-save"></i> Save</button>
-</footer>
+    <button class="btn btn-primary" ng-click="save(middleware)"
+            tooltip="Save & return to the Pipeline" tooltip-placement='left'><i
+        class="icon-save"></i> Save
+    </button>
+  </footer>
+</div>
+</div>

@@ -11,7 +11,8 @@ local Pipeline        = require 'models.pipeline'
 local Brain           = require 'brain'
 
 local has_valid_endpoint_characters = function(endpoint)
-  return not endpoint.code:find('-')
+-- allowed are lowercase letters, alphanuberic characters and a dash
+  return not endpoint.code:find('[^%l%w-]')
 end
 
 local has_service_already = function(endpoint)

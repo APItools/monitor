@@ -1,5 +1,5 @@
 local redis   = require('concurredis')
-local luajson = require('json')
+local json = require('cjson')
 local inspect = require 'inspect'
 
 local cachejor = {}
@@ -10,17 +10,20 @@ local store = redisstore
 
 -- redis backend store
 function redisstore:encode(...)
-  return luajson.encode({value = ... })
+  return json.encode({value = ... })
 end
 
 function redisstore:decode(str)
-  local obj = luajson.decode(str)
+  local obj = json.decode(str)
   local value = obj.value
 
   return value
 end
 
 function redisstore:save(value, ...)
+  if type(value) == "function" then
+    return
+  end
   local key, field = cache:key(...)
   local value = redisstore:encode(value)
 
@@ -77,7 +80,7 @@ function cache:key(collection, ...)
   local key = ""
 
   for i,part in ipairs({...}) do
-    part = luajson.encode(part)
+    part = json.encode(part)
     key = key .. "/" .. part
   end
 
