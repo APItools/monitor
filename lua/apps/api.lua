@@ -198,6 +198,8 @@ router:delete( '/api/services/:service_id/dashboards/:id'    , r('dashboards.del
 router:get(    '/api/brain'                                  , r('brain.url'))
 router:post(   '/api/brain/report'                           , r('brain.report'))
 router:post(   '/api/brain/register'                         , r('brain.register'))
+router:post(   '/api/brain/link'                             , r('brain.link'))
+router:post(   '/api/brain/unlink'                           , r('brain.unlink'))
 
 router:get(    '/api/brain/middleware_specs/search/'         , r('brain_middleware_specs.search'))
 router:get(    '/api/brain/middleware_specs/:id/'            , r('brain_middleware_specs.show'))

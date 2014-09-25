@@ -8,6 +8,8 @@ local lock = require "lock"
 local Model = require 'model'
 local Config  =  Model:new()
 
+local uuid = require 'uuid'
+
 Config.collection = 'config'
 Config.localhost = '127.0.0.1:7071' -- used by brain.lua and consumers/mail.lua
 
@@ -44,7 +46,8 @@ Config.update_missing = lock.wrapper('update_missing', Config.update_missing)
 
 Config.default = function()
   return {
-    csrf_secret = Config.csrf_secret()
+    csrf_secret = Config.csrf_secret(),
+    uuid        = uuid.getUUID()
   }
 end
 
@@ -91,6 +94,19 @@ end
 Config.set_slug_name = function(str)
   local c = Config.get() -- create config if it does not exist
   return Config:update({_id = c._id}, {slug_name = str})
+end
+
+Config.get_uuid = function()
+  return Config.get().uuid
+end
+
+Config.get_link_key = function()
+  return Config.get().link_key
+end
+
+Config.set_link_key = function(key)
+  local c = Config.get()
+  return Config:update({_id = c._id}, {link_key = key})
 end
 
 return Config

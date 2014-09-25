@@ -18,9 +18,18 @@ local brain = {
   end,
 
   register = function(params)
-    local registered = Brain.register()
-    Brain.use_keys(registered.keys)
-    h.send_json(registered)
+    local resp = Brain.register()
+    h.send_json(resp)
+  end,
+
+  link = function(params)
+    local json = h.request_json()
+    local key = json.key
+    h.send_json(Brain.link(key))
+  end,
+
+  unlink = function(params)
+    h.send_json(Brain.unlink())
   end,
 
   configure = function(params)

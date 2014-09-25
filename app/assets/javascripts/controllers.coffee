@@ -13,4 +13,5 @@ angular.module 'slug.controllers',
                   'slug.notifications'
                   'slug.controllers.services'
                   'slug.user_settings'
+                  'slug.services.brain'
                 ]

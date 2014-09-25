@@ -25,8 +25,12 @@
     </ul>
 
     <ul class="nav pull-right">
-      <li>
-        <a ng-show='brain' ng-href="{{brain}}/slugs" >Go to global dashboard</a>
+      <li ng-show="config.get('paired')">
+        <a ng-show='brain.host' ng-href="{{brain}}/slugs" >Go to global dashboard</a>
+      </li>
+
+      <li ng-hide="config.get('paired')">
+        <a ng-href="pair" >Pair with global dashboard</a>
       </li>
     </ul>
   </nav>

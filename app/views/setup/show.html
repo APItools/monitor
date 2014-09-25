@@ -1,0 +1,49 @@
+<div id="setup-modal">
+  <div id="setup-dialog" class="container">
+    <div class="hero-unit">
+
+      <h1>Congratulations! Your API traffic monitor is up and running.</h1>
+
+
+      <h2>What's next?</h2>
+
+      <ul>
+        <li>Pair your traffic monitor with your APItools account. <a
+          href="https://docs.apitools.com/docs/on-premise/">Learn more</a>
+        </li>
+        <li>Learn more about different ways of installation, DNS configuration <a
+          href="https://docs.apitools.com/docs/on-premise/">Learn more</a>
+        </li>
+        <li>Get familiar with APItools taking our tour. <a
+          href="https://docs.apitools.com/docs/tour/">Learn more</a>
+        </li>
+      </ul>
+    </div>
+
+    <form id="setup-form" name='setup_form' ng-submit="saveSetup()">
+      <fieldset ng-class="{error: form.name.$invalid}">
+        <legend>Anonymously report usage</legend>
+        <label class="checkbox" for="report_usage">
+
+          <input id="report_usage" type="checkbox" name="report_usage"
+                 ng-model="setup.report_usage">
+          Send report</label>
+
+          <p class="help-block">
+            You can run your APItools monitor completely standalone if you don't choose to pair it with the cloud service.
+            However, if you're willing the you can help us out by reporting anonymized traffic stats.
+            This will allow us to do performance analysis of various APIs, predict performance issues
+            or just tell you if it is broken just for you or everyone else.</p>
+          <p class="help-block">
+            Read our <a href="https://docs.apitools.com/legal/terms-and-conditions/" target="_blank">Terms and Conditions</a>
+            and <a href="https://docs.apitools.com/legal/privacy-policy/" target="_blank">Privacy Policy</a>
+            to learn more about how we handle these data.<br/>
+            By running APItools Traffic Monitor you accept these Terms and Conditions and Privacy Policy.
+          </p>
+
+        <button type="submit" class="btn btn-primary btn-large">Save</button>
+      </fieldset>
+    </form>
+  </div>
+</div>
+
