@@ -52,10 +52,9 @@ namespace :release do
   desc "Release license file"
   task :license, :output do |t, args|
     output = get_output(args, :release)
-
-    FileUtils.cp('on-premise/README.md', output)
-    FileUtils.cp('on-premise/LICENSE.txt', output)
-    FileUtils.cp('on-premise/CONTRIBUTING.md', output)
+    FileUtils.cp('README.md', output)
+    FileUtils.cp('LICENSE.txt', output)
+    FileUtils.cp('CONTRIBUTING.md', output)
   end
 
   desc "Release just html code"
