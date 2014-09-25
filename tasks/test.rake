@@ -26,7 +26,7 @@ namespace :test do
     require 'headless'
 
     if !system('karma', '--version') || `karma --version` !~ /Karma version:/
-      print "Karma not found. Install it by: `npm install -g karma`"
+      print "Karma not found. Install it by: `npm install -g karma-cli`"
       exit(1)
     end
 
