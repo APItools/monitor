@@ -1,0 +1,301 @@
+// Cosmo 2.3.2
+// Variables
+// --------------------------------------------------
+
+
+// Global values
+// --------------------------------------------------
+
+
+// Grays
+// -------------------------
+$black:                 #000 !default;
+$grayDarker:            #080808 !default;
+$grayDark:              #999 !default;
+$gray:                  #bbb !default;
+$grayLight:             #dfdfdf !default;
+$grayLighter:           #eee !default;
+$white:                 #fff !default;
+
+
+// Accent colors
+// -------------------------
+$blue:                  #007FFF !default;
+$blueDark:              #1F26B6 !default;
+$green:                 #3FB618 !default;
+$red:                   #FF0039 !default;
+$yellow:                #FFA500 !default;
+$orange:                #FF7518 !default;
+$pink:                  #E671B8 !default;
+$purple:                #9954BB !default;
+
+
+// Scaffolding
+// -------------------------
+$bodyBackground:        $white !default;
+$textColor:             #555 !default;
+
+
+// Links
+// -------------------------
+$linkColor:             $blue !default;
+$linkColorHover:        darken($linkColor, 10%) !default;
+
+
+// Typography
+// -------------------------
+$sansFontFamily:        "Open Sans", Calibri, Candara, Arial, sans-serif !default;
+$serifFontFamily:       Georgia, "Times New Roman", Times, serif !default;
+$monoFontFamily:        Monaco, Menlo, Consolas, "Courier New", monospace !default;
+
+$baseFontSize:          14px !default;
+$baseFontFamily:        $sansFontFamily !default;
+$baseLineHeight:        20px !default;
+$altFontFamily:         $serifFontFamily !default;
+
+$headingsFontFamily:    inherit !default; // empty to use BS default, $baseFontFamily
+$headingsFontWeight:    300 !default;    // instead of browser default, bold
+$headingsColor:         $grayDarker !default; // empty to use BS default, $textColor
+
+
+// Component sizing
+// -------------------------
+// Based on 14px font-size and 20px line-height
+
+$fontSizeLarge:         $baseFontSize * 1.25 !default; // ~18px
+$fontSizeSmall:         $baseFontSize * 0.85 !default; // ~12px
+$fontSizeMini:          $baseFontSize * 0.75 !default; // ~11px
+
+$paddingLarge:          22px 30px !default; // 66px
+$paddingSmall:          2px 10px !default;  // 26px
+$paddingMini:           2px 6px !default;   // 24px
+
+$baseBorderRadius:      0px !default;
+$borderRadiusLarge:     0px !default;
+$borderRadiusSmall:     0px !default;
+
+
+// Tables
+// -------------------------
+$tableBackground:                   transparent !default; // overall background-color
+$tableBackgroundAccent:             #f9f9f9 !default; // for striping
+$tableBackgroundHover:              #E8F8FD !default; // for hover
+$tableBorder:                       #ddd !default; // table and cell border
+
+// Buttons
+// -------------------------
+$btnBackground:                     $grayLighter !default;
+$btnBackgroundHighlight:            darken($grayLighter, 15%) !default;
+$btnBorder:                         #bbb !default;
+
+$btnPrimaryBackground:              lighten($blue, 5%) !default;
+$btnPrimaryBackgroundHighlight:     darken($blue, 5%) !default;
+
+$btnInfoBackground:                 lighten($purple, 5%) !default;
+$btnInfoBackgroundHighlight:        darken($purple, 5%) !default;
+
+$btnSuccessBackground:              lighten($green, 5%) !default;
+$btnSuccessBackgroundHighlight:     darken($green, 5%) !default;
+
+$btnWarningBackground:              lighten($orange, 5%) !default;
+$btnWarningBackgroundHighlight:     darken($orange, 5%) !default;
+
+$btnDangerBackground:               lighten($red, 5%) !default;
+$btnDangerBackgroundHighlight:      darken($red, 5%) !default;
+
+$btnInverseBackground:              lighten($black, 5%) !default;
+$btnInverseBackgroundHighlight:     darken($black, 5%) !default;
+
+
+// Forms
+// -------------------------
+$inputBackground:               $white !default;
+$inputBorder:                   $gray !default;
+$inputBorderRadius:             $baseBorderRadius !default;
+$inputDisabledBackground:       $grayLighter !default;
+$formActionsBackground:         #f5f5f5 !default;
+$inputHeight:                   $baseLineHeight + 10px !default; // base line-height + 8px vertical padding + 2px top/bottom border
+
+
+// Dropdowns
+// -------------------------
+$dropdownBackground:            $white !default;
+$dropdownBorder:                rgba(0,0,0,.2) !default;
+$dropdownDividerTop:            #e5e5e5 !default;
+$dropdownDividerBottom:         $white !default;
+
+$dropdownLinkColor:             $grayDark !default;
+$dropdownLinkColorHover:        $white !default;
+$dropdownLinkColorActive:       $white !default;
+
+$dropdownLinkBackgroundActive:  $blue !default;
+$dropdownLinkBackgroundHover:   $dropdownLinkBackgroundActive !default;
+
+
+
+// COMPONENT VARIABLES
+// --------------------------------------------------
+
+
+// Z-index master list
+// -------------------------
+// Used for a bird's eye view of components dependent on the z-axis
+// Try to avoid customizing these :)
+$zindexDropdown:          1000 !default;
+$zindexPopover:           1010 !default;
+$zindexTooltip:           1030 !default;
+$zindexFixedNavbar:       1030 !default;
+$zindexModalBackdrop:     1040 !default;
+$zindexModal:             1050 !default;
+
+
+// Sprite icons path
+// -------------------------
+$iconSpritePath:          image-path("glyphicons-halflings.png") !default;
+$iconWhiteSpritePath:     image-path("glyphicons-halflings-white.png") !default;
+
+
+// Input placeholder text color
+// -------------------------
+$placeholderText:         $gray !default;
+
+
+// Hr border color
+// -------------------------
+$hrBorder:                $grayLighter !default;
+
+
+// Horizontal forms & lists
+// -------------------------
+$horizontalComponentOffset:       180px !default;
+
+
+// Wells
+// -------------------------
+$wellBackground:                  $grayLighter !default;
+
+
+// Navbar
+// -------------------------
+$navbarCollapseWidth:             979px !default;
+$navbarCollapseDesktopWidth:      $navbarCollapseWidth + 1 !default;
+
+$navbarHeight:                    50px !default;
+$navbarBackgroundHighlight:       $grayDarker !default;
+$navbarBackground:                $grayDarker !default;
+$navbarBorder:                    transparent !default;
+
+$navbarText:                      $white !default;
+$navbarLinkColor:                 $white !default;
+$navbarLinkColorHover:            $gray !default;
+$navbarLinkColorActive:           $white !default;
+$navbarLinkBackgroundHover:       rgba(0, 0, 0, 0.05) !default;
+$navbarLinkBackgroundActive:      transparent !default;
+
+$navbarBrandColor:                $navbarLinkColor !default;
+
+// Inverted navbar
+$navbarInverseBackground:                $blue !default;
+$navbarInverseBackgroundHighlight:       $navbarInverseBackground !default;
+$navbarInverseBorder:                    transparent !default;
+
+$navbarInverseText:                      $white !default;
+$navbarInverseLinkColor:                 $white !default;
+$navbarInverseLinkColorHover:            $white !default;
+$navbarInverseLinkColorActive:           $navbarInverseLinkColorHover !default;
+$navbarInverseLinkBackgroundHover:       rgba(0, 0, 0, 0.05) !default;
+$navbarInverseLinkBackgroundActive:      $navbarInverseBackground !default;
+
+$navbarInverseSearchBackground:          lighten($navbarInverseBackground, 25%) !default;
+$navbarInverseSearchBackgroundFocus:     $white !default;
+$navbarInverseSearchBorder:              $navbarInverseBackground !default;
+$navbarInverseSearchPlaceholderColor:    $grayDark !default;
+
+$navbarInverseBrandColor:                $navbarInverseLinkColor !default;
+
+
+// Pagination
+// -------------------------
+$paginationBackground:                $grayLight !default;
+$paginationBorder:                    transparent !default;
+$paginationActiveBackground:          $blue !default;
+
+
+// Hero unit
+// -------------------------
+$heroUnitBackground:              $grayLighter !default;
+$heroUnitHeadingColor:            inherit !default;
+$heroUnitLeadColor:               inherit !default;
+
+
+// Form states and alerts
+// -------------------------
+$warningText:             $white !default;
+$warningBackground:       $orange !default;
+$warningBorder:           transparent !default;
+
+$errorText:               $white !default;
+$errorBackground:         $red !default;
+$errorBorder:             transparent !default;
+
+$successText:             $white !default;
+$successBackground:       $green !default;
+$successBorder:           transparent !default;
+
+$infoText:                $white !default;
+$infoBackground:          $purple !default;
+$infoBorder:              transparent !default;
+
+
+// Tooltips and popovers
+// -------------------------
+$tooltipColor:            #fff !default;
+$tooltipBackground:       #000 !default;
+$tooltipArrowWidth:       5px !default;
+$tooltipArrowColor:       $tooltipBackground !default;
+
+$popoverBackground:       $orange !default;
+$popoverArrowWidth:       15px !default;
+$popoverArrowColor:       $orange !default;
+$popoverTitleBackground:  $orange !default;
+
+// Special enhancement for popovers
+$popoverArrowOuterWidth:  $popoverArrowWidth + 1 !default;
+$popoverArrowOuterColor:  transparent !default;
+
+
+
+// GRID
+// --------------------------------------------------
+
+
+// Default 940px grid
+// -------------------------
+$gridColumns:             12 !default;
+$gridColumnWidth:         60px !default;
+$gridGutterWidth:         20px !default;
+$gridRowWidth:            ($gridColumns * $gridColumnWidth) + ($gridGutterWidth * ($gridColumns - 1)) !default;
+
+// 1200px min
+$gridColumnWidth1200:     70px !default;
+$gridGutterWidth1200:     30px !default;
+$gridRowWidth1200:        ($gridColumns * $gridColumnWidth1200) + ($gridGutterWidth1200 * ($gridColumns - 1)) !default;
+
+// 768px-979px
+$gridColumnWidth768:      42px !default;
+$gridGutterWidth768:      20px !default;
+$gridRowWidth768:         ($gridColumns * $gridColumnWidth768) + ($gridGutterWidth768 * ($gridColumns - 1)) !default;
+
+
+// Fluid grid
+// -------------------------
+$fluidGridColumnWidth:    percentage($gridColumnWidth/$gridRowWidth) !default;
+$fluidGridGutterWidth:    percentage($gridGutterWidth/$gridRowWidth) !default;
+
+// 1200px min
+$fluidGridColumnWidth1200:     percentage($gridColumnWidth1200/$gridRowWidth1200) !default;
+$fluidGridGutterWidth1200:     percentage($gridGutterWidth1200/$gridRowWidth1200) !default;
+
+// 768px-979px
+$fluidGridColumnWidth768:      percentage($gridColumnWidth768/$gridRowWidth768) !default;
+$fluidGridGutterWidth768:      percentage($gridGutterWidth768/$gridRowWidth768) !default;

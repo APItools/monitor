@@ -3,8 +3,8 @@ local rack_module  = require 'rack'
 local sandbox      = require 'sandbox'
 local Trace        = require 'models.trace'
 local Event        = require 'models.event'
-local http         = require 'http_mw'
-local cjson        = require 'cjson'
+local http_mw      = require 'http_mw'
+local luajson      = require 'json'
 local brainslug    = require 'middlewares.brainslug'
 local statsd       = require 'statsd_wrapper'
 local sanitizer    = require 'middlewares.sanitizer'
@@ -13,12 +13,15 @@ local Console      = require 'console'
 local Bucket       = require 'bucket'
 local Model        = require 'model'
 local xml          = require 'lxp'
+local http_ng      = require 'http_ng'
+local async_resty  = require 'http_ng.backend.async_resty'
 
 local Pipeline = Model:new()
 Pipeline.collection = 'pipelines'
 Pipeline.excluded_fields_to_index = Model.build_excluded_fields('name', 'middlewares')
 
-local safe_http = { simple = http.simple, multi = http.multi }
+local http = http_ng.new{ backend = async_resty,
+                          simple = http_mw.simple, multi = http_mw.multi }
 
 -- { _id,
 --   service_id,
@@ -120,13 +123,13 @@ local use_middleware = function(rack, middleware, trace, service_id)
     log               = log,
     base64            = base64,
     hmac              = hmac,
-    http              = safe_http,
+    http              = http,
     bucket            = bucket,
     send              = send,
     time              = time,
     metric            = metric(trace),
     trace             = trace,
-    json              = cjson,
+    json              = luajson,
     xml               = xml
   }
 

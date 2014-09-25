@@ -1,0 +1,53 @@
+.service-demo {
+
+  ul {
+    list-style: none;
+    margin: 0;
+
+    li {
+      margin: 0 0 $baseLineHeight/4 0;
+    }
+  }
+
+
+  button {
+    font-size: $baseFontSize*1.5;
+    @extend .btn-link;
+
+    &:hover {
+      text-decoration: none;
+    }
+
+    &:disabled {
+      color: $gray;
+
+      &:hover {
+        color: $gray;
+      }
+    }
+  }
+
+  .call {
+    margin-left: 45px;
+    padding: 0 0 $baseLineHeight/4 0;
+  }
+
+  .loading {
+    font-size: $baseFontSize * 1.1;
+  }
+
+  .status-code {
+    margin-left: -45px;
+    width: 40px;
+    vertical-align: middle;
+    visibility: hidden;
+  }
+
+  .visible {
+    visibility: visible;
+  }
+
+  .demo-response {
+    color: $gray;
+  }
+}

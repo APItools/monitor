@@ -1,0 +1,14 @@
+{ "_id": 3,
+  "service_id": 1,
+  "name": "sandbox_time",
+  "middlewares": {
+    "0":{ "name": "sandbox_time",
+      "position": 0,
+      "uuid": "time",
+      "description": "it gets time for caching",
+      "active": true,
+      "config":{},
+      "code": "return function(req, next_middleware) local res=next_middleware() if not time.http(time.seconds()) then res.status=500 end return res end"
+    }
+  }
+}

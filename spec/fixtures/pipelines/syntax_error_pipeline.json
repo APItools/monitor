@@ -1,0 +1,12 @@
+{ "_id": 1,
+  "service_id": 1,
+  "name": "syntax_error_pipeline",
+  "middlewares": {
+    "1":{ "name": "syntax_error",
+      "position": 0,
+      "description": "Throws a syntax error when being loaded",
+      "active": true,
+      "code": "function() "
+    }
+  }
+}

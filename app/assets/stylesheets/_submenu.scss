@@ -1,0 +1,45 @@
+.subnav {
+  //@extend .navbar;
+
+  .subnav-inner {
+    background: $brand-secondary;
+  }
+
+  .subnav-inner {
+    height: auto;
+    min-height: 30px;
+
+  }
+
+  .subnav-nav {
+    margin: 0 0 0 25.5%; //same fucked up to keep it aligned
+    padding: 0;
+
+    li {
+      display: inline-block;
+    }
+    .subnav-action {
+      color: #fff;
+      display: inline-block;
+      padding: 5px 15px;
+
+      &:hover,
+      &:focus {
+        color: $brand-primary;
+        text-decoration: none;
+        background-color: transparent;
+      }
+
+      &:active,
+      &.active {
+        color: $brand-primary;
+      }
+    }
+  }
+}
+
+#service-list, .services-menu {
+  a {
+    cursor: pointer;
+  }
+}

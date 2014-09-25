@@ -1,0 +1,14 @@
+{ "_id": 2,
+  "service_id": 1,
+  "name": "sandbox_json",
+  "middlewares": {
+    "0":{ "name": "sandbox_json",
+      "position": 0,
+      "uuid": "json",
+      "description": "it generates a json",
+      "active": true,
+      "config":{},
+      "code": "return function(req, next_middleware) local res=next_middleware() if not json then res.status=500 end  return res end"
+    }
+  }
+}

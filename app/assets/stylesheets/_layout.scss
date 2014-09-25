@@ -1,0 +1,44 @@
+
+/* LAYOUT ******************** */
+#wrap {
+  min-height: 100%;
+  padding-bottom: $baseLineHeight;
+  height: auto !important;
+  height: 100%;
+  margin: 0 auto -60px;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+#header {
+  margin: 0;
+
+}
+
+
+#content {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding-bottom: 50px;
+}
+
+#footer {
+  color: #fff;
+  padding: 20px 0 10px 0;
+  background-color: $brand-secondary;
+  text-align: center;
+  font-size: $fontSizeSmall;
+
+  .container-fluid {
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .credit {
+    margin: 15px 0;
+  }
+}
+/* ************************* */

@@ -1,0 +1,5 @@
+# ignore files for The Silver Searcher - https://github.com/ggreer/the_silver_searcher
+app/assets/javascripts/compiled/*
+tmp/*
+app/vendor/*
+

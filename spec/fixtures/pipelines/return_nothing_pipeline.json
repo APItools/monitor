@@ -1,0 +1,15 @@
+{
+  "_id": 1,
+  "service_id": 1,
+  "middlewares": {
+    "return-nil": {
+      "code": "return function(req, next_middleware) end",
+      "config": {},
+      "uuid": "return-nil",
+      "position": 1,
+      "active": true,
+      "name": "nil",
+      "description": "returns nil and this should raise an error"
+    }
+  }
+}

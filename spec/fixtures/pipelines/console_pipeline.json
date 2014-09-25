@@ -1,0 +1,15 @@
+{ "_id": 1,
+  "service_id": 1,
+  "middlewares": {
+    "console":{
+      "name": "console",
+      "uuid": "console",
+      "description": "writes messages on the console",
+      "position": 0,
+      "code": "return function(req, next_middleware) console.log('a log'); console.error('an error'); return next_middleware() end",
+      "config": {},
+      "active": true,
+      "spec_id": 0
+    }
+  }
+}

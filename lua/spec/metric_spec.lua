@@ -1,6 +1,4 @@
-ngx = (require 'spec.util.fakengx').new()
-require('spec.util.fakerestyredis')
-require('spec.util.fakerestylock')
+require 'spec.spec_helper'
 
 local Metric = require 'models.metric'
 

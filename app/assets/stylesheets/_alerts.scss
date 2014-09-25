@@ -1,0 +1,61 @@
+//
+// Rewriting Alerts
+// --------------------------------------------------
+
+
+.alert {
+  background-color: $brand-warning;
+  border: 1px solid $brand-warning;
+
+  .close {
+    color: #fff;
+    opacity: 1;
+  }
+
+  a,
+  button {
+    color: darken($brand-warning, 30%);
+  }
+
+  a:hover,
+  a:focus,
+  button:hover,
+  button:focus {
+    color: darken($brand-warning, 70%);
+  }
+
+}
+.alert,
+.alert h4 {
+  color: #fff;
+}
+
+// Alternate styles
+// -------------------------
+
+.alert-success {
+  background-color: $brand-success;
+  border-color: $brand-success;
+  color: #fff;
+}
+.alert-success h4 {
+  color: #fff;
+}
+.alert-danger,
+.alert-error {
+  background-color: $brand-danger;
+  border-color: $brand-danger;
+  color: #fff;
+}
+.alert-danger h4,
+.alert-error h4 {
+  color: #fff;
+}
+.alert-info {
+  background-color: $brand-info;
+  border-color: $brand-info;
+  color: #fff;
+}
+.alert-info h4 {
+  color: #fff;
+}

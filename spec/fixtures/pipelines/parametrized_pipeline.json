@@ -1,0 +1,17 @@
+{ "_id": 1,
+  "service_id": 1,
+  "name": "parametrized_pipeline",
+  "middlewares": {
+    "1":{ "name": "replacer",
+      "position": 0,
+      "description": "Replaces one substring in the response by another",
+      "active": true,
+      "uuid": "uuid1",
+      "code": "return function(req, next_middleware, config) local res=next_middleware() res.body = (res.body or ''):gsub(config.replace, config.with) return res end",
+      "config": {
+        "replace": "echo",
+        "with": "hodor"
+      }
+    }
+  }
+}

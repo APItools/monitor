@@ -1,0 +1,27 @@
+@import "bourbon";
+@import "neat";
+
+@import 'v2/layout';
+@import 'v2/modal';
+@import 'v2/action_blocks';
+
+@import 'v2/split_panes';
+@import 'v2/middleware_edit';
+
+// hacks
+
+// some places need to put normal box sizing back
+input, .search-tokens .token, .dashboard-box {
+  -webkit-box-sizing: content-box;
+  -moz-box-sizing: content-box;
+  box-sizing: content-box;
+}
+
+.control-box.btn-toolbar {
+  clear: both;
+}
+
+
+.split-pane .CodeMirror {
+  height: 100%;
+}

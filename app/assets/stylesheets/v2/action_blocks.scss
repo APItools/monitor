@@ -1,0 +1,46 @@
+@import "../variables";
+
+.action-block {
+  border: 1px solid $brand-info;
+  padding: 1em;
+
+  .action-block-title {
+    color: $brand-info;
+    margin: 0 0 1em 0;
+  }
+}
+
+.action-block-danger {
+  border-color: $brand-danger;
+
+  .action-block-title {
+    color: $brand-danger;
+  }
+}
+
+// Confirm directive mod
+.action-block {
+  .slug-confirm-active {
+    background: transparent;
+    border: none;
+    padding: 0;
+  }
+  .slug-confirm-box {
+    background: none;
+    color: $text-color;
+    padding: 0.5em 0;
+  }
+  .slug-confirm-box .slug-cancel {
+    color: $link-color;
+  }
+
+}
+
+.action-block-danger {
+  .slug-confirm-box
+  .slug-confirmation {
+    background: $brand-danger;
+    color: #fff;
+    padding: 0.5em;
+  }
+}

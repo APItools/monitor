@@ -1,0 +1,99 @@
+
+.trace-response, .trace-request {
+
+  @extend .dl-horizontal;
+
+  dt {
+    width:130px;
+    margin-bottom: $baseLineHeight/2;
+    button {
+      padding-left: 0;
+    }
+  }
+  dd {
+    margin-bottom: $baseLineHeight/2;
+    margin-left: 140px;
+
+    .btn-link {
+      padding: 0;
+      border: 0;
+      margin-bottom: 5px;
+    }
+  }
+
+  table {
+    padding: $baseLineHeight/4;
+    border: 1px solid $grayLighter;
+
+    tr {
+      border-bottom: 1px solid $grayLighter;
+      word-break: break-word;
+    }
+
+    td, th {
+      padding: $baseLineHeight/4;
+    }
+
+    th {
+      min-width: 9em;
+      max-width: 40%;
+    }
+    td {
+      max-width: 60%;
+    }
+
+  }
+}
+
+.trace-pipeline {
+  counter-reset: li;
+  list-style: none;
+
+
+  li {
+    position: relative;
+    counter-increment: li;
+    border: 2px dashed $blue;
+    padding: $baseLineHeight/2;
+    margin: 0 0 $baseLineHeight 0;
+
+    .counter::before {
+      content: counter(li);
+    }
+
+    .counter{
+      position: absolute;
+      left: -42px;
+      top: 50%;
+      margin-top: -1.3em;
+
+      height: 2em;
+      width: 2em;
+      line-height: 2em;
+
+      text-align: center;
+      font-weight: bold;
+      border-radius: 2em;
+      transition: all .3s ease-out;
+
+      background: $grayLighter;
+      color: $gray;
+      border: 3px solid $blue;
+    }
+
+    .counter:hover {
+      background: #eee;
+    }
+
+    .counter:hover:before {
+      transform: rotate(360deg);
+    }
+
+
+    .trace-request {
+      padding-bottom: $baseLineHeight;
+      border-bottom: 1px solid $grayLighter;
+    }
+
+  }
+}

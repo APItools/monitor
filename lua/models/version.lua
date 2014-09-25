@@ -1,4 +1,4 @@
-Version = {}
+local Version = {}
 Version.__index = Version
 
 local function map(f, t)
@@ -68,3 +68,5 @@ end
 Version.__tostring = function(self)
   return table.concat(self, ".")
 end
+
+return Version

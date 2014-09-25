@@ -1,0 +1,14 @@
+{ "_id": 1,
+  "service_id": 1,
+  "middlewares": {
+    "do-nothing":{ "name": "do-nothing",
+      "uuid": "do-nothing",
+      "position": 0,
+                   "code": "return function(req, next_middleware) return next_middleware() end",
+      "config": {},
+      "active": true,
+      "spec_id": 0,
+      "description": "pass through of the request and returns response"
+    }
+  }
+}

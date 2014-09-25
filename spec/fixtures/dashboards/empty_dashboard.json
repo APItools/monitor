@@ -1,0 +1,12 @@
+{
+    "_id":1,
+    "service_id":1,
+    "graphs": {
+        "0": {
+            "name": "empty",
+            "function": "{}",
+            "type": "pie",
+            "position": 0
+        }
+    }
+}

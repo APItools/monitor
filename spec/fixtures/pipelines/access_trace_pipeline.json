@@ -1,0 +1,13 @@
+{ "_id": 1,
+  "service_id": 1,
+  "name": "fire_event_pipeline",
+  "middlewares": {
+    "1": { "name": "error",
+      "position": 1,
+      "description": "Fires an event",
+      "active": true,
+      "uuid": "send_event",
+      "code": "return function(req, next_middleware) local res=next_middleware() if trace then send.event({channel='syslog', level='info', msg='we triggered this', data={trace=trace}}) end return res end"
+    }
+  }
+}

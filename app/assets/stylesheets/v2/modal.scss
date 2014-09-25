@@ -1,0 +1,92 @@
+@import "bourbon";
+
+.modal-slug {
+  position: absolute;
+}
+
+.modal-dialog, .modal-content {
+  height: 100%;
+}
+
+.modal {
+  @include box-sizing(content-box);
+}
+
+.modal-fill-flex {
+  height: 100%;
+
+  @include display('flex');
+  @include flex-direction(column);
+
+  .modal-body {
+    @include flex(2);
+    max-height: initial;
+    margin: 0;
+  }
+}
+
+@mixin fullscreen($margin) {
+  $space: $margin !important;
+
+  position: absolute;
+
+  left: $space;
+  right: $space;
+  top: $space;
+  bottom: $space;
+
+  width: auto;
+  height: auto;
+
+  margin: 0;
+}
+
+.modal-tall {
+  $space: 1em !important;
+
+  top: $space;
+  bottom: $space;
+}
+
+.modal-row  {
+  display: table-row;
+}
+.modal-content {
+  display: table;
+  width: 100%;
+}
+
+.modal-open {
+  overflow: hidden;
+}
+
+.modal-center {
+  height: 100%;
+
+  .modal-body {
+    height: 100%;
+    max-height: none;
+    padding: 0;
+    margin: 0;
+  }
+}
+
+.modal-full {
+  @include fullscreen(1em);
+}
+
+.modal-fullscreen {
+  @include fullscreen(0);
+  border: none;
+}
+
+.modal-full-graph {
+  @extend .modal-full;
+
+  position: fixed;
+
+  .modal-body {
+    height: 100%;
+  }
+
+}

@@ -1,0 +1,41 @@
+%label {
+  display: inline-block;
+  padding: 2px 10px;
+  font-size: 11px;
+  line-height: 14px;
+  color: #fff;
+  vertical-align: baseline;
+  white-space: nowrap;
+}
+
+.label-debug,
+.label-log {
+  @extend %label;
+  background-color: $brand-tertiary;
+}
+
+.label-success {
+  @extend %label;
+  background-color: $brand-success;
+}
+
+.label-warn,
+.label-redirect {
+  @extend %label;
+  background-color: $brand-warning;
+}
+
+.label-info,
+.label-information,{
+  @extend %label;
+  background-color: $brand-info;
+}
+
+.label-error,
+.label-client-error,
+.label-server-error {
+  @extend %label;
+  background-color: $brand-danger;
+}
+
+

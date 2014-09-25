@@ -1,0 +1,18 @@
+{
+    "_id":2,
+    "service_id":1,
+    "graphs": {
+        "0": {
+            "name": "graph1",
+            "function": "{}",
+            "type": "pie",
+            "position": 0
+        },
+        "1": {
+            "name": "graph2",
+            "function": "{}",
+            "type": "bars",
+            "position": 1
+        }
+    }
+}

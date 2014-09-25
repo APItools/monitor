@@ -1,0 +1,32 @@
+.demo-block {
+  border: 1px solid $brand-info;
+  padding: $paddingLarge;
+  margin-bottom: $baseLineHeight;
+  position: relative;
+
+  .demo-block-remove {
+    @extend .btn-link;
+    @extend .close;
+    color: $brand-info;
+  }
+
+  h4 {
+    color:$brand-info;
+    border-bottom: 1px solid $brand-info;
+    padding-bottom: $baseLineHeight/2;
+    padding-left: $baseLineHeight;
+    margin-top: 0 ;
+    margin-left: -$baseLineHeight ;
+    margin-right: -$baseLineHeight ;
+  }
+
+  i {
+    font-size: $fontSizeLarge;
+  }
+
+  ul {
+    list-style: none;
+  }
+
+
+}

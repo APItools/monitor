@@ -1,0 +1,105 @@
+%box {
+
+  padding: 1em;
+  border: 1px solid $brand-tertiary;
+  display: block;
+  margin-bottom: $baseLineHeight;
+
+  &:hover,
+  &:focus {
+    text-decoration: none;
+  }
+
+  ul, ol {
+    list-style: none;
+    margin: 0;
+
+    li {
+      padding: $paddingSmall;
+      padding-left: 0;
+    }
+
+    li:nth-child(odd) {
+      background: $grayLighter;
+    }
+
+    .cell {
+      padding: $paddingSmall;
+    }
+
+  }
+
+  a:hover,
+  a:focus {
+    text-decoration: none;
+  }
+
+}
+
+.dashboard-box {
+  @extend %box;
+  height: 22em;
+
+  .no-records {
+    margin-top: 80px;
+    margin-bottom: 80px;
+  }
+
+  .no-records, .new-service {
+    display: block;
+    text-align: center;
+    vertical-align: middle;
+  }
+}
+
+.dashboard-box-title {
+  margin: 0 -14px 7px -14px;
+  padding: 0 14px 7px 14px;
+  border-bottom: 1px solid $brand-tertiary;
+}
+
+.small-dashboard-boxes {
+  text-align: center;
+
+  .number, .box-label {
+    display: block;
+    line-height: 1;
+  }
+
+  .number {
+    font-size: 4em;
+    font-weight: bold;
+    color: $brand-secondary;
+
+    &.error {
+      color: $brand-danger;
+    }
+
+    &.ok {
+      color: $brand-success;
+    }
+
+  }
+
+
+}
+
+.selected-dashboard {
+  height: 250px;
+
+}
+
+.dashboard-box-mini {
+  height: 5em;
+}
+
+.dashboard-box-small {
+  height: 16.5em;
+}
+
+.notification-link,
+.trace-link {
+  color: $brand-secondary;
+}
+
+

@@ -1,0 +1,166 @@
+/* Custom side menu ******** */
+
+.side-menu {
+
+  margin: 0 0 $baseLineHeight 0;
+  list-style: none;
+
+  a {
+    color: $brand-secondary;
+  }
+
+  a:hover,
+  a:focus {
+    text-decoration: none;
+  }
+
+  a:active,
+  a.active {
+
+  }
+
+  li:not(.header) {
+    margin: 0 0 $baseLineHeight / 4 0;
+    position: relative;
+
+    > a {
+      @include box-sizing(border-box);
+      display: block;
+      padding: 8px 12px;
+
+      margin: 0;
+      padding-right: 0;
+
+    }
+
+  }
+
+  // Nav headers (for dropdowns and lists)
+  //might happen that we actually dont need this
+
+  .header {
+    display: block;
+    padding: 3px 15px;
+    font-size: 11px;
+    font-weight: bold;
+    line-height: $baseLineHeight;
+    color: $grayLight;
+    text-shadow: 0 1px 0 rgba(255,255,255,.5);
+    text-transform: uppercase;
+    margin-left:  -15px;
+    margin-right: -15px;
+    text-shadow: 0 1px 0 rgba(255,255,255,.5);
+
+    &:hover, &:focus {
+      background: none;
+    }
+
+  }
+  // Space them out when they follow another list item (link)
+  + .header {
+    margin-top: 9px;
+  }
+
+  // Dividers (basically an hr) within the dropdown
+  li.divider {
+    //@include nav-divider();
+    padding:0;
+  }
+
+}
+
+.side-menu-filter {
+
+  border: 1px solid $brand-secondary;
+  color: $brand-secondary;
+
+  &:hover,
+  &:focus {
+    background-color: $brand-primary;
+    border-color: $brand-primary;
+    color: #fff;
+
+    a {
+      color: #fff;
+    }
+  }
+
+  // Active state
+  &.active, &.active:hover {
+    color: $white;
+    background-color: $brand-secondary;
+
+    a {
+      color: $white;
+      background-color: transparent;
+    }
+  }
+
+  .edit-form {
+    display: none;
+    margin: 0;
+    padding: 8px 12px;
+
+    input {
+      margin: 0;
+      padding: 0 2px;
+      width: 75%;
+    }
+  }
+
+  .controls {
+    display: none;
+    position: absolute;
+    top: 7px;
+    right: 12px;
+
+    a {
+      display: inline-block;
+      width: 20px;
+      vertical-align: middle;
+      text-align: center;
+    }
+
+  }
+
+  &.editable:hover,
+  &.editable:focus {
+    .select-mode {
+      display: block;
+    }
+    &:not(.active) .active-button {
+      display: none;
+    }
+  }
+
+  &.active .select-mode {
+    display: block;
+    .slug-confirm-box {
+    }
+  }
+
+
+  &.editable.editing,
+  &.editable.editing:hover {
+
+    .edit-mode,
+    .edit-form {
+      display: block;
+    }
+    .select-mode {
+      display: none;
+    }
+  }
+
+  .slug-confirm-box {
+    background: $brand-warning;
+    position: absolute;
+    right:0;
+    top: 0;
+    width: 80px;
+  }
+
+  .slug-confirmation {
+    color: $brand-danger;
+  }
+}

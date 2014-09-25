@@ -1,0 +1,1 @@
+[ @events(:service_created), @events(:service_deleted) ]

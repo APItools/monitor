@@ -70,7 +70,7 @@ to_bits = function (n)
   local tbl = {}
   local cnt = 1
   while (n > 0) do
-    local last = math.mod(n,2)
+    local last = n % 2
     if(last == 1) then
       tbl[cnt] = 1
     else

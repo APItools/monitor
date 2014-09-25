@@ -1,0 +1,206 @@
+@import "compass/css3/text-shadow";
+
+/* Hide by default */
+
+.switch .slide-button {
+  display: none;
+}
+
+/* Radio Switch
+ */
+.switch {
+  display: inline-block;
+  cursor: pointer;
+  vertical-align: middle;
+  @include border-radius(5px);
+  border: 1px solid;
+  border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
+  @include buttonBackground($btnBackgroundHighlight, $btnBackground, $grayDark, 0 1px 1px rgba(255,255,255,.75));
+  position: relative;
+  text-align: left;
+  overflow: hidden;
+  line-height: 8px;
+  @include user-select(none);
+
+  min-width: 100px;
+
+  input {
+    position: absolute;
+    opacity: 0;
+  }
+
+  label {
+    position: relative;
+    z-index: 2;
+
+    float: left;
+    width: 50%;
+    height: 100%;
+
+    margin: 0;
+    text-align: center;
+
+    position: relative;
+    display: inline-block;
+
+    padding-bottom: 4px;
+    padding-top: 4px;
+    font-size: 14px;
+    line-height: 20px;
+    vertical-align: middle;
+  }
+
+  &.switch-mini {
+    min-width: 72px;
+    label {
+      padding-bottom: 4px;
+      padding-top: 4px;
+      font-size: 10px;
+      line-height: 9px;
+    }
+  }
+
+  &.switch-small {
+    min-width: 80px;
+    label {
+      padding-bottom: 3px;
+      padding-top: 3px;
+      font-size: 12px;
+      line-height: 18px;
+    }
+  }
+
+  &.switch-large {
+    min-width: 120px;
+    label {
+      padding-bottom: 9px;
+      padding-top: 9px;
+      font-size: 16px;
+      line-height: normal;
+    }
+  }
+
+  &.deactivate {
+    @include opacity(50);
+    cursor: default !important;
+    label, span {
+      cursor: default !important;
+    }
+
+
+  }
+
+  .slide-button {
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 0;
+    padding: 0;
+    z-index: 1;
+
+    width: 50%;
+    height: 100%;
+
+    @include transition(left 0.5s);
+  }
+
+  input:last-of-type:checked ~ .slide-button {
+    left: 50%;
+  }
+}
+
+.switch *{
+  @include box-sizing(border-box);
+}
+
+.switch input:focus + label {
+  outline: 1px dotted #888;
+}
+
+
+
+/* BrainSlug Theme */
+
+.switch {
+  display: inline-block;
+  cursor: pointer;
+  border: 1px solid;
+  position: relative;
+  text-align: left;
+  overflow: hidden;
+  line-height: 8px;
+  @include user-select(none);
+  @include buttonBackground($btnBackground, $btnBackgroundHighlight, $grayDark, 0 1px 1px rgba(255,255,255,.75));
+  border: 1px solid $btnBorder;
+  border-bottom-color: darken($btnBorder, 10%);
+  @include border-radius(5px);
+  background-image: none;
+
+  min-width: 100px;
+
+  &.switch-mini {
+    min-width: 72px;
+    label {
+      padding-bottom: 4px;
+      padding-top: 4px;
+      font-size: 10px;
+      line-height: 9px;
+    }
+  }
+
+  &.switch-small {
+    min-width: 80px;
+    label {
+      padding-bottom: 3px;
+      padding-top: 3px;
+      font-size: 12px;
+      line-height: 18px;
+    }
+  }
+
+  &.switch-large {
+    min-width: 120px;
+    label {
+      padding-bottom: 9px;
+      padding-top: 9px;
+      font-size: 16px;
+      line-height: normal;
+    }
+  }
+
+  &.deactivate {
+    @include opacity(50);
+    cursor: default !important;
+    label, span {
+      cursor: default !important;
+    }
+  }
+
+  &:hover {
+    background: auto;
+  }
+
+  label {
+    @include text-shadow(none);
+  }
+
+  input:checked + label {
+    color: $white;
+    @include text-shadow(0 -1px 0 rgba(0, 0, 0, 0.25));
+  }
+
+  .slide-button {
+    border-width: 1px;
+    @include buttonBackground($btnPrimaryBackground, $btnPrimaryBackgroundHighlight);
+    @include border-radius(5px);
+    @include box-shadow(inset 0 1px 0 rgba(255,255,255,.2), 0 1px 2px rgba(0,0,0,.05));
+
+    &:hover ,
+    &:focus {
+      color: $grayDark;
+      text-decoration: none;
+      background-position: 0 -15px;
+    }
+  }
+
+}

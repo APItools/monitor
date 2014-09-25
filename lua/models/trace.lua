@@ -142,6 +142,7 @@ function Trace:redo(trace)
 
   local service = Service:find_or_error(trace.service_id, 'service ' .. trace.service_id .. ' not found')
 
+
   return http.simple(query, trace.req.body)
 end
 

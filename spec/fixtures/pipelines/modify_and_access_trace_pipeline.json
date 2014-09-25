@@ -1,0 +1,20 @@
+{ "_id": 1,
+  "service_id": 1,
+  "name": "modify_and_access_trace",
+  "middlewares": {
+     "0":{ "name": "access",
+     "position": 0,
+     "description": "event if trace has 'foo'",
+      "uuid": "access",
+     "active": true,
+     "code": "return function(req, next_middleware) local res=next_middleware() if trace.foo then send.event({channel='middleware', level='info', msg='trace was modified', data={trace=trace}}) end return res end"
+    },
+    "1":{ "name": "modify",
+      "position": 1,
+      "description": "set 'foo' on trace",
+      "active": true,
+      "uuid": "modify",
+      "code": "return function(req, next_middleware)  local res=next_middleware() trace.foo = 'foo'  return res end"
+    }
+  }
+}

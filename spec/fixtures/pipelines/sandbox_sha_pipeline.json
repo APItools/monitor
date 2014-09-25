@@ -1,0 +1,14 @@
+{ "_id": 2,
+  "service_id": 1,
+  "name": "sandbox_sha",
+  "middlewares": {
+    "0":{ "name": "sandbox_sha",
+      "position": 0,
+      "uuid": "sha",
+      "description": "it generates a sha256",
+      "active": true,
+      "config":{},
+      "code": "return function(req, next_middleware) local res = next_middleware() local digest = hmac.sha256('what do ya want for nothing?', 'Jefe') if digest ~= '5bdcc146bf60754e6a042426089575c75a003f089d2739839dec58b964ec3843' then res.status=500 end  return res end"
+    }
+  }
+}

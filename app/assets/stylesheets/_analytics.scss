@@ -1,0 +1,19 @@
+.analytics {
+	.thumbnails {
+		li {
+			margin-left: 0;
+			padding: 0;
+			width: 100%;
+		}
+
+		.new {
+			border-width: 3px;
+			border-style: dashed;
+
+			.caption {
+				text-align: center;
+				font-size: $fontSizeLarge;
+			}
+		}
+	}
+}

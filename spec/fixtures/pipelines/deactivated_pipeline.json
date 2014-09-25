@@ -1,0 +1,13 @@
+{ "_id": 1,
+  "service_id": 1,
+  "name": "deactivated_pipeline",
+  "middlewares": {
+    "1":{ "name": "hodor",
+      "position": 1,
+      "description": "Replaces the response body by 'hodor'",
+      "comment__": "This middleware is not active",
+      "active": false,
+      "code": "return function(req, next_middleware) local res = next_middleware(); res.body = 'hodor' end"
+    }
+  }
+}

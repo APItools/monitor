@@ -1,0 +1,15 @@
+{ "_id": 1,
+  "service_id": 1,
+  "name": "upcase_pipeline",
+  "middlewares": {
+    "upcase-body":{ "name": "upcase-body",
+      "uuid": "upcase-body",
+      "position": 0,
+      "code": "return function(req, next_middleware) req.headers['foo']= 'bar'; return next_middleware() end",
+      "config": {},
+      "active": true,
+      "spec_id": 0,
+      "description": "uppercases the body"
+    }
+  }
+}

@@ -1,0 +1,7 @@
+{"collection": "pipelines",
+ "object": {
+    "middlewares": [{
+        "name": "brainslug",
+        "position": 0
+    }]
+}}

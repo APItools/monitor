@@ -1,0 +1,42 @@
+{
+  "name": "angular-flash",
+  "description": "Flash messages for Angular Js",
+  "version": "0.1.12",
+  "main": [
+    "dist/angular-flash.min.js",
+    "dist/angular-flash.js"
+  ],
+  "ignore": [
+    "app",
+    "bower_components",
+    "test",
+    ".jshintrc",
+    "src/.jshintrc",
+    ".travis.yml",
+    "karma.conf.js",
+    "Gruntfile.js"
+  ],
+  "dependencies": {
+    "angular": "1.0 - 1.2"
+  },
+  "devDependencies": {
+    "jquery": "~2.0.0",
+    "angular-mocks": "~1.2.0",
+    "angular-scenario": "~1.2.0",
+    "angular-route": "~1.2.0",
+    "json3": "~3.2.4",
+    "es5-shim": "~2.0.8",
+    "bootstrap": "~2.3.2",
+    "font-awesome": "~3.2.1"
+  },
+  "homepage": "https://github.com/wmluke/angular-flash",
+  "_release": "0.1.12",
+  "_resolution": {
+    "type": "version",
+    "tag": "0.1.12",
+    "commit": "3f4fc68b5af4b12527c93d11cef3e554196eed0c"
+  },
+  "_source": "git://github.com/wmluke/angular-flash.git",
+  "_target": "*",
+  "_originalSource": "wmluke/angular-flash"
+}

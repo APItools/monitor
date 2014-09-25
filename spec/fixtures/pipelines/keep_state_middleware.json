@@ -1,0 +1,15 @@
+{ "_id": 1,
+  "service_id": 1,
+  "name": "fire_event_pipeline",
+  "middlewares": {
+    "0":{
+      "name": "error",
+      "position": 0,
+      "uuid": "keepstate",
+      "description": "Fires an event",
+      "active": true,
+       "config":{},
+          "code": "return function(req, next_mw) local res=next_mw(); res.status = bucket.middleware.get('status') or 200; bucket.middleware.set('status', 201); return res end"
+    }
+  }
+}

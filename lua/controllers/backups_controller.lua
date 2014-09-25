@@ -17,7 +17,8 @@ function backups.export()
 end
 
 function backups.valid(file)
-  return os.execute('redis-check-dump ' .. file) == 0
+  local valid = os.execute('redis-check-dump ' .. file)
+  return valid == 0 or valid == true
 end
 
 function backups.import(params)

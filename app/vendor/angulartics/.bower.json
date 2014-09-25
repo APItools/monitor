@@ -1,0 +1,22 @@
+{
+  "name": "angulartics",
+  "version": "0.14.15",
+  "main": "./src/angulartics.js",
+  "dependencies": {
+    "angular": ">= 1.0.7",
+    "jquery-waypoints": "~v2.0.3"
+  },
+  "devDependencies": {
+    "angular-mocks": ">= 1.0.7"
+  },
+  "homepage": "https://github.com/luisfarzati/angulartics",
+  "_release": "0.14.15",
+  "_resolution": {
+    "type": "version",
+    "tag": "0.14.15",
+    "commit": "714c4cc732b917136ad39846442ba5c392a3b6c2"
+  },
+  "_source": "git://github.com/luisfarzati/angulartics.git",
+  "_target": "*",
+  "_originalSource": "luisfarzati/angulartics"
+}

@@ -1,0 +1,108 @@
+nginx:
+  worker_processes: 1
+  master_process: 'on'
+  error_log_level: notice
+  daemon: 'off'
+  lua_code_cache: 'on'
+  # this one is a function directly in release.rb
+  # logging:
+  include:
+    - shared_dict.conf
+    - global.conf
+    - app.conf
+    - proxy.conf
+    - echo.conf
+
+app:
+  uglify:
+    compress: true
+    mangle: false
+    output:
+      ascii_only: true
+      comments: :none
+      quote_keys: true
+  input: app/assets/javascripts
+  name: app.js
+  files:
+    - app
+    - controllers
+    - controllers/*
+    - services
+    - services/*
+    - filters
+    - filters/*
+    - directives
+    - directives/*
+    # - modules.js
+    - modules/*
+
+vendor:
+  uglify:
+    compress: true
+    mangle: false
+    output:
+      ascii_only: true
+      comments: true
+      quote_keys: true
+  name: vendor.js
+  input: app/vendor
+  files:
+    - jquery/jquery.js
+
+    - underscore/underscore.js
+
+    - angular/angular.js
+    - angular-resource/angular-resource.js
+    - angular-animate/angular-animate.js
+    - ngAnimate-animate.css/animate.js
+    - angular-ui-sortable/src/sortable.js
+
+    - angular-ui-bootstrap/src/bindHtml/bindHtml.js
+    - angular-ui-bootstrap/src/transition/transition.js
+    - angular-ui-bootstrap/src/collapse/collapse.js
+    - angular-ui-bootstrap/src/accordion/accordion.js
+    - angular-ui-bootstrap/src/tabs/tabs.js
+    - angular-ui-bootstrap/src/dropdownToggle/dropdownToggle.js
+    - angular-ui-bootstrap/src/pagination/pagination.js
+    - angular-ui-bootstrap/src/tooltip/tooltip.js
+    - angular-ui-bootstrap/src/popover/popover.js
+    - angular-ui-bootstrap/src/position/position.js
+    - angular-ui-bootstrap/src/modal/modal.js
+    - angular-ui-bootstrap/src/typeahead/typeahead.js
+
+    - angular-ui-router/release/angular-ui-router.js
+
+    - select2/select2.js
+    - angular-ui-select2/src/select2.js
+
+    - angular-moment/angular-moment.js
+    - moment/moment.js
+
+    - ng-infinite-scroll/build/ng-infinite-scroll.js
+
+    - base64/base64.js
+
+    - jquery-ui/ui/jquery.ui.core.js
+    - jquery-ui/ui/jquery.ui.widget.js
+    - jquery-ui/ui/jquery.ui.mouse.js
+    - jquery-ui/ui/jquery.ui.sortable.js
+    - jquery-ui/ui/jquery.ui.draggable.js
+
+    - codemirror/lib/codemirror.js
+    - codemirror/addon/edit/matchbrackets.js
+    - codemirror/addon/runmode/runmode.js
+    - codemirror/mode/lua/lua.js
+    - codemirror/mode/javascript/javascript.js
+    - angular-ui-codemirror/ui-codemirror.js
+
+    - angular-flash/dist/angular-flash.js
+
+    - zeroclipboard/ZeroClipboard.js
+
+    - angulartics/src/angulartics.js
+    - angulartics/src/angulartics-ga.js
+    - angulartics/src/angulartics-segmentio.js
+
+    - d3/d3.js
+
+    - rickshaw/rickshaw.js

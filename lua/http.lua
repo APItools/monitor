@@ -103,8 +103,13 @@ function http.simple(req, body)
     req.headers["content-length"] = #req.body
   end
 
+  local method = METHODS[req.method or "GET"]
+  if method == ngx.HTTP_POST or ngx.HTTP_PUT then
+    req.body = req.body or ''
+  end
+
   local res = ngx.location.capture(PROXY_LOCATION, {
-    method = METHODS[req.method or "GET"],
+    method = method,
 
     body = req.body,
     ctx = {

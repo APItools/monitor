@@ -1,0 +1,131 @@
+.slug-grid {
+  @extend .clearfix;
+  width: 960px;
+  margin: 0 auto;
+  list-style: none;
+
+  li {
+    width: 220px;
+    height: 220px;
+    float: left;
+    margin: 0 0 20px 20px;
+    transition-property: width;
+    transition-duration: 0.8s;
+    transition-timing-function: ease;
+
+    &.opened {
+
+      width: 940px;
+
+      .slug-grid-item {
+        border-color: $blue;
+      }
+
+      .caption {
+        width: 690px;
+        height: 180px;
+        padding: 9px;
+        @include transition(all 1ms linear 0.8s);
+      }
+    }
+  }
+
+}
+
+.slug-grid-item {
+  @extend .clearfix;
+
+  padding: 4px;
+  line-height: $baseLineHeight;
+  border: 1px solid $grayLight;
+  background: $white;
+  cursor: pointer;
+  @include border-radius($baseBorderRadius);
+  @include box-shadow(rgba(0, 0, 0, 0.055) 0 1px 3px);
+  @include transition(all 0.2s ease-in-out);
+
+
+  &:hover {
+    border-color: $blue;
+    @include box-shadow(rgba(0, 105, 214, 0.25) 0 1px 4px);
+  }
+
+  h3 {
+    margin: 0;
+  }
+
+  img {
+    width: 210px;
+    float: left;
+    background: lighten($grayLight, 20%);
+
+    .exists & {
+      background: lighten($blueDark, 20%);
+    }
+  }
+
+  .caption {
+    width: 0;
+    height: 0;
+    padding: 0;
+    overflow: hidden;
+    float: left;
+    vertical-align: middle;
+
+    transition-property: width, height, padding;
+    transition-duration: 1ms;
+    transition-timing-function: linear;
+    transition-delay: -1s;
+  }
+}
+
+.demo-button {
+  @extend .btn;
+  @extend .btn-primary;
+  @extend .pull-right;
+}
+
+.create-demo {
+  @extend .demo-button;
+
+  .exists & {
+    display: none;
+  }
+}
+.go-to-demo {
+  @extend .demo-button;
+  display: none;
+
+  .exists & {
+    display: inline-block;
+  }
+}
+
+.welcome {
+  @extend .hero-unit;
+  @extend .clearfix;
+
+  .description {
+    @extend .row-fluid;
+    text-align: center;
+    margin: $baseLineHeight 0;
+
+    .icon-logo {
+      font-size: 135px;
+      background: lighten($grayLight, 15%);
+      padding: 35px;
+      @include border-radius(50%);
+      margin-bottom: $baseLineHeight;
+      display: inline-block;
+    }
+  }
+
+  .action {
+    @extend .btn;
+    @extend .btn-large;
+    @extend .btn-primary;
+
+    font-size: 40px;
+    float: right;
+  }
+}

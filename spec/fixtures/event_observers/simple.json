@@ -1,0 +1,4 @@
+{ "condition": "return function(ev) return true end",
+  "action": "return function(ev) ngx.log(0, ev.msg) end",
+  "frequency": 1
+}

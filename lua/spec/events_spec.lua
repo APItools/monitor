@@ -1,9 +1,4 @@
-require('spec.util.fakerestyredis')
-require('spec.util.fakerestylock')
-
-inspect = require 'inspect'
-pinspect = function(x) print(inspect(x)) end
-ngx = (require 'spec.util.fakengx').new()
+require 'spec.spec_helper'
 
 local Event = require 'models.event'
 

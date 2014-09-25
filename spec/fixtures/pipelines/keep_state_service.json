@@ -1,0 +1,22 @@
+{ "_id": 1,
+  "service_id": 1,
+  "name": "fire_event_pipeline",
+  "middlewares": {
+    "0":{ "name": "pre",
+      "uuid": "pre",
+      "position": 0,
+      "description": "foo",
+      "active": true,
+       "config":{},
+          "code": "return function(req, next_middleware) bucket.service.set('lol', 201); return next_middleware() end"
+    },
+    "1":{ "name": "error",
+      "position": 1,
+      "uuid": "keepstate",
+      "description": "Fires an event",
+      "active": true,
+       "config":{},
+      "code": "return function(req, next_middleware) local res = next_middleware(); res.status = bucket.service.get('lol'); return res end"
+    }
+  }
+}

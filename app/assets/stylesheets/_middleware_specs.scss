@@ -1,0 +1,12 @@
+.middleware-spec-list {
+  list-style-type: none;
+}
+.middleware-spec {
+  height: 100px;
+}
+
+.edit-middleware {
+  label {
+    input, textarea { display: block; }
+  }
+}

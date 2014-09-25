@@ -1,0 +1,12 @@
+{ "_id": 1,
+  "service_id": 1,
+  "name": "internal_state_pipeline",
+  "middlewares": {
+    "1":{ "name": "error",
+      "position": 1,
+      "description": "internal state",
+      "active": true,
+      "code": "local count = 0 return function(req, res, trace) if count > 1 then res.status = 403 end count = count + 1 end"
+    }
+}
+}

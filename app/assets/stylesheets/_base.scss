@@ -1,0 +1,34 @@
+html, body {
+	height: 100%;
+}
+
+// Heading style
+h1 {
+  font-size: 22px;
+}
+
+h2 {
+  font-size: 20px;
+}
+
+h3 {
+  font-size: 18px;
+}
+
+h4 {
+  font-size: 16px;
+}
+
+//anchors
+a:hover,
+a:focus {
+  text-decoration: none;
+}
+
+
+//au revoir annoying shadow and border radius (hacking "boottrap" 2.3)
+* {
+  box-shadow: none !important;
+  text-shadow: none !important;
+  border-radius: 0 !important;
+}

@@ -1,0 +1,39 @@
+{
+  "name": "ngAnimate-animate.css",
+  "version": "0.1.1",
+  "homepage": "https://github.com/yearofmoo/ngAnimate-animate.css",
+  "authors": [
+    "yearofmoo <contact@yearofmoo.com>"
+  ],
+  "description": "animate.css integration for ngAnimate in angular 1.2.X",
+  "main": [
+    "animate.js"
+  ],
+  "keywords": [
+    "ngAnimate",
+    "animate.css",
+    "angular",
+    "angular-animate"
+  ],
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "angular": "latest",
+    "angular-animate": "latest",
+    "animate.css": "latest"
+  },
+  "_release": "0.1.1",
+  "_resolution": {
+    "type": "version",
+    "tag": "v0.1.1",
+    "commit": "3e61338675538c6712a745a7a6db80961679d1c3"
+  },
+  "_source": "git://github.com/yearofmoo/ngAnimate-animate.css.git",
+  "_target": "*",
+  "_originalSource": "yearofmoo/ngAnimate-animate.css"
+}

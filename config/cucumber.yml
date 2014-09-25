@@ -1,0 +1,3 @@
+webkit: DRIVER=webkit --tags ~@selenium
+selenium: DRIVER=selenium --tags ~@webkit
+default: --profile selenium

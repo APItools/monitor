@@ -1,0 +1,14 @@
+{ "_id": 2,
+  "service_id": 1,
+  "name": "sandbox_xml",
+  "middlewares": {
+    "0":{ "name": "sandbox_xml",
+      "position": 0,
+      "uuid": "xml",
+      "description": "it parses some xml",
+      "active": true,
+      "config":{},
+          "code": "return function(req, next_middleware) local res = next_middleware(); local count = 0; local p = xml.new({StartElement = function() count = count + 1 end}); p:parse('<foo><bar>baz</bar></foo>'); if count ~= 2 then res.status = 500 end; return res end"
+    }
+  }
+}

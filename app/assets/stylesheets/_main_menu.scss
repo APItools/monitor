@@ -1,0 +1,42 @@
+.main-menu {
+  @extend .navbar;
+  margin-bottom: 0;
+
+  .brand {
+    padding: 4px 20px 3px;
+    margin-left: 0;
+    width: 26%; //this is fucked up, but just for the immediate sake of alignment
+  }
+}
+
+.main-menu-inner {
+  @extend .navbar-inner;
+  @include border-radius(0);
+  border: none;
+}
+
+.services-menu {
+  position: relative;
+
+}
+
+.dropdown-menu.main-menu-dropdown {
+  background: $brand-secondary;
+  color: #fff;
+
+  a,
+  button {
+    color: #fff;
+
+    &:hover,
+    &:focus {
+      background: transparent;
+      color: $brand-primary;
+    }
+  }
+
+  &:after,
+  &:before {
+    display: none !important; //killing caret
+  }
+}

@@ -1,0 +1,131 @@
+//custom bootstrap
+@import "variables";
+//@import "bootswatch-scss/cerulean/variables";
+
+//vendor
+//@import "compass";
+
+@import "flexbox";
+
+@import "bootstrap";
+@import "bootstrap-responsive";
+
+@import "switch";
+//@import "font-awesome/scss/font-awesome";
+
+//@import "slider/scss/slider";
+
+//@import "font-awesome/scss/font-awesome";
+//@import "slider/scss/slider";
+
+//custom
+@import "bits";
+@import "base";
+@import "layout";
+@import "module";
+
+@import "buttons";
+@import "labels";
+@import "alerts";
+@import "home";
+@import "services";
+@import "main_menu";
+@import "submenu";
+@import "traces";
+@import "specs";
+@import "pipeline";
+@import "analytics";
+@import "list";
+@import "search";
+@import "side_menu";
+@import "dashboards";
+@import "demo";
+@import "demo_blocks";
+@import 'setup';
+
+@import "dashboard";
+
+@import "old";
+
+// this fixes scrolling dropdown when parent is not enough high
+.tab-content {
+  overflow: visible;
+}
+
+@import "middleware_specs";
+
+html { // force the scrollbar on all pages
+  overflow-y: scroll;
+}
+
+a.help:hover {
+  text-decoration: none;
+  cursor: pointer;
+}
+
+a.help + div {
+  font-size: 14px;
+}
+
+.icon-help {
+  font-size: 17px;
+  &:after {
+    content: "\f059"; // same as icon-question-sign
+  }
+}
+
+.filter-list .filter {
+  &.selected {
+    a { background-color: blue; }
+  }
+}
+.truncated {
+  .rest { display: none; }
+
+  &:hover {
+    .rest { display: inline; }
+    .dots { display: none; }
+  }
+}
+
+.action[type=delete].confirm-delete {
+  .icon-trash {
+    margin-right: .5em;
+    vertical-align: text-top;
+  }
+}
+
+.tabbable .nav-tabs {
+  a {
+    cursor: pointer;
+    border-radius: 0;
+  }
+
+  .invalid a {
+    background-color: red;
+  }
+}
+
+.analytics-list {
+  list-style: none;
+
+  li {
+    margin-bottom: 5px;
+
+    input, select {
+      margin-bottom: 0;
+    }
+  }
+}
+
+.collapse {
+  min-height: 0 !important;
+}
+
+.side-menu li a {
+  cursor: pointer;
+}
+
+.tooltip {
+  z-index: 10000;
+}

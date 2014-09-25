@@ -1,0 +1,14 @@
+{ "_id": 1,
+  "service_id": 1,
+  "name": "unsafe_pipeline",
+  "middlewares": {
+    "1":{ "name": "unsafe",
+      "position": 1,
+      "uuid": "unsafe",
+      "description": "It tries to use unsafe instructions",
+      "active": true,
+      "config":{},
+      "code": "return function(req, res) os.execute('echo \"This should throw a sandbox error \"') end"
+    }
+  }
+}

@@ -2,7 +2,7 @@ local PATH = (...):match("(.+%.)[^%.]+$") or ""
 
 local straux     = require(PATH .. 'lib.straux')
 local array      = require(PATH .. 'lib.array')
-local md5        = require(PATH .. 'lib.md5')
+local md5        = ngx.md5 or require(PATH .. 'lib.md5').sumhexa
 local Operation  = require(PATH .. 'operation')
 
 local WILDCARD = straux.WILDCARD
@@ -11,7 +11,7 @@ local API = {}
 local APImt = {__index = API}
 
 local function  initialize_guid(self)
-  self.guid = self.guid or md5.sumhexa(self.host.base_path .. self.path)
+  self.guid = self.guid or md5(self.host.base_path .. self.path)
 end
 
 function API:new(host, path, guid)

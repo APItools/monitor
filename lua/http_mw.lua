@@ -61,7 +61,7 @@ end
 local init_req = function(r)
   each(assert, {r.url, r.method})
 
-  r.headers = headers(r)
+  r.headers = init_headers(r)
   r.method = METHODS[r.method]
   r.body = r.body or ''
 

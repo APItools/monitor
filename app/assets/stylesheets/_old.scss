@@ -1,0 +1,77 @@
+#service-middlewares {
+  h3 {
+    line-height: 2em;
+  }
+
+  label {
+    font: inherit;
+    display: inline-block;
+  }
+
+  input[type='checkbox'] {
+    margin-right: 1em;
+  }
+
+  li {
+
+  }
+
+}
+
+.drag-handle {
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: 1em;
+  position: absolute;
+  cursor: move;
+  background: #696969;
+}
+.service-middleware {
+  position: relative;
+  list-style: none;
+  border: 1px solid black;
+  margin-bottom: 1em;
+  padding-left: 2em;
+  padding-right: 0;
+  background-color: rgba(white, 0.8);
+
+  &.disabled {
+    background-color: rgba(#696969, 0.4);
+    opacity: 0.9;
+  }
+}
+
+.CodeMirror-autoresize{
+  .CodeMirror {
+    border: 1px solid #eee;
+    height: auto;
+  }
+
+  .CodeMirror-scroll {
+    overflow-y: hidden;
+    overflow-x: auto;
+  }
+}
+
+// animations
+
+// TODO: this has one issue and that height of the parent is not animated
+.animated.leave {
+  position: absolute;
+}
+
+.endpoint-example {
+  position: relative;
+}
+.endpoint-example .copy-to-clipboard {
+  position: absolute;
+  right: 0;
+  top: 0;
+}
+
+a.destroy {
+  float: right;
+  padding-top: 9.5px;
+  padding-right: 9.5px;
+}

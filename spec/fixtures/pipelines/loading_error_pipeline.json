@@ -1,0 +1,13 @@
+{ "_id": 1,
+  "service_id": 1,
+  "name": "loading_error_pipeline",
+  "middlewares": {
+    "1":{ "name": "loading_error",
+      "position": 0,
+      "description": "Throws an error when loading",
+      "active": true,
+      "uuid": "load_error",
+      "code": "error('error thrown from loading_error_pipeline')"
+    }
+}
+}

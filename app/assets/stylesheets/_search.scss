@@ -1,0 +1,147 @@
+.search-box {
+  @extend .row-fluid;
+  @extend .form-inline;
+
+  margin: 0 0 $baseLineHeight 0;
+
+
+  .search-input {
+    width: 98%;
+    padding-left: 1%;
+    padding-right: 1%;
+    margin: 0 0 $baseLineHeight 0;
+  }
+
+  .search-tokens {
+    @extend .span10; //10 since switch is hidden
+    float: left;
+
+    margin-right: $baseLineHeight/4;
+
+    ul {
+      margin: 0;
+    }
+
+    .token-active {
+
+      border: 1px solid $inputBorder;
+      padding: $paddingMini;
+      margin: 0 0 $baseLineHeight 0;
+
+    }
+
+  }
+
+
+  .controls {
+
+    @extend .span2; //2 since switch is hidden
+    float: right;
+    text-align: right;
+
+    .switch {
+      width: 150px;
+    }
+    .search {
+    }
+  }
+
+}
+
+.search-tokens {
+  margin: 0;
+
+  .show-mode, .edit-mode {
+    display: inline-block;
+    vertical-align: middle;
+  }
+
+  a {
+    text-decoration: none;
+    &, .icon { vertical-align: middle; }
+  }
+}
+
+.token {
+  display: inline-block;
+  padding: $baseLineHeight/4;
+  margin: $baseLineHeight/10;
+
+  border: 1px solid $brand-tertiary;
+  color: $brand-tertiary;
+
+  form {
+    margin: 0;
+  }
+
+  a, button {
+    padding: 0;
+    line-height: 1;
+    color: $brand-tertiary;
+  }
+
+  input {
+    min-width: 70px;
+    border: none;
+    box-shadow: none;
+    padding:0;
+  }
+
+
+  &.new {
+    border-color: $brand-complementary;
+    color: $brand-complementary;
+
+    input {
+      font-weight: bold;
+      width: 70px;
+    }
+
+    input:not(:invalid) {
+      color: $brand-complementary;
+    }
+
+    input:focus {
+      width: auto;
+    }
+
+    a,
+    button,
+    {
+      color: $brand-complementary;
+    }
+
+  }
+
+  &.active {
+    border-color: $brand-secondary;
+    color: $brand-secondary;
+
+    a {
+      color: $brand-secondary;
+    }
+  }
+
+  &.editing {
+    border-style: dashed;
+  }
+
+  .token-suggestions & {
+    border-color: $brand-complementary;
+    color: $brand-complementary;
+
+    a,
+    button {
+      color: $brand-complementary;
+    }
+
+    &.disabled {
+      @extend .hidden;
+    }
+
+    .toggle { display: none; }
+    .show-mode {
+      cursor: pointer;
+    }
+  }
+}

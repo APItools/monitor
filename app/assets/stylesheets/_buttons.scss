@@ -1,0 +1,129 @@
+// Overwritting BS buttons
+
+$btn-default-color: #fff;
+$btn-default-bg: #1bb0ae;
+$btn-default-hover-bg: $brand-tertiary;
+$btn-default-active-bg: $brand-secondary;
+
+$btn-primary-bg: $brand-complementary;
+$btn-primary-hover-bg: darken($brand-complementary, 5%);
+
+$btn-success-bg: $brand-success;
+$btn-success-hover-bg: darken($brand-success, 5%);
+
+$btn-info-bg: $brand-info;
+$btn-info-hover-bg: darken($brand-info, 5%);
+
+$btn-warning-bg: $brand-warning;
+$btn-warning-hover-bg: darken($brand-warning, 5%);
+
+$btn-danger-bg: $brand-danger;
+$btn-danger-hover-bg: darken($brand-danger, 5%);
+
+$btn-link-disabled-color: $brand-tertiary;
+
+
+
+.btn {
+
+  &:hover,
+  &:focus {
+    background: $btn-default-hover-bg;
+  }
+
+  &.active,
+  &:active {
+    background: $btn-default-active-bg;
+    color: #fff;
+  }
+}
+
+.btn-primary {
+
+  &:hover,
+  &:focus {
+    background: $btn-primary-hover-bg;
+  }
+}
+
+.btn-success {
+
+  &:hover,
+  &:focus {
+    background: $btn-success-hover-bg;
+  }
+
+}
+
+.btn-info {
+
+  &:hover,
+  &:focus {
+    background: $btn-info-hover-bg;
+  }
+}
+
+.btn-warning {
+
+  &:hover,
+  &:focus {
+    background: $btn-warning-hover-bg;
+  }
+}
+
+.btn-danger {
+
+  &:hover,
+  &:focus {
+    background: $btn-danger-hover-bg;
+  }
+
+}
+
+.btn.disabled {
+  cursor: not-allowed;
+  border-color: $brand-tertiary;
+
+  &:hover,
+  &:focus {
+    background: transparent;
+  }
+
+  &:active {
+    background: transparent;
+    color: inherit;
+  }
+}
+
+.btn-link {
+  &:hover,
+  &:focus {
+    background: transparent;
+  }
+
+  &:active {
+    background: transparent;
+    color: inherit;
+  }
+}
+
+.cta {
+  background: transparent;
+  border: 1px solid $brand-complementary;
+  color: $brand-complementary;
+  text-align: center;
+  min-height: 4em;
+
+  &:hover,
+  &:focus {
+    background: $brand-complementary;
+    color: #fff;
+  }
+
+  &:active {
+    background: $brand-secondary;
+    color: #fff;
+  }
+
+}
+

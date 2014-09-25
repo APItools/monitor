@@ -1,10 +1,6 @@
-require('spec.util.fakerestyredis')
+require 'spec.spec_helper'
 
-inspect = require 'inspect'
-ngxjor = require 'ngxjor'
-
-ngx = (require 'spec.util.fakengx').new()
-pinspect = function(x) print(inspect(x)) end
+local ngxjor = require 'ngxjor'
 
 local to_path = function(path)
   return table.concat(path.path_to or {})
@@ -37,7 +33,7 @@ local function shallow_merge(default, dominant)  -- returns new table with conte
   return res
 end
 
-function create_sample_doc_cs(partial_doc)
+local function create_sample_doc_cs(partial_doc)
   local doc = {
     _id = 1,
     name = {
@@ -77,7 +73,7 @@ function create_sample_doc_cs(partial_doc)
   end
 end
 
-function create_sample_doc_restaurant(partial_doc)
+local function create_sample_doc_restaurant(partial_doc)
   local doc = {
     _id = 1,
     name = "restaurant",

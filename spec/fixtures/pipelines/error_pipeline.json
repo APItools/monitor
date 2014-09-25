@@ -1,0 +1,13 @@
+{ "_id": 1,
+  "service_id": 1,
+  "name": "error_pipeline",
+  "middlewares": {
+    "1":{ "name": "error",
+      "position": 0,
+      "description": "Throws an error",
+      "active": true,
+      "uuid": "errorish",
+      "code": "return function(req, next_middleware) local res=next_middleware() error('error thrown from error_pipeline') end"
+    }
+  }
+}

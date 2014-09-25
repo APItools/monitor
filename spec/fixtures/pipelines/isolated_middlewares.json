@@ -1,0 +1,24 @@
+{ "_id": 1,
+  "service_id": 1,
+  "name": "fire_event_pipeline",
+  "middlewares": {
+    "0":{
+      "name": "error_if_not_state",
+      "position": 0,
+      "uuid": "other",
+      "description": "sets the middleware_bucket.status variable to 500",
+      "active": true,
+      "config":{},
+      "code": "return function(req, next_middleware) bucket.middleware.set('status', 500); return next_middleware(); end"
+    },
+    "1":{
+      "name": "if_status_then_200_else_201_and_set_status",
+      "position": 1,
+      "uuid": "keepstate",
+      "description": "",
+      "active": true,
+      "config":{},
+      "code": "return function(req, next_middleware) local res = next_middleware(); res.status = bucket.middleware.get('status') == '500' and 500 or 200; return res end"
+    }
+  }
+}

@@ -1,0 +1,136 @@
+/* SERVICE **************** */
+.services {
+  //TODO: Change this to extension OR NOT (?) (wait till refactor V2)
+  .thumbnails {
+    li {
+      height: 365px;
+    }
+  }
+
+  .new {
+    .thumbnail {
+      display: block;
+      text-align: center;
+      line-height: 20;
+      font-size: $fontSizeLarge;
+      border-color: $brand-complementary;
+
+      &:hover {
+        text-decoration: none;
+        background: $brand-complementary;
+        color: #fff;
+      }
+
+    }
+  }
+
+  .thumbnail {
+    height: 100%;
+  }
+
+  .controls {
+    @extend .clearfix;
+    padding: $baseLineHeight/2 0;
+    border-top: 1px solid $grayLighter;
+  }
+
+  .plot {
+    height: auto;
+  }
+}
+
+
+.service-status {
+  @extend .label;
+}
+
+.service-status-ok {
+  @extend .service-status;
+  @extend .label-success;
+}
+
+.service-status-errors {
+  @extend .service-status;
+  @extend .label-important;
+}
+
+.service-select {
+
+  @extend h1;
+  margin: 0;
+  height: auto;
+  border: none;
+  -webkit-appearance: none;
+  width: auto;
+  max-width: 24%;
+
+  &:focus {
+    border: none;
+  }
+
+  option {
+    font-size: $baseFontSize;
+  }
+
+
+
+}
+
+pre.endpoint {
+  @extend .well-small;
+  display: inline-block;
+}
+
+.new-endpoint {
+  .copy-to-clipboard {
+    @extend .btn-link;
+    padding: 0 0 4px 4px;
+
+  }
+}
+
+.service-nav {
+  @extend .nav;
+
+  margin-left: 25.64103%;  //.offset3:first-child
+}
+
+.confirm-delete {
+  @extend .btn-warning;
+}
+
+.demo-services {
+  list-style: none;
+
+  .demo-service {
+    @extend .media;
+
+  }
+  .demo-service-logo {
+    @extend .media-object;
+    width: 85px;
+  }
+  .demo-service-body {
+    @extend .media-object;
+  }
+  .demo-service-heading {
+    @extend .media-heading;
+  }
+
+  .demo-service-action {
+    @extend .btn-link;
+  }
+}
+
+@media (min-width: 1200px) {
+
+  .services {
+    .thumbnails {
+      li {
+        min-width: 23%;
+        margin-left: 2%;
+      }
+    }
+  }
+
+}

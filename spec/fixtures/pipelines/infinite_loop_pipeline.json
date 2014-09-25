@@ -1,0 +1,15 @@
+{ "_id": 1,
+  "service_id": 1,
+  "middlewares": {
+    "console":{
+      "name": "Infinite Loop",
+      "uuid": "infinite",
+      "description": "I am a strange loop",
+      "position": 0,
+      "code": "return function(req, next_middleware) while true do end end",
+      "config": {},
+      "active": true,
+      "spec_id": 0
+    }
+  }
+}

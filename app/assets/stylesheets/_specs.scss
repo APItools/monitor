@@ -1,0 +1,138 @@
+/* Middleware Specs ***** */
+
+.middlewares {
+
+  .stack {
+    padding: $paddingSmall;
+  }
+
+  .result { //TODO: Soon to be merged to specs.
+
+    width: 30%;
+
+    h3 {
+      line-height: 20px;
+      margin: 0;
+    }
+
+    .author, .version {
+      font-size: $fontSizeSmall;
+      color: $gray;
+    }
+
+    .badge {
+      margin-right: 5px;
+    }
+
+    .thumbnail {
+      height: 215px;
+    }
+
+    &.new {
+      .thumbnail {
+        display: block;
+        height:100%;
+        text-align: center;
+        line-height: 10;
+        font-size: $fontSizeLarge;
+        border-width: 3px;
+        border-style: dashed;
+        box-shadow: none;
+
+        &:hover {
+          text-decoration: none;
+        }
+
+      }
+    }
+
+  }
+
+
+  //TODO: Change this to extension class. This had .specs class before parenting.
+  .thumbnails {
+    li {
+      width: 30%;
+      height: 260px;
+      margin-left: 2%;
+
+      h3 {
+        line-height: 23px;
+        margin: 0;
+      }
+
+      .thumbnail {
+        height: 100%;
+
+        .author, .version {
+          font-size: $fontSizeSmall;
+          color: $gray;
+        }
+
+        .caption {
+          position: relative;
+          height: 100%;
+        }
+        .controls {
+          @extend .clearfix;
+          position: absolute;
+          bottom: 30px;
+          width: 95%;
+          padding: $baseLineHeight 0 0 0;
+          border-top: 1px solid $grayLighter;
+        }
+
+      }
+
+      &.new {
+        .thumbnail {
+          display: block;
+          text-align: center;
+          line-height: 16;
+          font-size: $fontSizeLarge;
+          border-width: 3px;
+          border-style: dashed;
+          box-shadow: none;
+
+          &:hover {
+            text-decoration: none;
+          }
+
+        }
+      }
+
+    }
+  }
+
+
+  .github {
+    background-color: $grayLighter;
+      @include border-radius($baseBorderRadius);
+
+      padding: $paddingSmall;
+
+    .result {
+      background-color: $white;
+    }
+  }
+
+
+  //spec conf
+
+  .config {
+    textarea {
+      display: block;
+      width: 430px;
+      height: 70px;
+      margin: $baseLineHeight 0 0 0;
+    }
+  }
+
+  .CodeMirror {
+    border: 3px dashed $grayLighter;
+    padding: $paddingLarge;
+  }
+
+}
+
+/* ********************** */

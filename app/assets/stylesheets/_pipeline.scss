@@ -1,0 +1,225 @@
+/* Pipeline ************* */
+
+%middleware {
+  background-color: #fff;
+  border: 1px solid $brand-secondary;
+  color: $brand-secondary;
+  display: block;
+  position: relative;
+  padding: $paddingSmall;
+  margin: $baseLineHeight/2 0;
+  min-height: 65px;
+  overflow:hidden;
+  cursor: move;
+  margin-bottom: 10px;
+}
+
+.pipeline-container {
+  @extend .row-fluid;
+  margin: 0 0 $baseLineHeight 0;
+
+  i {
+    vertical-align: initial;
+  }
+}
+
+.pipeline-box {
+  @extend .span8;
+  float: left;
+}
+
+.pipeline-wrap {
+  border: 1px solid $brand-secondary;
+  padding: $baseLineHeight *2 0;
+  margin: $baseLineHeight 0;
+
+  @include display-flex();
+  @include flex-direction(row);
+  @include flex-wrap(wrap);
+  @include align-content(space-between);
+
+  .pipeline {
+    @include flex(2);
+    margin: 0 $baseLineHeight/2;
+    position:relative;
+
+    .middleware-list {
+      min-height: 100px;
+      margin-bottom: $baseLineHeight/2;
+    }
+
+  &.changed {
+    border-color: $brand-warning;
+    background: lighten($brand-warning, 50%);
+    }
+  }
+}
+
+.arrow {
+  width: 80px;
+  align-self: center;
+  text-align: center;
+
+  [class*='arrow-']:before {
+    font-family: FontAwesome;
+    font-size: 50px;
+    font-style: normal;
+    color: $brand-tertiary;
+  }
+
+  .arrow-up:before {
+    content: "\f062";
+  }
+
+  .arrow-down:before {
+    content: "\f063";
+  }
+}
+
+.service, .app {
+  color: #fff;
+  font-weight: normal;
+  margin: 0;
+  text-align: center;
+  padding: $baseLineHeight;
+
+}
+
+.app {
+  background: $brand-secondary;
+}
+.service {
+  background: $brand-primary;
+}
+
+
+.middleware-list {
+  margin: 0 $baseLineHeight;
+  list-style: none;
+  margin: 0;
+
+  .middleware {
+    @extend %middleware;
+
+    &.on {
+      border-color: $brand-secondary;
+      color: $brand-secondary;
+      a,
+      button {
+        color: $brand-secondary;
+      }
+    }
+
+    &.off {
+      border-color: $brand-tertiary;
+      color: $brand-tertiary;
+      button {
+        color: $brand-tertiary;
+      }
+    }
+
+    .header {
+      position: relative;
+    }
+
+    .controls {
+      margin: 0;
+      position: absolute;
+      right: 0;
+      top: 0;
+      li {
+        display: inline-block;
+      }
+      button {
+        padding: 0;
+      }
+      button:hover {
+        text-decoration: none;
+      }
+    }
+
+  }
+}
+
+%pseudo-middleware {
+  text-align: center;
+  border: 1px dashed $brand-tertiary;
+  color: $brand-tertiary;
+  font-size: $baseFontSize*1.25;
+
+}
+
+.new-middleware {
+  width: 100%;
+  min-height: 65px;
+}
+
+.middleware-pipeline.ui-sortable-placeholder {
+
+  @extend %pseudo-middleware;
+  visibility: visible !important;
+
+  &:before {
+    content: "Drop Here";
+    line-height: 4;
+    border: none;
+  }
+}
+
+.drag-middleware {
+  @extend %pseudo-middleware;
+  position: absolute;
+  top: 10%;
+  left: 0%;
+  width: 100%;
+  line-height: 4;
+}
+
+.middleware-stack {
+  @extend .span4;
+  float: right;
+  border: 1px solid $brand-tertiary;
+  padding: $paddingLarge;
+  min-height: 30em;
+
+  .middleware-list-wrap {
+    //commented in order to make draggable items work, tackling this later
+    //max-height: 24em;
+    //overflow-y: auto;
+  }
+
+  .middleware-list {
+
+    position: relative;
+
+    margin-bottom: 1em;
+  }
+
+  .middleware {
+    border: 1px dashed $brand-tertiary;
+    height: 4em;
+
+    &:before {
+      font-family: FontAwesome;
+      content: "\f047";
+      float: right;
+    }
+  }
+
+  .middleware-control {
+    width: 100%
+  }
+}
+
+.middleware-loading {
+  margin-top: 1em;
+}
+
+.middleware-search {
+  width: auto;
+}
+.middleware-search-submit {
+  display: inline-block;
+  vertical-align: top;
+}
+

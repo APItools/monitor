@@ -1,0 +1,17 @@
+{ "_id": 1,
+  "service_id": 1,
+  "name": "http_client_pipeline",
+  "middlewares": {
+    "1":{ "name": "httpclient",
+      "position": 0,
+      "description": "sends a req to echo service",
+      "active": true,
+      "uuid": "uuid1",
+      "code": "return function(req, next_middleware)  local body, status, headers = http.simple{url='http://127.0.0.1:8081'}; return { body = body } end",
+      "config": {
+        "replace": "echo",
+        "with": "hodor"
+      }
+    }
+  }
+}

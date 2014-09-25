@@ -1,0 +1,13 @@
+{ "service_id": 1,
+  "middlewares": {
+    "1":{
+      "code": "some code",
+      "config": {"password": "abcd"},
+      "position": 1,
+      "active": false,
+      "spec_id": 0,
+      "name": "test",
+      "description": "test middleware"
+    }
+  }
+}

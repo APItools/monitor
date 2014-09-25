@@ -1,0 +1,153 @@
+/*
+Slug List module.
+
+Styleguide Slug.List.
+*/
+
+.slug-list {
+  list-style: none;
+  margin: $baseLineHeight 0;
+
+  .no-results {
+    @extend .alert;
+    //@extend .alert-info;
+  }
+
+  pre { margin: 0; }
+
+}
+
+.slug-item {
+  border: 1px solid $brand-secondary;
+  margin-bottom: 0.25em;
+  position: relative;
+
+  &.highlighted {
+    border-color: $brand-complementary;
+
+    .btn[type=highlight] {
+      @extend .active;
+    }
+
+    .slug-item-title,
+    .slug-item-title a,
+    .action-button {
+      color: $brand-complementary;
+    }
+  }
+
+  &.opened {
+    border-style: dashed;
+  }
+}
+
+.slug-item-content {
+  .wrap {
+    padding: $baseLineHeight;
+  }
+}
+
+.slug-item-heading {
+  padding: 0.5em 4em 0.5em 2em;
+  position: relative;
+
+  .truncated {
+    .rest {
+      position: absolute;
+      background-color: white;
+      white-space: nowrap;
+
+      padding: 0.5em 0;
+      margin-top: -0.5em;
+    }
+    &:hover {
+      .rest { display: inline-block; }
+    }
+  }
+
+  .slug-item.highlighted & {
+    //background-color: lighten($linkColor, 40%) /*lighten($btnPrimaryBackgroundHighlight,10%)*/;
+  }
+
+  .service-code {
+    @extend .label;
+    opacity: 0.8;
+    vertical-align: middle;
+    .slug-item:hover & { opacity: 1; }
+  }
+
+  .slug-item-title {
+    margin: 0;
+    a {
+      color: $text-color;
+    }
+
+  }
+
+  .slug-item-check {
+    position: absolute;
+    left: 0.5em;
+    top: 0.5em;
+  }
+}
+
+.slug-item-dropdown {
+  background: $brand-secondary;
+  border: none;
+  color: #fff;
+  > li > a,
+  > li > button {
+    color: #fff;
+  }
+}
+
+.slug-item-actions {
+  position: absolute;
+  right: 1em;
+  top: 1em;
+
+  .dropdown-menu {
+    left: inherit;
+    right: 0;
+  }
+}
+
+.action-button {
+  background: none;
+  border: none;
+  font-size: $fontSizeLarge;
+  padding: 0;
+}
+
+.slug-item-toggle {
+  width: 100%;
+  cursor: pointer;
+}
+
+.slug-item-details {
+  .detail {
+    margin-right: 1em;
+    font-size: $fontSizeMini;
+  }
+}
+
+// notifications listing
+.notification {
+  .detail.log-level {
+    display: inline-block;
+    min-width: 3em;
+  }
+
+  .detail.channel {
+    display: inline-block;
+    min-width: 4em;
+  }
+}
+
+.listing-actions {
+  list-style: none;
+
+  dt, dd {
+    display: inline-block;
+  }
+}

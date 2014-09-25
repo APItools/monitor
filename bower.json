@@ -1,0 +1,41 @@
+{
+  "name": "brainslug",
+  "devDependencies": {
+    "jasmine-jquery": "velesin/jasmine-jquery#2.0.5"
+  },
+  "dependencies": {
+    "angular": "1.2.15",
+    "angular-mocks": "1.2.15",
+    "angular-resource": "1.2.15",
+    "angular-animate": "1.2.15",
+    "angulartics": "luisfarzati/angulartics",
+    "angular-flash": "wmluke/angular-flash",
+    "ngAnimate-animate.css": "yearofmoo/ngAnimate-animate.css",
+    "underscore": "documentcloud/underscore",
+    "angular-ui-sortable": "mikz/ui-sortable#master",
+    "angular-ui-codemirror": "angular-ui/ui-codemirror#0.0.5",
+    "font-awesome": "FortAwesome/Font-Awesome#3.2.1",
+    "select2": "ivaynberg/select2",
+    "zeroclipboard": "zeroclipboard/zeroclipboard",
+    "bootswatch-scss": "nrub/bootswatch-scss#2.3.2",
+    "angular-ui-bootstrap": "angular-ui/bootstrap#0.8.0",
+    "angular-moment": "urish/angular-moment",
+    "moment": "timrwood/moment",
+    "angular-ui-router": "angular-ui/ui-router#0.2.10",
+    "angular-ui-select2": "angular-ui/ui-select2",
+    "jquery": "latest",
+    "jquery-ui": "latest",
+    "ng-infinite-scroll": "BinaryMuse/ngInfiniteScroll",
+    "base64": "dankogai/js-base64",
+    "angular-ricksaw": "ngyewch/angular-rickshaw"
+  },
+  "ignore": [
+    "node_modules",
+    "bower_components"
+  ],
+  "resolutions": {
+    "angular": "1.2.15",
+    "codemirror": "~3.20.0",
+    "rickshaw": "~1.5.0"
+  }
+}

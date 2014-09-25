@@ -1,0 +1,14 @@
+{
+  "service_id": 1,
+  "middlewares": {
+    "fake-uuid": {
+      "code": "return function(req, next_middleware) local res = next_middleware() res.status = 200; res.body = 'Hello World' return res end",
+      "config": {},
+      "uuid": "fake-uuid",
+      "position": 0,
+      "active": true,
+      "name": "hello world",
+      "description": "simple middleware"
+    }
+  }
+}
