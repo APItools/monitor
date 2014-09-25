@@ -19,3 +19,6 @@ build :
 clean : 
 	- docker rm --force --volumes $(NAME)
 	rm -rf release
+
+release:
+	rake release -- -y
