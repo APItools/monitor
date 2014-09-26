@@ -5,6 +5,7 @@ local Trace        = require 'models.trace'
 local Event        = require 'models.event'
 local http_mw      = require 'http_mw'
 local luajson      = require 'json'
+local cjson        = require 'cjson'
 local brainslug    = require 'middlewares.brainslug'
 local statsd       = require 'statsd_wrapper'
 local sanitizer    = require 'middlewares.sanitizer'
@@ -12,7 +13,7 @@ local collector    = require 'collector'
 local Console      = require 'console'
 local Bucket       = require 'bucket'
 local Model        = require 'model'
-local xml          = require 'lxp'
+local lxp          = require 'lxp'
 local http_ng      = require 'http_ng'
 local async_resty  = require 'http_ng.backend.async_resty'
 
@@ -102,9 +103,11 @@ local use_middleware = function(rack, middleware, trace, service_id)
   local service_bucket    = Bucket.for_service(service_id)
 
   local base64 = { decode = ngx.decode_base64, encode = ngx.encode_base64 }
-  local send =   { email = send_email, mail = send_email, event = send_event, notification = send_notification }
-  local time =   { seconds = ngx.time, http = ngx.http_time, now = ngx.now }
+  local send   = { email = send_email, mail = send_email, event = send_event, notification = send_notification }
+  local time   = { seconds = ngx.time, http = ngx.http_time, now = ngx.now }
   local bucket = { middleware = middleware_bucket, service = service_bucket }
+  local json   = { encode = luajson.encode, decode = cjson.decode }
+  local xml    = { new = lxp.new }
 
   local hmac_sha256 = function(str, key)
     local resty_hmac   = require 'resty.hmac'
@@ -129,7 +132,7 @@ local use_middleware = function(rack, middleware, trace, service_id)
     time              = time,
     metric            = metric(trace),
     trace             = trace,
-    json              = luajson,
+    json              = json,
     xml               = xml
   }
 
