@@ -1,5 +1,3 @@
-require 'spec.spec_helper'
-
 local backend = require 'http_ng.backend.ngx'
 
 describe('ngx backend',function()

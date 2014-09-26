@@ -1,5 +1,3 @@
-require 'spec.spec_helper'
-
 local ngxjor = require 'ngxjor'
 
 local to_path = function(path)

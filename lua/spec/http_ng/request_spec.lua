@@ -1,5 +1,3 @@
-require 'spec.spec_helper'
-
 local request = require 'http_ng.request'
 
 describe('request', function()

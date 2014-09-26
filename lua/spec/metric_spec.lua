@@ -1,5 +1,3 @@
-require 'spec.spec_helper'
-
 local Metric = require 'models.metric'
 
 describe("Metric", function()

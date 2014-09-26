@@ -1,5 +1,3 @@
-require 'spec.spec_helper'
-
 local http_ng = require 'http_ng'
 local fake_backend = require 'spec.util.fake_backend'
 
