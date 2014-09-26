@@ -1,4 +1,4 @@
-# APItools Traffic Monitor
+# APItools Traffic Monitor [![Build Status](https://travis-ci.org/APItools/monitor.svg?branch=master)](https://travis-ci.org/APItools/monitor)
 
 APITools is a hosted proxy mailny for API calls, but can be used as general programmable proxy.
 It has analytics, lua middleware, storing passed calls and many other features.
