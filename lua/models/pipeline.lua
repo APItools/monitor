@@ -5,7 +5,6 @@ local Trace        = require 'models.trace'
 local Event        = require 'models.event'
 local http_mw      = require 'http_mw'
 local luajson      = require 'json'
-local cjson        = require 'cjson'
 local brainslug    = require 'middlewares.brainslug'
 local statsd       = require 'statsd_wrapper'
 local sanitizer    = require 'middlewares.sanitizer'
@@ -106,7 +105,7 @@ local use_middleware = function(rack, middleware, trace, service_id)
   local send   = { email = send_email, mail = send_email, event = send_event, notification = send_notification }
   local time   = { seconds = ngx.time, http = ngx.http_time, now = ngx.now }
   local bucket = { middleware = middleware_bucket, service = service_bucket }
-  local json   = { encode = luajson.encode, decode = cjson.decode }
+  local json   = { encode = luajson.encode, decode = luajson.decode }
   local xml    = { new = lxp.new }
 
   local hmac_sha256 = function(str, key)
