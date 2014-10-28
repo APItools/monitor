@@ -17,7 +17,7 @@ build :
 	docker build -t $(PROJECT) .
 
 clean : 
-	- docker rm --force --volumes $(NAME)
+	- docker rm --force --volumes $(NAME) 2> /dev/null
 	rm -rf release
 
 release:
