@@ -57,5 +57,5 @@ RUN bundle config --local without development \
 
 ENV SLUG_ENV test
 RUN rake release -- -y
-CMD script/jenkins.sh
+CMD ["script/docker.sh"]
 EXPOSE 7071 1002
