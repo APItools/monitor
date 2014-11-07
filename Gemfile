@@ -1,7 +1,5 @@
 source 'https://rubygems.org'
 
-ruby '2.1.3'
-
 gem 'rake'
 
 gem 'compass', '~> 1.0.0'
