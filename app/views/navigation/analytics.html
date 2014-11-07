@@ -10,7 +10,7 @@
   <li class="header">Dashboards</li>
 
   <li ng-repeat="dashboard in dashboards"
-      ng-class="{ active: current_dashboard === dashboard, editing: isEditing(dashboard), new: !dashboard._id }" class="side-menu-filter editable">
+      ng-class="{ active: current_dashboard === dashboard, editing: isEditing(dashboard), new: !dashboard._id }" class="dashboard side-menu-filter editable">
     <edit-filter ng-submit="save(dashboard)" placeholder="new dashboard"></edit-filter>
     <a ng-hide="isEditing(dashboard)" ng-click="select(dashboard)" href><i class="icon-dashboard"></i> {{ dashboard.name }}</a>
 
