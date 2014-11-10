@@ -3,8 +3,9 @@ class AnalyticsPage
 
   def add_dashboard
     click_on('Add Dashboard')
-    fill_in('new dashboard', with: 'new dashboard')
-    click_on('save dashboard')
+    new_dashboard = find('.dashboard.editing.new')
+    new_dashboard.fill_in('new dashboard', with: 'new dashboard')
+    new_dashboard.click_on('save dashboard')
   end
 
   def has_empty_charts?(count)

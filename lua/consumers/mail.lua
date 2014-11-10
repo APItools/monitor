@@ -78,7 +78,7 @@ mailer.run = function()
 									stand_by)
 	end
 
-	mail_lock = assert(lock:new('locks'))
+	local mail_lock = assert(lock:new('locks'))
 	mail_lock:lock(mailer.name)
   local job = mailer.next_job()
 	while job and count < 5 do

@@ -60,8 +60,8 @@ function cache:store(driver, ...)
   local res, err = driver:find(...)
 
   if res then
-    store:save(res, ...)
-   end
+    pcall(store.save, store, res, ...)
+  end
 
   return res, err
 end

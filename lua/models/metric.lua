@@ -81,7 +81,9 @@ local function compact_projections(metric)
   end
 end
 
-local function sort_by_created_at(a,b) return a._created_at < b._created_at end
+local function sort_by_created_at(a,b)
+  return a._created_at and b._created_at and a._created_at < b._created_at
+end
 
 local function do_compact(dict, ids_to_delete)
   local keys= {}; for k,_ in pairs(dict) do keys[#keys+1] = k end
