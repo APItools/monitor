@@ -1,3 +1,14 @@
+------------
+-- APItools Middleware
+--
+-- Middleware documentation of APItools.
+-- All this should be available when middleware is evaluated.
+--
+-- @module middleware
+-- @license MIT
+-- @copyright APItools 2014
+
+
 local inspect      = require 'inspect'
 local rack_module  = require 'rack'
 local sandbox      = require 'sandbox'
@@ -61,7 +72,10 @@ end
 local send_event = function(ev) Event:create(ev) end
 local send_notification = function(ev) ev.channel = 'middleware' Event:create(ev) end
 
-local log = function(x) ngx.log(0, inspect(x)) end
+---  Simple debugging function that inspects the object and prints them to a logfile.
+-- @tparam ?string|table ... any number of parameters
+-- @function log
+local log = function(...) ngx.log(0, inspect(...)) end
 
 local send_email = function(to, subject, msg)
   assert(to); assert(subject); assert(msg)
@@ -79,9 +93,13 @@ end
 local metric = function(trace)
 
   return {
+    --- store integer values
+    -- @function metric.count
     count = function(name, inc)
       collector.collect(trace.service_id, name, 'count', { trace.req.method, trace.generic_path } , inc or 1)
     end,
+    --- store scalar values
+    -- @function metric.set
     set = function(name, value)
       collector.collect(trace.service_id, name, 'set', { trace.req.method, trace.generic_path } , value)
     end
@@ -97,16 +115,97 @@ local use_middleware = function(rack, middleware, trace, service_id)
     error(err)
   end
 
+  --- console like in the browser
+  -- see @{Console} for all the available methods
+  -- @console console
   local console           = Console.new(service_id, middleware.uuid)
+
   local middleware_bucket = Bucket.for_middleware(service_id, middleware.uuid)
   local service_bucket    = Bucket.for_service(service_id)
 
-  local base64 = { decode = ngx.decode_base64, encode = ngx.encode_base64 }
-  local send   = { email = send_email, mail = send_email, event = send_event, notification = send_notification }
-  local time   = { seconds = ngx.time, http = ngx.http_time, now = ngx.now }
-  local bucket = { middleware = middleware_bucket, service = service_bucket }
-  local json   = { encode = luajson.encode, decode = luajson.decode }
-  local xml    = { new = lxp.new }
+  local base64 = {
+    --- decode base64
+    -- Decodes the str argument as a base64 digest to the raw form. Returns nil if str is not well formed.
+    -- @tparam string str base64 encoded string
+    -- @treturn ?string decoded string
+    -- @function base64.decode
+    decode = ngx.decode_base64,
+
+    --- encode base64
+    -- Encode str to a base64 digest.
+    -- @tparam string str a string
+    -- @treturn string base64 encoded string
+    -- @function base64.encode
+    encode = ngx.encode_base64
+  }
+  local send   = {
+    ---  Send email
+    -- @param[type=string] to email address of the receiver
+    -- @tparam string subject email subject
+    -- @tparam string msg the email body
+    -- @function send.email
+    email = send_email,
+    mail = send_email,
+
+    ---  Create event
+    -- Creates @{Event}
+    -- @param[type=table] event the event to be created
+    -- @function send.event
+    event = send_event,
+
+    ---  Create middleware notification
+    -- Creates @{Event} and will be overriden to middleware channel.
+    -- @param[type=table] event the event to be created
+    -- @function send.notification
+    notification = send_notification
+  }
+  local time   = {
+    --- Current time in seconds
+    -- Returns the elapsed seconds from the epoch.
+    -- @treturn int elapsed seconds from the epoch
+    -- @function time.seconds
+    seconds = ngx.time,
+    --- Formats number of seconds to a stirng
+    -- Returns a formated string can be used as the
+    -- http header time (for example, being used in Last-Modified header).
+    -- @treturn string formatted string
+    -- @tparam int sec timestamp in seconds (like those returned from time.seconds)
+    -- @function time.http
+    http = ngx.http_time,
+    --- Returns a floating-point number for the elapsed time in seconds
+    -- (including milliseconds as the decimal part) from the epoch for the current time stamp.
+    -- @treturn float elapsed seconds from the epoch (including miliseconds)
+    -- @function time.now
+    now = ngx.now
+  }
+
+  local bucket = {
+    --- Middleware Bucket
+    -- Every middleware has own bucket. You can access it by using methods of @{Bucket}.
+    -- @bucket[type=Bucket] bucket.middleware
+    middleware = middleware_bucket,
+    --- Service Bucket
+    -- Every service has own bucket. All middlewares can access it by using @{Bucket}.
+    -- @bucket bucket.service
+    service = service_bucket
+  }
+
+  local json = {
+    --- JSON Encode
+    -- Encodes given table to a JSON.
+    -- @param[type=table] object to be serialized
+    -- @return[type=string] JSON string
+    -- @function json.encode
+    encode = luajson.encode,
+    --- JSON Decode
+    -- Decodes JSON to an object.
+    -- @param[type=string] string to be deserialized
+    -- @return[type=table] deserialized object
+    -- @function json.decode
+    decode = luajson.decode
+  }
+
+  local xml = { new = lxp.new }
 
   local hmac_sha256 = function(str, key)
     local resty_hmac   = require 'resty.hmac'
@@ -115,7 +214,15 @@ local use_middleware = function(rack, middleware, trace, service_id)
     return digest
   end
 
-  local hmac = { sha256 = hmac_sha256 }
+  local hmac = {
+    --- HMAC-SHA-256
+    -- create keyed-hash message authentication code by SHA-256 hashing function
+    -- @param[type=string] str string to be signed
+    -- @param[type=string] key to sign it with
+    -- @return[type=string] digest
+    -- @function hmac.sha256
+    sha256 = hmac_sha256
+  }
 
   local env  = {
     console           = console,
@@ -130,6 +237,9 @@ local use_middleware = function(rack, middleware, trace, service_id)
     send              = send,
     time              = time,
     metric            = metric(trace),
+    --- Trace
+    -- @{Trace} object of current request
+    -- @table[type=Trace] trace
     trace             = trace,
     json              = json,
     xml               = xml

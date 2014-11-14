@@ -22,3 +22,8 @@ clean :
 
 release:
 	rake release -- -y
+
+lua/%.lua:
+
+doc: lua/%.lua
+	ldoc .
