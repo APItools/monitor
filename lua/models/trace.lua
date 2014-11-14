@@ -1,3 +1,8 @@
+------------
+--- Trace
+-- Trace object. Holds both request and response.
+-- @module middleware
+
 local Model    = require 'model'
 local Service  = require 'models.service'
 local Event    = require 'models.event'
@@ -6,6 +11,10 @@ local http     = require 'http'
 local uuid4    = require 'uuid'
 local inspect  = require 'inspect'
 local Config   = require 'models.config'
+
+
+--- Trace
+-- @type Trace
 
 local Trace = Model:new()
 
@@ -32,6 +41,14 @@ local Trace_mt = {
 }
 
 function Trace:new(req)
+  --- req
+  -- request
+  -- @field trace.req
+
+  --- uuid
+  -- unique identifier
+  -- @field trace.uuid
+
   Model:check_dots(self, Trace, 'new')
   local trace = { req = req, uuid = uuid4.getUUID() }
   return setmetatable(trace, Trace_mt)
