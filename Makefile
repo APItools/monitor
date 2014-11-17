@@ -23,6 +23,9 @@ clean :
 release:
 	rake release -- -y
 
+vagrant:
+	vagrant up
+	vagrant ssh
 lua/%.lua:
 
 doc: lua/%.lua
