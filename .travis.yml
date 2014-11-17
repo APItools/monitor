@@ -35,7 +35,9 @@ install:
   - sudo luarocks install luajson
   - sudo luarocks install LuaExpat
   - npm install -g karma-cli
-  - cd ${TRAVIS_BUILD_DIR} && bundle install && npm install
+  - cd ${TRAVIS_BUILD_DIR}
+  - bundle install --without development
+  - npm install
 before_script:
   - bundle exec rake release -- -y
   - redis-server > /dev/null &
