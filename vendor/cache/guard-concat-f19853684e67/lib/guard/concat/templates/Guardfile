@@ -1,0 +1,4 @@
+# This will concatenate the javascript files specified in :files to public/js/all.js
+guard :concat, type: "js", files: %w(), input_dir: "public/js", output: "public/js/all"
+
+guard :concat, type: "css", files: %w(), input_dir: "public/css", output: "public/css/all"
