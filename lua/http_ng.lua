@@ -53,7 +53,9 @@ http.serializers.string = function(req)
 end
 
 http.serializers.json = function(req)
-  req.body = json.encode(req.body)
+  if type(req.body) ~= 'string' then
+    req.body = json.encode(req.body)
+  end
   req.headers['Content-Type'] = 'application/json'
   http.serializers.string(req)
 end
