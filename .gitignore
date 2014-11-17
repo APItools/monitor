@@ -24,7 +24,6 @@ node_modules
 /.vagrant
 /.listen_test
 /release
-/vendor
 /app/assets/compiled/*
 /app/vendor/jasmine/
 .rspec
