@@ -8,6 +8,11 @@ http.method = function(method, client)
   assert(client)
 
   return function(url, options)
+    if type(url) == 'table' and not options then
+      options = url
+      url = unpack(url)
+    end
+
     assert(url, 'url as first parameter is required')
 
     local req = http.request.new{ url = url, method = method,
@@ -22,6 +27,11 @@ http.method_with_body = function(method, client)
   assert(client)
 
   return function(url, body, options)
+    if type(url) == 'table' and not body and not options then
+      options = url
+      url, body = unpack(url)
+    end
+
     assert(url, 'url as first parameter is required')
     assert(body, 'body as second parameter is required')
 

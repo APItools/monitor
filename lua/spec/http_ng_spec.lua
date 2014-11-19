@@ -44,8 +44,29 @@ describe('http_ng', function()
     end)
   end)
 
+  describe('array syntax', function()
+    it('works for get', function()
+      local response = http.get{'http://example.com', headers = { custom = 'value'} }
+      local last_request = assert(fake_backend.last_request)
+      assert.equal('value', last_request.headers.custom)
+    end)
+
+    it('works for post', function()
+      local response = http.post{'http://example.com', 'body', headers = { custom = 'value'} }
+      local last_request = assert(fake_backend.last_request)
+      assert.equal('value', last_request.headers.Custom)
+      assert.equal('body', last_request.body)
+    end)
+  end)
+
   describe('headers', function()
     local headers = { custom_header = 'value' }
+
+    it('can override Host header', function()
+      local response = http.get('http://example.com', { headers = { host = 'overriden' }})
+      local last_request = assert(fake_backend.last_request)
+      assert.equal('overriden', last_request.headers.host)
+    end)
 
     it('passed headers for requests with body', function()
       local response = http.post('http://example.com', '', { headers = headers })
