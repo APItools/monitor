@@ -1,7 +1,16 @@
+------------
+--- HTTP
+-- HTTP client
+-- @module middleware
+
+--- HTTP
+-- @type HTTP
+
 local backend = require 'http_ng.backend.resty'
 local json = require 'cjson'
 local request = require 'http_ng.request'
 local http = { request = request }
+
 
 http.method = function(method, client)
   assert(method)
@@ -42,17 +51,73 @@ http.method_with_body = function(method, client)
   end
 end
 
+--- GET request
+-- @param[type=string] url
+-- @param[type=table] options
+-- @return[type=response] a response
+-- @function http.get
 http.get = http.method
+
+--- HEAD request
+-- @param[type=string] url
+-- @param[type=table] options
+-- @return[type=response] a response
+-- @function http.head
 http.head = http.method
-http.put = http.method_with_body
-http.post = http.method_with_body
+
+--- DELETE request
+-- @param[type=string] url
+-- @param[type=table] options
+-- @return[type=response] a response
+-- @function http.delete
 http.delete = http.method
+
+--- OPTIONS request
+-- @param[type=string] url
+-- @param[type=table] options
+-- @return[type=response] a response
+-- @function http.options
 http.options = http.method
+
+--- PUT request
+-- @param[type=string] url
+-- @param[type=string|table] body
+-- @param[type=table] options
+-- @return[type=response] a response
+-- @function http.put
+http.put = http.method_with_body
+
+--- POST request
+-- @param[type=string] url
+-- @param[type=string|table] body
+-- @param[type=table] options
+-- @return[type=response] a response
+-- @function http.post
+http.post = http.method_with_body
+
+--- PATCH request
+-- @param[type=string] url
+-- @param[type=string|table] body
+-- @param[type=options] options
+-- @return[type=response] a response
+-- @function http.patch
 http.patch = http.method_with_body
+
 http.trace = http.method_with_body
 
+--- HTTP Serializers
+-- Serializers can transform your request/response to for example
+-- automatically conver tables to json and vice versa.
+-- @table http.serializers
+-- @usage
+-- http.serializers.custom = function(req) ... end
+-- http.custom.get(...)
 http.serializers = {}
 
+--- Urlencoded serializer
+-- Serializes your data to application/x-www-form-urlencoded format
+-- and sets correct Content-Type header.
+-- @usage http.urlencoded.post(url, { example = 'table' })
 http.serializers.urlencoded = function(req)
   req.body = ngx.encode_args(req.body)
   req.headers['Content-Type'] = 'application/x-www-form-urlencoded'
@@ -64,6 +129,9 @@ http.serializers.string = function(req)
   req.headers['Content-Length'] = #req.body
 end
 
+--- JSON serializer
+-- Converts the body to JSON unless it is already a string and sets correct Content-Type.
+-- @usage http.json.post(url, { example = 'table' })
 http.serializers.json = function(req)
   if type(req.body) ~= 'string' then
     req.body = json.encode(req.body)
@@ -72,6 +140,8 @@ http.serializers.json = function(req)
   http.serializers.string(req)
 end
 
+--- Default serializer
+-- Used by default. Unless body is a string, will use urlencoded, else string.
 http.serializers.default = function(req)
   if req.body then
     if type(req.body) ~= 'string' then
