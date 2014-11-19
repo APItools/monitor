@@ -11,7 +11,8 @@ http.method = function(method, client)
     assert(url)
 
     local req = http.request.new{ url = url, method = method,
-                                  options = options, client = client }
+                                  options = options, client = client,
+                                  serializer = client.serializer or http.serializers.default }
     return client.backend.send(req)
   end
 end
@@ -25,7 +26,8 @@ http.method_with_body = function(method, client)
     assert(body)
 
     local req = http.request.new{ url = url, method = method, body = body,
-                                  options = options, client = client }
+                                  options = options, client = client,
+                                  serializer = client.serializer or http.serializers.default  }
     return client.backend.send(req)
   end
 end
@@ -61,10 +63,12 @@ http.serializers.json = function(req)
 end
 
 http.serializers.default = function(req)
-  if type(req.body) ~= 'string' then
-    http.serializers.urlencoded(req)
-  else
-    http.serializers.string(req)
+  if req.body then
+    if type(req.body) ~= 'string' then
+      http.serializers.urlencoded(req)
+    else
+      http.serializers.string(req)
+    end
   end
 end
 

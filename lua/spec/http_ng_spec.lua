@@ -1,12 +1,12 @@
 local http_ng = require 'http_ng'
 local fake_backend = require 'spec.util.fake_backend'
 
-spy.on(fake_backend, 'send')
 
 describe('http_ng', function()
   local http
   before_each(function()
-    http = http_ng.new{backend = fake_backend}
+    http = http_ng.new{backend = fake_backend.reset() }
+    spy.on(fake_backend, 'send')
   end)
 
   for _,method in ipairs{ 'get', 'head', 'options', 'delete' } do
@@ -32,6 +32,33 @@ describe('http_ng', function()
       assert.equal('body', last_request.body)
     end)
   end
+
+  describe('x-www-form-urlencoded', function()
+    local body = { value = 'some' }
+
+    it('serializes table as form-urlencoded', function()
+      local response = http.post('http://example.com', body)
+      local last_request = assert(fake_backend.last_request)
+      assert.equal('application/x-www-form-urlencoded', last_request.headers.content_type)
+      assert.equal('value=some', last_request.body)
+    end)
+  end)
+
+  describe('headers', function()
+    local headers = { custom_header = 'value' }
+
+    it('passed headers for requests with body', function()
+      local response = http.post('http://example.com', '', { headers = headers })
+      local last_request = assert(fake_backend.last_request)
+      assert.equal('value', last_request.headers['Custom-Header'])
+    end)
+
+    it('passed headers for requests without body', function()
+      local response = http.get('http://example.com', { headers = headers })
+      local last_request = assert(fake_backend.last_request)
+      assert.equal('value', last_request.headers['Custom-Header'])
+    end)
+  end)
 
   describe('json', function()
     it('has serializer', function()

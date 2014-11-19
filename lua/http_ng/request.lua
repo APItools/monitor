@@ -27,7 +27,7 @@ function request.new(req)
 
   setmetatable(req, {
     __index =  {
-      serialize = req.client.serializer or function() end
+      serialize = req.serializer or function() end
     }
   })
 
