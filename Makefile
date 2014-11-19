@@ -12,11 +12,11 @@ pull :
 test : clean
 	$(RUN) --name $(NAME) $(PROJECT)
 bash :
-	$(RUN) -t -i $(PROJECT) bash
+	$(RUN) -t -i -v $(shell pwd):/opt/slug  $(PROJECT) bash
 build :
 	docker build -t $(PROJECT) .
 
-clean : 
+clean :
 	- docker rm --force --volumes $(NAME) 2> /dev/null
 	rm -rf release
 
