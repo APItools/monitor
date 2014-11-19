@@ -8,7 +8,7 @@ http.method = function(method, client)
   assert(client)
 
   return function(url, options)
-    assert(url)
+    assert(url, 'url as first parameter is required')
 
     local req = http.request.new{ url = url, method = method,
                                   options = options, client = client,
@@ -22,8 +22,8 @@ http.method_with_body = function(method, client)
   assert(client)
 
   return function(url, body, options)
-    assert(url)
-    assert(body)
+    assert(url, 'url as first parameter is required')
+    assert(body, 'body as second parameter is required')
 
     local req = http.request.new{ url = url, method = method, body = body,
                                   options = options, client = client,
