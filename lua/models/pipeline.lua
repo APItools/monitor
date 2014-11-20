@@ -1,8 +1,14 @@
 ------------
 -- APItools Middleware
 --
--- Middleware documentation of APItools.
+-- Middleware documentation of [APItools](https://www.apitools.com).
 -- All this should be available when middleware is evaluated.
+--
+-- Check out our [GitHub Repository](https://github.com/apitools/monitor) and
+-- [Middleware repository](https://github.com/apitools/middleware).
+--
+-- If you don't have enough, we have a [blog](https://docs.apitools.com/blog) and a
+-- [documentation](https://docs.apitools.com/docs).
 --
 -- @module middleware
 -- @license MIT
