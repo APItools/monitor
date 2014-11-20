@@ -167,21 +167,30 @@
 <table class="function_list">
 	<tr>
 	<td class="name" nowrap><a href="#trace">trace</a></td>
-	<td class="summary">Trace
- <a href="index.html#Trace">Trace</a> object of current request</td>
+	<td class="summary"><a href="index.html#Trace">Trace</a> object of current request</td>
 	</tr>
 </table>
 <h2><a href="#Class_Trace">Class Trace </a></h2>
 <table class="function_list">
 	<tr>
-	<td class="name" nowrap><a href="#trace.req">trace.req</a></td>
-	<td class="summary">req
- request</td>
+	<td class="name" nowrap><a href="#Trace.req">Trace.req</a></td>
+	<td class="summary">a request</td>
 	</tr>
 	<tr>
-	<td class="name" nowrap><a href="#trace.uuid">trace.uuid</a></td>
-	<td class="summary">uuid
- unique identifier</td>
+	<td class="name" nowrap><a href="#Trace.res">Trace.res</a></td>
+	<td class="summary">a response</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#Trace.total_time">Trace.total_time</a></td>
+	<td class="summary">time in seconds how long it took APItools to return the request</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#Trace.service_id">Trace.service_id</a></td>
+	<td class="summary">id of the service that processed the request</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#Trace.starred">Trace.starred</a></td>
+	<td class="summary">starred</td>
 	</tr>
 </table>
 <h2><a href="#Class_Event">Class Event </a></h2>
@@ -289,31 +298,31 @@
 <h2><a href="#Class_Bucket">Class Bucket </a></h2>
 <table class="function_list">
 	<tr>
-	<td class="name" nowrap><a href="#bucket.get">bucket.get (field_name)</a></td>
+	<td class="name" nowrap><a href="#Bucket.get">Bucket.get (field_name)</a></td>
 	<td class="summary">get a value</td>
 	</tr>
 	<tr>
-	<td class="name" nowrap><a href="#bucket.get">bucket.get (field_name, value, exptime)</a></td>
+	<td class="name" nowrap><a href="#Bucket.set">Bucket.set (field_name, value, exptime)</a></td>
 	<td class="summary">set a value</td>
 	</tr>
 	<tr>
-	<td class="name" nowrap><a href="#bucket.delete">bucket.delete (field_name)</a></td>
+	<td class="name" nowrap><a href="#Bucket.delete">Bucket.delete (field_name)</a></td>
 	<td class="summary">delete a value</td>
 	</tr>
 	<tr>
-	<td class="name" nowrap><a href="#bucket.incr">bucket.incr (field_name, amount)</a></td>
+	<td class="name" nowrap><a href="#Bucket.incr">Bucket.incr (field_name[, amount=1])</a></td>
 	<td class="summary">increment a value</td>
 	</tr>
 	<tr>
-	<td class="name" nowrap><a href="#bucket.add">bucket.add (field_name, value, exptime)</a></td>
+	<td class="name" nowrap><a href="#Bucket.add">Bucket.add (field_name, value, exptime)</a></td>
 	<td class="summary">set the value if it does not exist</td>
 	</tr>
 	<tr>
-	<td class="name" nowrap><a href="#bucket.delete_all">bucket.delete_all ()</a></td>
+	<td class="name" nowrap><a href="#Bucket.delete_all">Bucket.delete_all ()</a></td>
 	<td class="summary">delete all values</td>
 	</tr>
 	<tr>
-	<td class="name" nowrap><a href="#bucket.get_keys">bucket.get_keys ()</a></td>
+	<td class="name" nowrap><a href="#Bucket.get_keys">Bucket.get_keys ()</a></td>
 	<td class="summary">get all keys</td>
 	</tr>
 </table>
@@ -331,13 +340,21 @@
     </dt>
     <dd>
     Middleware Bucket
- Every middleware has own bucket.  You can access it by using methods of <a href="index.html#Bucket">Bucket</a>.
+ Every middleware has own bucket.  You can access it by using methods of <a href="index.html#Bucket">Bucket</a> methods as <a href="index.html#bucket.middleware">bucket.middleware</a>.
 
 
 
 
 
+    <h3>See also:</h3>
+    <ul>
+         <a href="index.html#Bucket.get">Bucket.get</a>
+    </ul>
 
+    <h3>Usage:</h3>
+    <ul>
+        <pre class="example"><span class="keyword">local</span> cached = bucket.middleware.get(<span class="string">'my-cached-value'</span>)</pre>
+    </ul>
 
 </dd>
     <dt>
@@ -346,13 +363,21 @@
     </dt>
     <dd>
     Service Bucket
- Every service has own bucket.  All middlewares can access it by using <a href="index.html#Bucket">Bucket</a>.
+ Every service has own bucket.  All middlewares can access it by using <a href="index.html#Bucket">Bucket</a> methods as <a href="index.html#bucket.service">bucket.service</a>.
 
 
 
 
 
+    <h3>See also:</h3>
+    <ul>
+         <a href="index.html#Bucket.get">Bucket.get</a>
+    </ul>
 
+    <h3>Usage:</h3>
+    <ul>
+        <pre class="example"><span class="keyword">local</span> cached = bucket.service.get(<span class="string">'my-cached-value'</span>)</pre>
+    </ul>
 
 </dd>
 </dl>
@@ -750,13 +775,17 @@
     <strong>trace</strong>
     </dt>
     <dd>
-    Trace
- <a href="index.html#Trace">Trace</a> object of current request
+    <a href="index.html#Trace">Trace</a> object of current request
 
 
 
 
 
+    <h3>See also:</h3>
+    <ul>
+         <li><a href="index.html#Trace.req">Trace.req</a></li>
+         <li><a href="index.html#Trace.res">Trace.res</a></li>
+    </ul>
 
 
 </dd>
@@ -766,14 +795,52 @@
         Trace
     <dl class="function">
     <dt>
-    <a name = "trace.req"></a>
-    <strong>trace.req</strong>
+    <a name = "Trace.req"></a>
+    <strong>Trace.req</strong>
     </dt>
     <dd>
-    req
- request
+    a request
 
 
+    <h3>Fields:</h3>
+    <ul>
+        <li><span class="parameter">query</span>
+            <span class="types"><a class="type" href="http://www.lua.org/manual/5.2/manual.html#6.4">string</a></span>
+         query string
+        </li>
+        <li><span class="parameter">headers</span>
+            <span class="types"><a class="type" href="http://www.lua.org/manual/5.2/manual.html#6.5">table</a></span>
+
+        </li>
+        <li><span class="parameter">uri_full</span>
+            <span class="types"><a class="type" href="http://www.lua.org/manual/5.2/manual.html#6.4">string</a></span>
+         whole URI including scheme, host, port, path and query string
+        </li>
+        <li><span class="parameter">uri_relative</span>
+            <span class="types"><a class="type" href="http://www.lua.org/manual/5.2/manual.html#6.4">string</a></span>
+         path + query string
+        </li>
+        <li><span class="parameter">args</span>
+            <span class="types"><a class="type" href="http://www.lua.org/manual/5.2/manual.html#6.5">table</a></span>
+         parsed query string
+        </li>
+        <li><span class="parameter">method</span>
+            <span class="types"><a class="type" href="http://www.lua.org/manual/5.2/manual.html#6.4">string</a></span>
+         HTTP Method
+        </li>
+        <li><span class="parameter">scheme</span>
+            <span class="types"><a class="type" href="http://www.lua.org/manual/5.2/manual.html#6.4">string</a></span>
+         HTTP Scheme (http/https)
+        </li>
+        <li><span class="parameter">uri</span>
+            <span class="types"><a class="type" href="http://www.lua.org/manual/5.2/manual.html#6.4">string</a></span>
+         just the path
+        </li>
+        <li><span class="parameter">host</span>
+            <span class="types"><a class="type" href="http://www.lua.org/manual/5.2/manual.html#6.4">string</a></span>
+         value of Host header
+        </li>
+    </ul>
 
 
 
@@ -781,14 +848,88 @@
 
 </dd>
     <dt>
-    <a name = "trace.uuid"></a>
-    <strong>trace.uuid</strong>
+    <a name = "Trace.res"></a>
+    <strong>Trace.res</strong>
     </dt>
     <dd>
-    uuid
- unique identifier
+    a response
 
 
+    <h3>Fields:</h3>
+    <ul>
+        <li><span class="parameter">body</span>
+            <span class="types"><a class="type" href="http://www.lua.org/manual/5.2/manual.html#6.4">string</a></span>
+
+        </li>
+        <li><span class="parameter">status</span>
+            <span class="types"><span class="type">int</span></span>
+
+        </li>
+        <li><span class="parameter">headers</span>
+            <span class="types"><a class="type" href="http://www.lua.org/manual/5.2/manual.html#6.5">table</a></span>
+
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "Trace.total_time"></a>
+    <strong>Trace.total_time</strong>
+    </dt>
+    <dd>
+    time in seconds how long it took APItools to return the request
+
+
+    <ul>
+        <li><span class="parameter">total_time</span>
+            <span class="types"><span class="type">number</span></span>
+
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "Trace.service_id"></a>
+    <strong>Trace.service_id</strong>
+    </dt>
+    <dd>
+    id of the service that processed the request
+
+
+    <ul>
+        <li><span class="parameter">service_id</span>
+            <span class="types"><span class="type">number</span></span>
+
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "Trace.starred"></a>
+    <strong>Trace.starred</strong>
+    </dt>
+    <dd>
+    starred
+
+
+    <ul>
+        <li><span class="parameter">starred</span>
+            <span class="types"><span class="type">boolean</span></span>
+
+        </li>
+    </ul>
 
 
 
@@ -1063,7 +1204,7 @@
 
         </li>
         <li><span class="parameter">options</span>
-            <span class="types"><a class="type" href="index.html#http.options">options</a></span>
+            <span class="types"><a class="type" href="index.html#HTTP.options">options</a></span>
 
         </li>
     </ul>
@@ -1347,8 +1488,8 @@
         Bucket
     <dl class="function">
     <dt>
-    <a name = "bucket.get"></a>
-    <strong>bucket.get (field_name)</strong>
+    <a name = "Bucket.get"></a>
+    <strong>Bucket.get (field_name)</strong>
     </dt>
     <dd>
     get a value
@@ -1357,6 +1498,7 @@
     <h3>Parameters:</h3>
     <ul>
         <li><span class="parameter">field_name</span>
+            <span class="types"><a class="type" href="http://www.lua.org/manual/5.2/manual.html#6.4">string</a></span>
          name
         </li>
     </ul>
@@ -1369,11 +1511,16 @@
 
 
 
+    <h3>Usage:</h3>
+    <ul>
+        <li><pre class="example"><span class="keyword">local</span> response = bucket.middleware.get(<span class="string">'cached-response'</span>')</pre></li>
+        <li><pre class="example"><span class="keyword">local</span> val = bucket.service.get(key)</pre></li>
+    </ul>
 
 </dd>
     <dt>
-    <a name = "bucket.get"></a>
-    <strong>bucket.get (field_name, value, exptime)</strong>
+    <a name = "Bucket.set"></a>
+    <strong>Bucket.set (field_name, value, exptime)</strong>
     </dt>
     <dd>
     set a value
@@ -1386,7 +1533,8 @@
          key name
         </li>
         <li><span class="parameter">value</span>
-         value
+            <span class="types"><span class="type">boolean</span>, <span class="type">number</span>, <a class="type" href="http://www.lua.org/manual/5.2/manual.html#6.4">string</a> or <span class="type">nil</span></span>
+         a value to be stored
         </li>
         <li><span class="parameter">exptime</span>
             <span class="types"><span class="type">int</span></span>
@@ -1396,17 +1544,29 @@
 
     <h3>Returns:</h3>
     <ol>
-
-        value previously stored
+        <li>
+           <span class="types"><span class="type">bool</span></span>
+        indicates whether the key-value pair is stored or not</li>
+        <li>
+           <span class="types">optional <a class="type" href="http://www.lua.org/manual/5.2/manual.html#6.4">string</a></span>
+        error message, can be "no memory"</li>
+        <li>
+           <span class="types"><span class="type">bool</span></span>
+        indicates whether other valid items have been removed forcibly when out of storage in the shared memory zone</li>
     </ol>
 
 
 
+    <h3>Usage:</h3>
+    <ul>
+        <li><pre class="example"><span class="keyword">local</span> ok, err = bucket.middleware.set(<span class="string">'cached-api-key'</span>, <span class="string">'secret-api-key'</span>, <span class="number">3600</span>)</pre></li>
+        <li><pre class="example">bucket.middleware.set(<span class="string">'cached-response'</span>, response, <span class="number">60</span>)</pre></li>
+    </ul>
 
 </dd>
     <dt>
-    <a name = "bucket.delete"></a>
-    <strong>bucket.delete (field_name)</strong>
+    <a name = "Bucket.delete"></a>
+    <strong>Bucket.delete (field_name)</strong>
     </dt>
     <dd>
     delete a value
@@ -1420,19 +1580,19 @@
         </li>
     </ul>
 
-    <h3>Returns:</h3>
-    <ol>
-
-        value previously stored
-    </ol>
 
 
 
+    <h3>Usage:</h3>
+    <ul>
+        <li><pre class="example">bucket.middleware.delete(key)</pre></li>
+        <li><pre class="example">bucket.service.delete(key)</pre></li>
+    </ul>
 
 </dd>
     <dt>
-    <a name = "bucket.incr"></a>
-    <strong>bucket.incr (field_name, amount)</strong>
+    <a name = "Bucket.incr"></a>
+    <strong>Bucket.incr (field_name[, amount=1])</strong>
     </dt>
     <dd>
     increment a value
@@ -1446,23 +1606,48 @@
         </li>
         <li><span class="parameter">amount</span>
             <span class="types"><span class="type">number</span></span>
-         amount to increment/decrement (default 1)
+         amount to increment/decrement
+         (<em>default</em> 1)
         </li>
     </ul>
 
     <h3>Returns:</h3>
     <ol>
 
-        value previously stored
+           <span class="types"><span class="type">number</span></span>
+        new value
+    </ol>
+     <h3>Or</h3>
+    <ol>
+        <li>
+           <span class="types"><span class="type">nil</span></span>
+        </li>
+        <li>
+           <span class="types"><a class="type" href="http://www.lua.org/manual/5.2/manual.html#6.4">string</a></span>
+        not found</li>
+    </ol>
+     <h3>Or</h3>
+    <ol>
+        <li>
+           <span class="types"><span class="type">nil</span></span>
+        </li>
+        <li>
+           <span class="types"><a class="type" href="http://www.lua.org/manual/5.2/manual.html#6.4">string</a></span>
+        not a number</li>
     </ol>
 
 
 
+    <h3>Usage:</h3>
+    <ul>
+        <li><pre class="example">bucket.middleware.incr(<span class="string">'hits'</span>) -- default is <span class="number">1</span></pre></li>
+        <li><pre class="example">bucket.middleware.incr(<span class="string">'downloaded-kb'</span>, <span class="number">3500</span>)</pre></li>
+    </ul>
 
 </dd>
     <dt>
-    <a name = "bucket.add"></a>
-    <strong>bucket.add (field_name, value, exptime)</strong>
+    <a name = "Bucket.add"></a>
+    <strong>Bucket.add (field_name, value, exptime)</strong>
     </dt>
     <dd>
     set the value if it does not exist
@@ -1475,7 +1660,8 @@
          a key
         </li>
         <li><span class="parameter">value</span>
-         value
+            <span class="types"><span class="type">boolean</span>, <span class="type">number</span>, <a class="type" href="http://www.lua.org/manual/5.2/manual.html#6.4">string</a> or <span class="type">nil</span></span>
+         a value to be stored
         </li>
         <li><span class="parameter">exptime</span>
             <span class="types"><span class="type">int</span></span>
@@ -1483,14 +1669,30 @@
         </li>
     </ul>
 
+    <h3>Returns:</h3>
+    <ol>
+        <li>
+           <span class="types"><span class="type">bool</span></span>
+        indicates whether the key-value pair is stored or not</li>
+        <li>
+           <span class="types">optional <a class="type" href="http://www.lua.org/manual/5.2/manual.html#6.4">string</a></span>
+        error message, can be "no memory"</li>
+        <li>
+           <span class="types"><span class="type">bool</span></span>
+        indicates whether other valid items have been removed forcibly when out of storage in the shared memory zone</li>
+    </ol>
 
 
 
+    <h3>Usage:</h3>
+    <ul>
+        <pre class="example"><span class="keyword">if</span> bucket.middleware.add(<span class="string">'first-call'</span>, <span class="keyword">true</span>) <span class="keyword">then</span> response.body = <span class="string">'you won!'</span> <span class="keyword">end</span></pre>
+    </ul>
 
 </dd>
     <dt>
-    <a name = "bucket.delete_all"></a>
-    <strong>bucket.delete_all ()</strong>
+    <a name = "Bucket.delete_all"></a>
+    <strong>Bucket.delete_all ()</strong>
     </dt>
     <dd>
     delete all values
@@ -1503,8 +1705,8 @@
 
 </dd>
     <dt>
-    <a name = "bucket.get_keys"></a>
-    <strong>bucket.get_keys ()</strong>
+    <a name = "Bucket.get_keys"></a>
+    <strong>Bucket.get_keys ()</strong>
     </dt>
     <dd>
     get all keys
@@ -1529,7 +1731,7 @@
 </div> <!-- id="main" -->
 <div id="about">
 <i>generated by <a href="http://github.com/stevedonovan/LDoc">LDoc 1.4.3</a></i>
-<i style="float:right;">Last updated 2014-11-19 20:22:44 </i>
+<i style="float:right;">Last updated 2014-11-20 11:30:10 </i>
 </div> <!-- id="about" -->
 </div> <!-- id="container" -->
 </body>

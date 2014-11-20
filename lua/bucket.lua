@@ -22,8 +22,10 @@ end
 
 --- get a value
 -- @return value previously stored
--- @param field_name name
--- @function bucket.get
+-- @param[type=string] field_name name
+-- @function Bucket.get
+-- @usage local response = bucket.middleware.get('cached-response'')
+-- @usage local val = bucket.service.get(key)
 
 function Bucket_methods:get(field_name)
   local key = get_key(self, field_name)
@@ -34,11 +36,15 @@ end
 
 
 --- set a value
--- @tparam string field_name key name
--- @param value value
--- @tparam int exptime time to expire in seconds
--- @return value previously stored
--- @function bucket.get
+-- @param[type=string] field_name key name
+-- @param[type=boolean|number|string|nil] value a value to be stored
+-- @param[type=int] exptime time to expire in seconds
+-- @return[type=bool] indicates whether the key-value pair is stored or not
+-- @return[type=?string] error message, can be "no memory"
+-- @return[type=bool] indicates whether other valid items have been removed forcibly when out of storage in the shared memory zone
+-- @function Bucket.set
+-- @usage local ok, err = bucket.middleware.set('cached-api-key', 'secret-api-key', 3600)
+-- @usage bucket.middleware.set('cached-response', response, 60)
 
 function Bucket_methods:set(field_name, value, exptime)
   exptime = exptime or 0
@@ -48,9 +54,10 @@ function Bucket_methods:set(field_name, value, exptime)
 end
 
 --- delete a value
--- @tparam string field_name a key
--- @return value previously stored
--- @function bucket.delete
+-- @param[type=string] field_name a key
+-- @function Bucket.delete
+-- @usage bucket.middleware.delete(key)
+-- @usage bucket.service.delete(key)
 
 function Bucket_methods:delete(field_name)
   local key = get_key(self, field_name)
@@ -59,10 +66,14 @@ end
 
 
 --- increment a value
--- @tparam string field_name a key
--- @tparam number amount amount to increment/decrement (default 1)
--- @return value previously stored
--- @function bucket.incr
+-- @param[type=string] field_name a key
+-- @param[type=number,opt=1] amount amount to increment/decrement
+-- @return[type=number] new value
+-- @function Bucket.incr
+-- @error[1] not found
+-- @error[2] not a number
+-- @usage bucket.middleware.incr('hits') -- default is 1
+-- @usage bucket.middleware.incr('downloaded-kb', 3500)
 
 function Bucket_methods:incr(field_name, amount)
   amount = amount or 1
@@ -74,9 +85,13 @@ end
 
 --- set the value if it does not exist
 -- @param[type=string] field_name a key
--- @param value value
--- @tparam int exptime expire time in seconds
--- @function bucket.add
+-- @param[type=boolean|number|string|nil] value a value to be stored
+-- @param[type=int] exptime expire time in seconds
+-- @return[type=bool] indicates whether the key-value pair is stored or not
+-- @return[type=?string] error message, can be "no memory"
+-- @return[type=bool] indicates whether other valid items have been removed forcibly when out of storage in the shared memory zone
+-- @function Bucket.add
+-- @usage if bucket.middleware.add('first-call', true) then response.body = 'you won!' end
 
 function Bucket_methods:add(field_name, value, exptime)
   exptime = exptime or 0
@@ -86,7 +101,7 @@ function Bucket_methods:add(field_name, value, exptime)
 end
 
 --- delete all values
--- @function bucket.delete_all
+-- @function Bucket.delete_all
 
 function Bucket_methods:delete_all()
   for _,field_name in ipairs(self:get_keys()) do -- warning self:get_keys is inefficient
@@ -96,7 +111,7 @@ end
 
 --- get all keys
 -- @treturn {string, ...} all keys
--- @function bucket.get_keys
+-- @function Bucket.get_keys
 
 function Bucket_methods:get_keys()
   local result, len = {}, 0

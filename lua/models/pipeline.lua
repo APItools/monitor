@@ -189,12 +189,16 @@ local use_middleware = function(rack, middleware, trace, service_id)
 
   local bucket = {
     --- Middleware Bucket
-    -- Every middleware has own bucket. You can access it by using methods of @{Bucket}.
+    -- Every middleware has own bucket. You can access it by using methods of @{Bucket} methods as @{bucket.middleware}.
     -- @bucket[type=Bucket] bucket.middleware
+    -- @see Bucket.get
+    -- @usage local cached = bucket.middleware.get('my-cached-value')
     middleware = middleware_bucket,
     --- Service Bucket
-    -- Every service has own bucket. All middlewares can access it by using @{Bucket}.
+    -- Every service has own bucket. All middlewares can access it by using @{Bucket} methods as @{bucket.service}.
     -- @bucket bucket.service
+    -- @usage local cached = bucket.service.get('my-cached-value')
+    -- @see Bucket.get
     service = service_bucket
   }
 
@@ -245,8 +249,9 @@ local use_middleware = function(rack, middleware, trace, service_id)
     send              = send,
     time              = time,
     metric            = metric(trace),
-    --- Trace
-    -- @{Trace} object of current request
+    --- @{Trace} object of current request
+    -- @see Trace.req
+    -- @see Trace.res
     -- @table[type=Trace] trace
     trace             = trace,
     json              = json,

@@ -41,13 +41,32 @@ local Trace_mt = {
 }
 
 function Trace:new(req)
-  --- req
-  -- request
-  -- @field trace.req
+  --- a request
+  -- @table Trace.req
+  -- @field[type=string] query query string
+  -- @field[type=table] headers
+  -- @field[type=string] uri_full whole URI including scheme, host, port, path and query string
+  -- @field[type=string] uri_relative path + query string
+  -- @field[type=table] args parsed query string
+  -- @field[type=string] method HTTP Method
+  -- @field[type=string] scheme HTTP Scheme (http/https)
+  -- @field[type=string] uri just the path
+  -- @field[type=string] host value of Host header
 
-  --- uuid
-  -- unique identifier
-  -- @field trace.uuid
+  --- a response
+  -- @table Trace.res
+  -- @field[type=string] body
+  -- @field[type=int] status
+  -- @field[type=table] headers
+
+  --- time in seconds how long it took APItools to return the request
+  -- @field[type=number] total_time
+
+  --- id of the service that processed the request
+  -- @field[type=number] service_id
+
+  --- starred
+  -- @field[type=boolean] starred
 
   Model:check_dots(self, Trace, 'new')
   local trace = { req = req, uuid = uuid4.getUUID() }
