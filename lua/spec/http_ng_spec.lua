@@ -90,4 +90,13 @@ describe('http_ng', function()
       assert.equal('connection refused', response.error)
     end)
   end)
+
+  describe('works with api.twitter.com', function()
+
+    it('connects #twitter', function()
+      local http = http_ng.new{}
+      local response = http.get('http://api.twitter.com/')
+      assert(response.ok, 'response is not ok')
+    end)
+  end)
 end)

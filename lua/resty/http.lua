@@ -252,7 +252,7 @@ local function _receive_status(sock)
     return tonumber(str_sub(line, 10, 12)), tonumber(str_sub(line, 6, 8))
 end
 
-
+local http_ng_headers = require 'http_ng.headers'
 local function _receive_headers(sock)
     local headers = {}
 
@@ -271,7 +271,7 @@ local function _receive_headers(sock)
         end
     until str_find(line, "^%s*$")
 
-    return headers, nil
+    return http_ng_headers.new(headers), nil
 end
 
 
