@@ -31,6 +31,14 @@ local Pipeline = Model:new()
 Pipeline.collection = 'pipelines'
 Pipeline.excluded_fields_to_index = Model.build_excluded_fields('name', 'middlewares')
 
+--- HTTP Client
+-- Check @{http.get} for details.
+-- @http http
+-- @see http.get
+-- @see http.put
+-- @see http.post
+-- @see http.patch
+
 local http = http_ng.new{ backend = async_resty,
                           simple = http_mw.simple, multi = http_mw.multi }
 

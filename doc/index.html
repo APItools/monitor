@@ -31,10 +31,12 @@
 <ul>
 <li><a href="#Bucket">Bucket</a></li>
 <li><a href="#Console">Console</a></li>
+<li><a href="#HTTP">HTTP</a></li>
 <li><a href="#Functions">Functions</a></li>
 <li><a href="#Tables">Tables</a></li>
 <li><a href="#Class_Trace">Class Trace </a></li>
 <li><a href="#Class_Event">Class Event </a></li>
+<li><a href="#Class_HTTP">Class HTTP </a></li>
 <li><a href="#Class_Console">Class Console </a></li>
 <li><a href="#Class_Bucket">Class Bucket </a></li>
 </ul>
@@ -81,6 +83,14 @@
 	<td class="name" nowrap><a href="#console">console</a></td>
 	<td class="summary">console like in the browser
  see <a href="index.html#Console">Console</a> for all the available methods</td>
+	</tr>
+</table>
+<h2><a href="#HTTP">HTTP</a></h2>
+<table class="function_list">
+	<tr>
+	<td class="name" nowrap><a href="#http">http</a></td>
+	<td class="summary">HTTP Client
+ Check <a href="index.html#http.get">http.get</a> for details.</td>
 	</tr>
 </table>
 <h2><a href="#Functions">Functions</a></h2>
@@ -192,6 +202,67 @@
  required attribute, a message of the event</td>
 	</tr>
 </table>
+<h2><a href="#Class_HTTP">Class HTTP </a></h2>
+<table class="function_list">
+	<tr>
+	<td class="name" nowrap><a href="#http.get">http.get (url, options)</a></td>
+	<td class="summary">GET request</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#http.head">http.head (url, options)</a></td>
+	<td class="summary">HEAD request</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#http.delete">http.delete (url, options)</a></td>
+	<td class="summary">DELETE request</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#http.options">http.options (url, options)</a></td>
+	<td class="summary">OPTIONS request</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#http.put">http.put (url, body, options)</a></td>
+	<td class="summary">PUT request</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#http.post">http.post (url, body, options)</a></td>
+	<td class="summary">POST request</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#http.patch">http.patch (url, body, options)</a></td>
+	<td class="summary">PATCH request</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#http.serializers">http.serializers</a></td>
+	<td class="summary">HTTP Serializers
+ Serializers can transform your request/response to for example
+ automatically conver tables to json and vice versa.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#http.serializers.urlencoded">http.serializers.urlencoded (req)</a></td>
+	<td class="summary">Urlencoded serializer
+ Serializes your data to application/x-www-form-urlencoded format
+ and sets correct Content-Type header.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#http.serializers.json">http.serializers.json (req)</a></td>
+	<td class="summary">JSON serializer
+ Converts the body to JSON unless it is already a string and sets correct Content-Type.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#http.serializers.default">http.serializers.default (req)</a></td>
+	<td class="summary">Default serializer
+ Used by default.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#HTTP.response">HTTP.response</a></td>
+	<td class="summary">Response returned by http.get and similar calls</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#HTTP.options">HTTP.options</a></td>
+	<td class="summary">Options that can be passed to <a href="index.html#http">http</a> calls.</td>
+	</tr>
+</table>
 <h2><a href="#Class_Console">Class Console </a></h2>
 <table class="function_list">
 	<tr>
@@ -300,6 +371,32 @@
 
 
 
+
+
+</dd>
+</dl>
+    <h2><a name="HTTP"></a>HTTP</h2>
+
+    <dl class="function">
+    <dt>
+    <a name = "http"></a>
+    <strong>http</strong>
+    </dt>
+    <dd>
+    HTTP Client
+ Check <a href="index.html#http.get">http.get</a> for details.
+
+
+
+
+
+    <h3>See also:</h3>
+    <ul>
+         <li><a href="index.html#http.get">http.get</a></li>
+         <li><a href="index.html#http.put">http.put</a></li>
+         <li><a href="index.html#http.post">http.post</a></li>
+         <li><a href="index.html#http.patch">http.patch</a></li>
+    </ul>
 
 
 </dd>
@@ -749,6 +846,397 @@
 
 </dd>
 </dl>
+    <h2><a name="Class_HTTP"></a>Class HTTP </h2>
+
+        HTTP
+    <dl class="function">
+    <dt>
+    <a name = "http.get"></a>
+    <strong>http.get (url, options)</strong>
+    </dt>
+    <dd>
+    GET request
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">url</span>
+            <span class="types"><a class="type" href="http://www.lua.org/manual/5.2/manual.html#6.4">string</a></span>
+
+        </li>
+        <li><span class="parameter">options</span>
+            <span class="types"><a class="type" href="http://www.lua.org/manual/5.2/manual.html#6.5">table</a></span>
+
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+           <span class="types"><a class="type" href="index.html#HTTP.response">response</a></span>
+        a response
+    </ol>
+
+
+
+
+</dd>
+    <dt>
+    <a name = "http.head"></a>
+    <strong>http.head (url, options)</strong>
+    </dt>
+    <dd>
+    HEAD request
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">url</span>
+            <span class="types"><a class="type" href="http://www.lua.org/manual/5.2/manual.html#6.4">string</a></span>
+
+        </li>
+        <li><span class="parameter">options</span>
+            <span class="types"><a class="type" href="http://www.lua.org/manual/5.2/manual.html#6.5">table</a></span>
+
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+           <span class="types"><a class="type" href="index.html#HTTP.response">response</a></span>
+        a response
+    </ol>
+
+
+
+
+</dd>
+    <dt>
+    <a name = "http.delete"></a>
+    <strong>http.delete (url, options)</strong>
+    </dt>
+    <dd>
+    DELETE request
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">url</span>
+            <span class="types"><a class="type" href="http://www.lua.org/manual/5.2/manual.html#6.4">string</a></span>
+
+        </li>
+        <li><span class="parameter">options</span>
+            <span class="types"><a class="type" href="http://www.lua.org/manual/5.2/manual.html#6.5">table</a></span>
+
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+           <span class="types"><a class="type" href="index.html#HTTP.response">response</a></span>
+        a response
+    </ol>
+
+
+
+
+</dd>
+    <dt>
+    <a name = "http.options"></a>
+    <strong>http.options (url, options)</strong>
+    </dt>
+    <dd>
+    OPTIONS request
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">url</span>
+            <span class="types"><a class="type" href="http://www.lua.org/manual/5.2/manual.html#6.4">string</a></span>
+
+        </li>
+        <li><span class="parameter">options</span>
+            <span class="types"><a class="type" href="http://www.lua.org/manual/5.2/manual.html#6.5">table</a></span>
+
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+           <span class="types"><a class="type" href="index.html#HTTP.response">response</a></span>
+        a response
+    </ol>
+
+
+
+
+</dd>
+    <dt>
+    <a name = "http.put"></a>
+    <strong>http.put (url, body, options)</strong>
+    </dt>
+    <dd>
+    PUT request
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">url</span>
+            <span class="types"><a class="type" href="http://www.lua.org/manual/5.2/manual.html#6.4">string</a></span>
+
+        </li>
+        <li><span class="parameter">body</span>
+            <span class="types"><a class="type" href="http://www.lua.org/manual/5.2/manual.html#6.4">string</a> or <a class="type" href="http://www.lua.org/manual/5.2/manual.html#6.5">table</a></span>
+
+        </li>
+        <li><span class="parameter">options</span>
+            <span class="types"><a class="type" href="http://www.lua.org/manual/5.2/manual.html#6.5">table</a></span>
+
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+           <span class="types"><a class="type" href="index.html#HTTP.response">response</a></span>
+        a response
+    </ol>
+
+
+
+
+</dd>
+    <dt>
+    <a name = "http.post"></a>
+    <strong>http.post (url, body, options)</strong>
+    </dt>
+    <dd>
+    POST request
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">url</span>
+            <span class="types"><a class="type" href="http://www.lua.org/manual/5.2/manual.html#6.4">string</a></span>
+
+        </li>
+        <li><span class="parameter">body</span>
+            <span class="types"><a class="type" href="http://www.lua.org/manual/5.2/manual.html#6.4">string</a> or <a class="type" href="http://www.lua.org/manual/5.2/manual.html#6.5">table</a></span>
+
+        </li>
+        <li><span class="parameter">options</span>
+            <span class="types"><a class="type" href="http://www.lua.org/manual/5.2/manual.html#6.5">table</a></span>
+
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+           <span class="types"><a class="type" href="index.html#HTTP.response">response</a></span>
+        a response
+    </ol>
+
+
+
+
+</dd>
+    <dt>
+    <a name = "http.patch"></a>
+    <strong>http.patch (url, body, options)</strong>
+    </dt>
+    <dd>
+    PATCH request
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">url</span>
+            <span class="types"><a class="type" href="http://www.lua.org/manual/5.2/manual.html#6.4">string</a></span>
+
+        </li>
+        <li><span class="parameter">body</span>
+            <span class="types"><a class="type" href="http://www.lua.org/manual/5.2/manual.html#6.4">string</a> or <a class="type" href="http://www.lua.org/manual/5.2/manual.html#6.5">table</a></span>
+
+        </li>
+        <li><span class="parameter">options</span>
+            <span class="types"><a class="type" href="index.html#http.options">options</a></span>
+
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+           <span class="types"><a class="type" href="index.html#HTTP.response">response</a></span>
+        a response
+    </ol>
+
+
+
+
+</dd>
+    <dt>
+    <a name = "http.serializers"></a>
+    <strong>http.serializers</strong>
+    </dt>
+    <dd>
+    HTTP Serializers
+ Serializers can transform your request/response to for example
+ automatically conver tables to json and vice versa.
+
+
+
+
+
+
+    <h3>Usage:</h3>
+    <ul>
+        <pre class="example">
+ http.serializers.custom = <span class="keyword">function</span>(req) ... <span class="keyword">end</span>
+ http.custom.get(...)</pre>
+    </ul>
+
+</dd>
+    <dt>
+    <a name = "http.serializers.urlencoded"></a>
+    <strong>http.serializers.urlencoded (req)</strong>
+    </dt>
+    <dd>
+    Urlencoded serializer
+ Serializes your data to application/x-www-form-urlencoded format
+ and sets correct Content-Type header.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">req</span>
+
+        </li>
+    </ul>
+
+
+
+
+    <h3>Usage:</h3>
+    <ul>
+        <pre class="example">http.urlencoded.post(url, { example = <span class="string">'table'</span> })</pre>
+    </ul>
+
+</dd>
+    <dt>
+    <a name = "http.serializers.json"></a>
+    <strong>http.serializers.json (req)</strong>
+    </dt>
+    <dd>
+    JSON serializer
+ Converts the body to JSON unless it is already a string and sets correct Content-Type.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">req</span>
+
+        </li>
+    </ul>
+
+
+
+
+    <h3>Usage:</h3>
+    <ul>
+        <pre class="example">http.json.post(url, { example = <span class="string">'table'</span> })</pre>
+    </ul>
+
+</dd>
+    <dt>
+    <a name = "http.serializers.default"></a>
+    <strong>http.serializers.default (req)</strong>
+    </dt>
+    <dd>
+    Default serializer
+ Used by default.  Unless body is a string, will use urlencoded, else string.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">req</span>
+
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "HTTP.response"></a>
+    <strong>HTTP.response</strong>
+    </dt>
+    <dd>
+    Response returned by http.get and similar calls
+
+
+    <h3>Fields:</h3>
+    <ul>
+        <li><span class="parameter">status</span>
+            <span class="types"><span class="type">int</span></span>
+         HTTP Status Code
+        </li>
+        <li><span class="parameter">headers</span>
+            <span class="types"><a class="type" href="http://www.lua.org/manual/5.2/manual.html#6.5">table</a></span>
+         HTTP Headers
+        </li>
+        <li><span class="parameter">body</span>
+            <span class="types"><a class="type" href="http://www.lua.org/manual/5.2/manual.html#6.4">string</a></span>
+         response body
+        </li>
+        <li><span class="parameter">ok</span>
+            <span class="types"><span class="type">bool</span></span>
+
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "HTTP.options"></a>
+    <strong>HTTP.options</strong>
+    </dt>
+    <dd>
+    Options that can be passed to <a href="index.html#http">http</a> calls.
+
+
+    <h3>Fields:</h3>
+    <ul>
+        <li><span class="parameter">headers</span>
+            <span class="types"><a class="type" href="http://www.lua.org/manual/5.2/manual.html#6.5">table</a></span>
+         table of HTTP headers
+        </li>
+        <li><span class="parameter">ssl</span>
+            <span class="types"><a class="type" href="http://www.lua.org/manual/5.2/manual.html#6.5">table</a></span>
+         table with ssl options
+        </li>
+    </ul>
+
+
+
+
+    <h3>Usage:</h3>
+    <ul>
+        <li><pre class="example">http.get(uri, { ssl = { verify = <span class="keyword">false</span> }})</pre></li>
+        <li><pre class="example">http.get(uri, { headers = { my_header = <span class="string">'value'</span> }})</pre></li>
+    </ul>
+
+</dd>
+</dl>
     <h2><a name="Class_Console"></a>Class Console </h2>
 
         Console
@@ -1041,7 +1529,7 @@
 </div> <!-- id="main" -->
 <div id="about">
 <i>generated by <a href="http://github.com/stevedonovan/LDoc">LDoc 1.4.3</a></i>
-<i style="float:right;">Last updated 2014-11-14 16:11:29 </i>
+<i style="float:right;">Last updated 2014-11-19 20:22:44 </i>
 </div> <!-- id="about" -->
 </div> <!-- id="container" -->
 </body>
