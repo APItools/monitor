@@ -41,7 +41,7 @@ local Trace_mt = {
 }
 
 function Trace:new(req)
-  --- a request
+  --- Current HTTP Request like it will be stored and displayed in the UI.
   -- @table Trace.req
   -- @field[type=string] query query string
   -- @field[type=table] headers
@@ -53,7 +53,7 @@ function Trace:new(req)
   -- @field[type=string] uri just the path
   -- @field[type=string] host value of Host header
 
-  --- a response
+  --- Will contain the response like it will be stored (once it is processed).
   -- @table Trace.res
   -- @field[type=string] body
   -- @field[type=int] status

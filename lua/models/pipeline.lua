@@ -80,9 +80,6 @@ end
 local send_event = function(ev) Event:create(ev) end
 local send_notification = function(ev) ev.channel = 'middleware' Event:create(ev) end
 
----  Simple debugging function that inspects the object and prints them to a logfile.
--- @tparam ?string|table ... any number of parameters
--- @function log
 local log = function(...) ngx.log(0, inspect(...)) end
 
 local send_email = function(to, subject, msg)
@@ -101,12 +98,17 @@ end
 local metric = function(trace)
 
   return {
-    --- store integer values
+    --- store integer values as simple count
+    -- @param[type=string] metric name
+    -- @param[type=int,opt=1] increment
     -- @function metric.count
     count = function(name, inc)
       collector.collect(trace.service_id, name, 'count', { trace.req.method, trace.generic_path } , inc or 1)
     end,
-    --- store scalar values
+    --- store integer values as set
+    -- then you can get avg,p99 and other statistic
+    -- @param[type=string] metric name
+    -- @param[type=number] value
     -- @function metric.set
     set = function(name, value)
       collector.collect(trace.service_id, name, 'set', { trace.req.method, trace.generic_path } , value)
@@ -173,10 +175,10 @@ local use_middleware = function(rack, middleware, trace, service_id)
     -- @treturn int elapsed seconds from the epoch
     -- @function time.seconds
     seconds = ngx.time,
-    --- Formats number of seconds to a stirng
-    -- Returns a formated string can be used as the
-    -- http header time (for example, being used in Last-Modified header).
-    -- @treturn string formatted string
+    --- Formats number of seconds to a HTTP-date string
+    -- Returns a formated string in "HTTP-date" format specified by the [RFC 7231](http://tools.ietf.org/html/rfc7231).
+    -- It is used for example in Last-Modified header and looks like "`Tue, 15 Nov 2014 08:12:31 GMT`".
+    -- @treturn string  HTTP-date formatted string
     -- @tparam int sec timestamp in seconds (like those returned from time.seconds)
     -- @function time.http
     http = ngx.http_time,
@@ -249,9 +251,12 @@ local use_middleware = function(rack, middleware, trace, service_id)
     send              = send,
     time              = time,
     metric            = metric(trace),
-    --- @{Trace} object of current request
+    --- @{Trace} object of current request.
+    -- After all the middleware finish, it will be persisted for later search.
     -- @see Trace.req
     -- @see Trace.res
+    -- @usage trace.my_middleware = 'some metadata'
+    -- @usage trace.res.processed = true
     -- @table[type=Trace] trace
     trace             = trace,
     json              = json,

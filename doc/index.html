@@ -52,11 +52,10 @@
 <div id="content">
 
 <h1>Module <code>middleware</code></h1>
-<p>APItools Middleware
+<p>APItools Middleware</p>
+
 <p> Middleware documentation of APItools.</p>
-<p>
- All this should be available when middleware is evaluated.
-</p>
+<p> All this should be available when middleware is evaluated.</p>
     <h3>Info:</h3>
     <ul>
         <li><strong>Copyright</strong>: APItools 2014</li>
@@ -96,16 +95,13 @@
 <h2><a href="#Functions">Functions</a></h2>
 <table class="function_list">
 	<tr>
-	<td class="name" nowrap><a href="#log">log (...)</a></td>
-	<td class="summary">Simple debugging function that inspects the object and prints them to a logfile.</td>
+	<td class="name" nowrap><a href="#metric.count">metric.count (metric[, increment=1])</a></td>
+	<td class="summary">store integer values as simple count</td>
 	</tr>
 	<tr>
-	<td class="name" nowrap><a href="#metric.count">metric.count ()</a></td>
-	<td class="summary">store integer values</td>
-	</tr>
-	<tr>
-	<td class="name" nowrap><a href="#metric.set">metric.set ()</a></td>
-	<td class="summary">store scalar values</td>
+	<td class="name" nowrap><a href="#metric.set">metric.set (metric, value)</a></td>
+	<td class="summary">store integer values as set
+ then you can get avg,p99 and other statistic</td>
 	</tr>
 	<tr>
 	<td class="name" nowrap><a href="#base64.decode">base64.decode (str)</a></td>
@@ -138,9 +134,8 @@
 	</tr>
 	<tr>
 	<td class="name" nowrap><a href="#time.http">time.http (sec)</a></td>
-	<td class="summary">Formats number of seconds to a stirng
- Returns a formated string can be used as the
- http header time (for example, being used in Last-Modified header).</td>
+	<td class="summary">Formats number of seconds to a HTTP-date string
+ Returns a formated string in "HTTP-date" format specified by the <a href="http://tools.ietf.org/html/rfc7231">RFC 7231</a>.</td>
 	</tr>
 	<tr>
 	<td class="name" nowrap><a href="#time.now">time.now ()</a></td>
@@ -167,18 +162,18 @@
 <table class="function_list">
 	<tr>
 	<td class="name" nowrap><a href="#trace">trace</a></td>
-	<td class="summary"><a href="index.html#Trace">Trace</a> object of current request</td>
+	<td class="summary"><a href="index.html#Trace">Trace</a> object of current request.</td>
 	</tr>
 </table>
 <h2><a href="#Class_Trace">Class Trace </a></h2>
 <table class="function_list">
 	<tr>
 	<td class="name" nowrap><a href="#Trace.req">Trace.req</a></td>
-	<td class="summary">a request</td>
+	<td class="summary">Current HTTP Request like it will be stored and displayed in the UI.</td>
 	</tr>
 	<tr>
 	<td class="name" nowrap><a href="#Trace.res">Trace.res</a></td>
-	<td class="summary">a response</td>
+	<td class="summary">Will contain the response like it will be stored (once it is processed).</td>
 	</tr>
 	<tr>
 	<td class="name" nowrap><a href="#Trace.total_time">Trace.total_time</a></td>
@@ -430,18 +425,25 @@
 
     <dl class="function">
     <dt>
-    <a name = "log"></a>
-    <strong>log (...)</strong>
+    <a name = "metric.count"></a>
+    <strong>metric.count (metric[, increment=1])</strong>
     </dt>
     <dd>
-    Simple debugging function that inspects the object and prints them to a logfile.
+    store integer values as simple count
 
 
     <h3>Parameters:</h3>
     <ul>
-        <li><span class="parameter">...</span>
-            <span class="types"><a class="type" href="http://www.lua.org/manual/5.2/manual.html#6.4">string</a> or <a class="type" href="http://www.lua.org/manual/5.2/manual.html#6.5">table</a></span>
-         any number of parameters
+        <li><span class="parameter">metric</span>
+            <span class="types"><a class="type" href="http://www.lua.org/manual/5.2/manual.html#6.4">string</a></span>
+         name
+        </li>
+        <li><span class="parameter">increment</span>
+            <span class="types"><span class="type">int</span></span>
+
+
+
+         (<em>default</em> 1)
         </li>
     </ul>
 
@@ -451,27 +453,27 @@
 
 </dd>
     <dt>
-    <a name = "metric.count"></a>
-    <strong>metric.count ()</strong>
-    </dt>
-    <dd>
-    store integer values
-
-
-
-
-
-
-
-</dd>
-    <dt>
     <a name = "metric.set"></a>
-    <strong>metric.set ()</strong>
+    <strong>metric.set (metric, value)</strong>
     </dt>
     <dd>
-    store scalar values
+    store integer values as set
+ then you can get avg,p99 and other statistic
 
 
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">metric</span>
+            <span class="types"><a class="type" href="http://www.lua.org/manual/5.2/manual.html#6.4">string</a></span>
+         name
+        </li>
+        <li><span class="parameter">value</span>
+            <span class="types"><span class="type">number</span></span>
+
+
+
+        </li>
+    </ul>
 
 
 
@@ -633,9 +635,9 @@
     <strong>time.http (sec)</strong>
     </dt>
     <dd>
-    Formats number of seconds to a stirng
- Returns a formated string can be used as the
- http header time (for example, being used in Last-Modified header).
+    Formats number of seconds to a HTTP-date string
+ Returns a formated string in "HTTP-date" format specified by the <a href="http://tools.ietf.org/html/rfc7231">RFC 7231</a>.
+ It is used for example in Last-Modified header and looks like "<code>Tue, 15 Nov 2014 08:12:31 GMT</code>".
 
 
     <h3>Parameters:</h3>
@@ -650,7 +652,7 @@
     <ol>
 
            <span class="types"><a class="type" href="http://www.lua.org/manual/5.2/manual.html#6.4">string</a></span>
-        formatted string
+        HTTP-date formatted string
     </ol>
 
 
@@ -775,7 +777,8 @@
     <strong>trace</strong>
     </dt>
     <dd>
-    <a href="index.html#Trace">Trace</a> object of current request
+    <a href="index.html#Trace">Trace</a> object of current request.
+ After all the middleware finish, it will be persisted for later search.
 
 
 
@@ -787,6 +790,11 @@
          <li><a href="index.html#Trace.res">Trace.res</a></li>
     </ul>
 
+    <h3>Usage:</h3>
+    <ul>
+        <li><pre class="example">trace.my_middleware = <span class="string">'some metadata'</span></pre></li>
+        <li><pre class="example">trace.res.processed = <span class="keyword">true</span></pre></li>
+    </ul>
 
 </dd>
 </dl>
@@ -799,7 +807,7 @@
     <strong>Trace.req</strong>
     </dt>
     <dd>
-    a request
+    Current HTTP Request like it will be stored and displayed in the UI.
 
 
     <h3>Fields:</h3>
@@ -810,6 +818,8 @@
         </li>
         <li><span class="parameter">headers</span>
             <span class="types"><a class="type" href="http://www.lua.org/manual/5.2/manual.html#6.5">table</a></span>
+
+
 
         </li>
         <li><span class="parameter">uri_full</span>
@@ -852,7 +862,7 @@
     <strong>Trace.res</strong>
     </dt>
     <dd>
-    a response
+    Will contain the response like it will be stored (once it is processed).
 
 
     <h3>Fields:</h3>
@@ -860,13 +870,19 @@
         <li><span class="parameter">body</span>
             <span class="types"><a class="type" href="http://www.lua.org/manual/5.2/manual.html#6.4">string</a></span>
 
+
+
         </li>
         <li><span class="parameter">status</span>
             <span class="types"><span class="type">int</span></span>
 
+
+
         </li>
         <li><span class="parameter">headers</span>
             <span class="types"><a class="type" href="http://www.lua.org/manual/5.2/manual.html#6.5">table</a></span>
+
+
 
         </li>
     </ul>
@@ -888,6 +904,8 @@
         <li><span class="parameter">total_time</span>
             <span class="types"><span class="type">number</span></span>
 
+
+
         </li>
     </ul>
 
@@ -908,6 +926,8 @@
         <li><span class="parameter">service_id</span>
             <span class="types"><span class="type">number</span></span>
 
+
+
         </li>
     </ul>
 
@@ -927,6 +947,8 @@
     <ul>
         <li><span class="parameter">starred</span>
             <span class="types"><span class="type">boolean</span></span>
+
+
 
         </li>
     </ul>
@@ -1004,9 +1026,13 @@
         <li><span class="parameter">url</span>
             <span class="types"><a class="type" href="http://www.lua.org/manual/5.2/manual.html#6.4">string</a></span>
 
+
+
         </li>
         <li><span class="parameter">options</span>
             <span class="types"><a class="type" href="http://www.lua.org/manual/5.2/manual.html#6.5">table</a></span>
+
+
 
         </li>
     </ul>
@@ -1035,9 +1061,13 @@
         <li><span class="parameter">url</span>
             <span class="types"><a class="type" href="http://www.lua.org/manual/5.2/manual.html#6.4">string</a></span>
 
+
+
         </li>
         <li><span class="parameter">options</span>
             <span class="types"><a class="type" href="http://www.lua.org/manual/5.2/manual.html#6.5">table</a></span>
+
+
 
         </li>
     </ul>
@@ -1066,9 +1096,13 @@
         <li><span class="parameter">url</span>
             <span class="types"><a class="type" href="http://www.lua.org/manual/5.2/manual.html#6.4">string</a></span>
 
+
+
         </li>
         <li><span class="parameter">options</span>
             <span class="types"><a class="type" href="http://www.lua.org/manual/5.2/manual.html#6.5">table</a></span>
+
+
 
         </li>
     </ul>
@@ -1097,9 +1131,13 @@
         <li><span class="parameter">url</span>
             <span class="types"><a class="type" href="http://www.lua.org/manual/5.2/manual.html#6.4">string</a></span>
 
+
+
         </li>
         <li><span class="parameter">options</span>
             <span class="types"><a class="type" href="http://www.lua.org/manual/5.2/manual.html#6.5">table</a></span>
+
+
 
         </li>
     </ul>
@@ -1128,13 +1166,19 @@
         <li><span class="parameter">url</span>
             <span class="types"><a class="type" href="http://www.lua.org/manual/5.2/manual.html#6.4">string</a></span>
 
+
+
         </li>
         <li><span class="parameter">body</span>
             <span class="types"><a class="type" href="http://www.lua.org/manual/5.2/manual.html#6.4">string</a> or <a class="type" href="http://www.lua.org/manual/5.2/manual.html#6.5">table</a></span>
 
+
+
         </li>
         <li><span class="parameter">options</span>
             <span class="types"><a class="type" href="http://www.lua.org/manual/5.2/manual.html#6.5">table</a></span>
+
+
 
         </li>
     </ul>
@@ -1163,13 +1207,19 @@
         <li><span class="parameter">url</span>
             <span class="types"><a class="type" href="http://www.lua.org/manual/5.2/manual.html#6.4">string</a></span>
 
+
+
         </li>
         <li><span class="parameter">body</span>
             <span class="types"><a class="type" href="http://www.lua.org/manual/5.2/manual.html#6.4">string</a> or <a class="type" href="http://www.lua.org/manual/5.2/manual.html#6.5">table</a></span>
 
+
+
         </li>
         <li><span class="parameter">options</span>
             <span class="types"><a class="type" href="http://www.lua.org/manual/5.2/manual.html#6.5">table</a></span>
+
+
 
         </li>
     </ul>
@@ -1198,13 +1248,19 @@
         <li><span class="parameter">url</span>
             <span class="types"><a class="type" href="http://www.lua.org/manual/5.2/manual.html#6.4">string</a></span>
 
+
+
         </li>
         <li><span class="parameter">body</span>
             <span class="types"><a class="type" href="http://www.lua.org/manual/5.2/manual.html#6.4">string</a> or <a class="type" href="http://www.lua.org/manual/5.2/manual.html#6.5">table</a></span>
 
+
+
         </li>
         <li><span class="parameter">options</span>
-            <span class="types"><a class="type" href="index.html#HTTP.options">options</a></span>
+            <span class="types"><a class="type" href="index.html#http.options">options</a></span>
+
+
 
         </li>
     </ul>
@@ -1256,6 +1312,8 @@
     <ul>
         <li><span class="parameter">req</span>
 
+
+
         </li>
     </ul>
 
@@ -1281,6 +1339,8 @@
     <ul>
         <li><span class="parameter">req</span>
 
+
+
         </li>
     </ul>
 
@@ -1305,6 +1365,8 @@
     <h3>Parameters:</h3>
     <ul>
         <li><span class="parameter">req</span>
+
+
 
         </li>
     </ul>
@@ -1338,6 +1400,8 @@
         </li>
         <li><span class="parameter">ok</span>
             <span class="types"><span class="type">bool</span></span>
+
+
 
         </li>
     </ul>
@@ -1621,7 +1685,9 @@
     <ol>
         <li>
            <span class="types"><span class="type">nil</span></span>
-        </li>
+
+
+</li>
         <li>
            <span class="types"><a class="type" href="http://www.lua.org/manual/5.2/manual.html#6.4">string</a></span>
         not found</li>
@@ -1630,7 +1696,9 @@
     <ol>
         <li>
            <span class="types"><span class="type">nil</span></span>
-        </li>
+
+
+</li>
         <li>
            <span class="types"><a class="type" href="http://www.lua.org/manual/5.2/manual.html#6.4">string</a></span>
         not a number</li>
@@ -1731,7 +1799,7 @@
 </div> <!-- id="main" -->
 <div id="about">
 <i>generated by <a href="http://github.com/stevedonovan/LDoc">LDoc 1.4.3</a></i>
-<i style="float:right;">Last updated 2014-11-20 11:30:10 </i>
+<i style="float:right;">Last updated 2014-11-20 12:23:26 </i>
 </div> <!-- id="about" -->
 </div> <!-- id="container" -->
 </body>

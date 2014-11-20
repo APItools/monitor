@@ -11,6 +11,7 @@ file = {
 project = 'APItools'
 title = 'APItools Middleware Documentation'
 merge = true
+format = 'markdown'
 
 new_type("bucket","Bucket")
 new_type("trace","Trace")
