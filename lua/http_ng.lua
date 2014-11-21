@@ -117,7 +117,7 @@ http.serializers = {}
 -- @usage http.urlencoded.post(url, { example = 'table' })
 http.serializers.urlencoded = function(req)
   req.body = ngx.encode_args(req.body)
-  req.headers['Content-Type'] = 'application/x-www-form-urlencoded'
+  req.headers.content_type = req.headers.content_type or 'application/x-www-form-urlencoded'
   http.serializers.string(req)
 end
 
@@ -136,7 +136,7 @@ http.serializers.json = function(req)
   if type(req.body) ~= 'string' then
     req.body = json.encode(req.body)
   end
-  req.headers['Content-Type'] = 'application/json'
+  req.headers.content_type = req.headers.content_type or 'application/json'
   http.serializers.string(req)
 end
 
