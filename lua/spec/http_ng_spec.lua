@@ -105,6 +105,12 @@ describe('http_ng', function()
       assert.equal(#'{"table" : "value"}', fake_backend.last_request.headers['Content-Length'])
       assert.equal('application/json', fake_backend.last_request.headers['Content-Type'])
     end)
+
+    it('does not override passed headers', function()
+      http.json.post('http://example.com', '{}', { headers = { content_type = 'custom/format' }})
+      assert.spy(http.backend.send).was_called()
+      assert.equal('custom/format', fake_backend.last_request.headers['Content-Type'])
+    end)
   end)
 
   describe('when there is no error', function()

@@ -1,8 +1,14 @@
 ------------
 -- APItools Middleware
 --
--- Middleware documentation of APItools.
+-- Middleware documentation of [APItools](https://www.apitools.com).
 -- All this should be available when middleware is evaluated.
+--
+-- Check out our [GitHub Repository](https://github.com/apitools/monitor) and
+-- [Middleware repository](https://github.com/apitools/middleware).
+--
+-- If you don't have enough, we have a [blog](https://docs.apitools.com/blog) and a
+-- [documentation](https://docs.apitools.com/docs).
 --
 -- @module middleware
 -- @license MIT
@@ -80,9 +86,6 @@ end
 local send_event = function(ev) Event:create(ev) end
 local send_notification = function(ev) ev.channel = 'middleware' Event:create(ev) end
 
----  Simple debugging function that inspects the object and prints them to a logfile.
--- @tparam ?string|table ... any number of parameters
--- @function log
 local log = function(...) ngx.log(0, inspect(...)) end
 
 local send_email = function(to, subject, msg)
@@ -101,12 +104,17 @@ end
 local metric = function(trace)
 
   return {
-    --- store integer values
+    --- store integer values as simple count
+    -- @param[type=string] metric name
+    -- @param[type=int,opt=1] increment
     -- @function metric.count
     count = function(name, inc)
       collector.collect(trace.service_id, name, 'count', { trace.req.method, trace.generic_path } , inc or 1)
     end,
-    --- store scalar values
+    --- store integer values as set
+    -- then you can get avg,p99 and other statistic
+    -- @param[type=string] metric name
+    -- @param[type=number] value
     -- @function metric.set
     set = function(name, value)
       collector.collect(trace.service_id, name, 'set', { trace.req.method, trace.generic_path } , value)
@@ -123,8 +131,7 @@ local use_middleware = function(rack, middleware, trace, service_id)
     error(err)
   end
 
-  --- console like in the browser
-  -- see @{Console} for all the available methods
+  --- @{Console} for all the available methods. Almost like in the browser.
   -- @console console
   local console           = Console.new(service_id, middleware.uuid)
 
@@ -132,15 +139,14 @@ local use_middleware = function(rack, middleware, trace, service_id)
   local service_bucket    = Bucket.for_service(service_id)
 
   local base64 = {
-    --- decode base64
-    -- Decodes the str argument as a base64 digest to the raw form. Returns nil if str is not well formed.
+    --- Decodes the str argument as a base64 digest to the raw form.
+    -- Returns nil if str is not well formed.
     -- @tparam string str base64 encoded string
     -- @treturn ?string decoded string
     -- @function base64.decode
     decode = ngx.decode_base64,
 
-    --- encode base64
-    -- Encode str to a base64 digest.
+    --- Encode str to a base64 digest.
     -- @tparam string str a string
     -- @treturn string base64 encoded string
     -- @function base64.encode
@@ -155,8 +161,7 @@ local use_middleware = function(rack, middleware, trace, service_id)
     email = send_email,
     mail = send_email,
 
-    ---  Create event
-    -- Creates @{Event}
+    ---  Create @{Event}
     -- @param[type=table] event the event to be created
     -- @function send.event
     event = send_event,
@@ -173,10 +178,10 @@ local use_middleware = function(rack, middleware, trace, service_id)
     -- @treturn int elapsed seconds from the epoch
     -- @function time.seconds
     seconds = ngx.time,
-    --- Formats number of seconds to a stirng
-    -- Returns a formated string can be used as the
-    -- http header time (for example, being used in Last-Modified header).
-    -- @treturn string formatted string
+    --- Formats number of seconds to a HTTP-date string
+    -- Returns a formated string in "HTTP-date" format specified by the [RFC 7231](http://tools.ietf.org/html/rfc7231).
+    -- It is used for example in Last-Modified header and looks like "`Tue, 15 Nov 2014 08:12:31 GMT`".
+    -- @treturn string  HTTP-date formatted string
     -- @tparam int sec timestamp in seconds (like those returned from time.seconds)
     -- @function time.http
     http = ngx.http_time,
@@ -189,24 +194,26 @@ local use_middleware = function(rack, middleware, trace, service_id)
 
   local bucket = {
     --- Middleware Bucket
-    -- Every middleware has own bucket. You can access it by using methods of @{Bucket}.
+    -- Every middleware has own bucket. You can access it by using methods of @{Bucket} methods as @{bucket.middleware}.
     -- @bucket[type=Bucket] bucket.middleware
+    -- @see Bucket.get
+    -- @usage local cached = bucket.middleware.get('my-cached-value')
     middleware = middleware_bucket,
     --- Service Bucket
-    -- Every service has own bucket. All middlewares can access it by using @{Bucket}.
+    -- Every service has own bucket. All middlewares can access it by using @{Bucket} methods as @{bucket.service}.
     -- @bucket bucket.service
+    -- @usage local cached = bucket.service.get('my-cached-value')
+    -- @see Bucket.get
     service = service_bucket
   }
 
   local json = {
-    --- JSON Encode
-    -- Encodes given table to a JSON.
+    --- JSON Encode table to a JSON string.
     -- @param[type=table] object to be serialized
     -- @return[type=string] JSON string
     -- @function json.encode
     encode = luajson.encode,
-    --- JSON Decode
-    -- Decodes JSON to an object.
+    --- Decode JSON string to an object.
     -- @param[type=string] string to be deserialized
     -- @return[type=table] deserialized object
     -- @function json.decode
@@ -223,8 +230,7 @@ local use_middleware = function(rack, middleware, trace, service_id)
   end
 
   local hmac = {
-    --- HMAC-SHA-256
-    -- create keyed-hash message authentication code by SHA-256 hashing function
+    --- Create keyed-hash message authentication code using HMAC-SHA-256.
     -- @param[type=string] str string to be signed
     -- @param[type=string] key to sign it with
     -- @return[type=string] digest
@@ -245,8 +251,12 @@ local use_middleware = function(rack, middleware, trace, service_id)
     send              = send,
     time              = time,
     metric            = metric(trace),
-    --- Trace
-    -- @{Trace} object of current request
+    --- @{Trace} object of current request.
+    -- After all the middleware finish, it will be persisted for later search.
+    -- @see Trace.req
+    -- @see Trace.res
+    -- @usage trace.my_middleware = 'some metadata'
+    -- @usage trace.res.processed = true
     -- @table[type=Trace] trace
     trace             = trace,
     json              = json,
