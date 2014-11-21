@@ -51,51 +51,54 @@ http.method_with_body = function(method, client)
   end
 end
 
---- GET request
+--- Make GET request.
 -- @param[type=string] url
--- @param[type=table] options
+-- @param[type=options] options
 -- @return[type=response] a response
 -- @function http.get
 http.get = http.method
 
---- HEAD request
+--- Make HEAD request.
 -- @param[type=string] url
--- @param[type=table] options
+-- @param[type=options] options
 -- @return[type=response] a response
 -- @function http.head
 http.head = http.method
 
---- DELETE request
+--- Make DELETE request.
 -- @param[type=string] url
--- @param[type=table] options
+-- @param[type=options] options
 -- @return[type=response] a response
 -- @function http.delete
 http.delete = http.method
 
---- OPTIONS request
+--- Make OPTIONS request.
 -- @param[type=string] url
--- @param[type=table] options
+-- @param[type=options] options
 -- @return[type=response] a response
 -- @function http.options
 http.options = http.method
 
---- PUT request
+--- Make PUT request.
+-- The **body** is serialized by @{HTTP.urlencoded} unless you used different serializer.
 -- @param[type=string] url
 -- @param[type=string|table] body
--- @param[type=table] options
+-- @param[type=options] options
 -- @return[type=response] a response
 -- @function http.put
 http.put = http.method_with_body
 
---- POST request
+--- Make POST request.
+-- The **body** is serialized by @{HTTP.urlencoded} unless you used different serializer.
 -- @param[type=string] url
 -- @param[type=string|table] body
--- @param[type=table] options
+-- @param[type=options] options
 -- @return[type=response] a response
 -- @function http.post
 http.post = http.method_with_body
 
---- PATCH request
+--- Make PATCH request.
+-- The **body** is serialized by @{HTTP.urlencoded} unless you used different serializer.
 -- @param[type=string] url
 -- @param[type=string|table] body
 -- @param[type=options] options
@@ -105,18 +108,12 @@ http.patch = http.method_with_body
 
 http.trace = http.method_with_body
 
---- HTTP Serializers
--- Serializers can transform your request/response to for example
--- automatically conver tables to json and vice versa.
--- @table http.serializers
--- @usage
--- http.serializers.custom = function(req) ... end
--- http.custom.get(...)
 http.serializers = {}
 
 --- Urlencoded serializer
--- Serializes your data to application/x-www-form-urlencoded format
+-- Serializes your data to `application/x-www-form-urlencoded` format
 -- and sets correct Content-Type header.
+-- @http HTTP.urlencoded
 -- @usage http.urlencoded.post(url, { example = 'table' })
 http.serializers.urlencoded = function(req)
   req.body = ngx.encode_args(req.body)
@@ -130,8 +127,11 @@ http.serializers.string = function(req)
 end
 
 --- JSON serializer
--- Converts the body to JSON unless it is already a string and sets correct Content-Type.
+-- Converts the body to JSON unless it is already a string
+-- and sets correct Content-Type `application/json`.
+-- @http HTTP.json
 -- @usage http.json.post(url, { example = 'table' })
+-- @see http.post
 http.serializers.json = function(req)
   if type(req.body) ~= 'string' then
     req.body = json.encode(req.body)
@@ -140,8 +140,6 @@ http.serializers.json = function(req)
   http.serializers.string(req)
 end
 
---- Default serializer
--- Used by default. Unless body is a string, will use urlencoded, else string.
 http.serializers.default = function(req)
   if req.body then
     if type(req.body) ~= 'string' then

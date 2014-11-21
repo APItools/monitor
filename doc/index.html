@@ -86,8 +86,7 @@
 <table class="function_list">
 	<tr>
 	<td class="name" nowrap><a href="#console">console</a></td>
-	<td class="summary">console like in the browser
- see <a href="index.html#Console">Console</a> for all the available methods</td>
+	<td class="summary"><a href="index.html#Console">Console</a> for all the available methods.</td>
 	</tr>
 </table>
 <h2><a href="#HTTP">HTTP</a></h2>
@@ -111,13 +110,11 @@
 	</tr>
 	<tr>
 	<td class="name" nowrap><a href="#base64.decode">base64.decode (str)</a></td>
-	<td class="summary">decode base64
- Decodes the str argument as a base64 digest to the raw form.</td>
+	<td class="summary">Decodes the str argument as a base64 digest to the raw form.</td>
 	</tr>
 	<tr>
 	<td class="name" nowrap><a href="#base64.encode">base64.encode (str)</a></td>
-	<td class="summary">encode base64
- Encode str to a base64 digest.</td>
+	<td class="summary">Encode str to a base64 digest.</td>
 	</tr>
 	<tr>
 	<td class="name" nowrap><a href="#send.email">send.email (to, subject, msg)</a></td>
@@ -125,8 +122,7 @@
 	</tr>
 	<tr>
 	<td class="name" nowrap><a href="#send.event">send.event (event)</a></td>
-	<td class="summary">Create event
- Creates <a href="index.html#Event">Event</a></td>
+	<td class="summary">Create <a href="index.html#Event">Event</a></td>
 	</tr>
 	<tr>
 	<td class="name" nowrap><a href="#send.notification">send.notification (event)</a></td>
@@ -150,18 +146,15 @@
 	</tr>
 	<tr>
 	<td class="name" nowrap><a href="#json.encode">json.encode (object)</a></td>
-	<td class="summary">JSON Encode
- Encodes given table to a JSON.</td>
+	<td class="summary">JSON Encode table to a JSON string.</td>
 	</tr>
 	<tr>
 	<td class="name" nowrap><a href="#json.decode">json.decode (string)</a></td>
-	<td class="summary">JSON Decode
- Decodes JSON to an object.</td>
+	<td class="summary">Decode JSON string to an object.</td>
 	</tr>
 	<tr>
 	<td class="name" nowrap><a href="#hmac.sha256">hmac.sha256 (str, key)</a></td>
-	<td class="summary">HMAC-SHA-256
- create keyed-hash message authentication code by SHA-256 hashing function</td>
+	<td class="summary">Create keyed-hash message authentication code using HMAC-SHA-256.</td>
 	</tr>
 </table>
 <h2><a href="#Tables">Tables</a></h2>
@@ -216,53 +209,43 @@
 <table class="function_list">
 	<tr>
 	<td class="name" nowrap><a href="#http.get">http.get (url, options)</a></td>
-	<td class="summary">GET request</td>
+	<td class="summary">Make GET request.</td>
 	</tr>
 	<tr>
 	<td class="name" nowrap><a href="#http.head">http.head (url, options)</a></td>
-	<td class="summary">HEAD request</td>
+	<td class="summary">Make HEAD request.</td>
 	</tr>
 	<tr>
 	<td class="name" nowrap><a href="#http.delete">http.delete (url, options)</a></td>
-	<td class="summary">DELETE request</td>
+	<td class="summary">Make DELETE request.</td>
 	</tr>
 	<tr>
 	<td class="name" nowrap><a href="#http.options">http.options (url, options)</a></td>
-	<td class="summary">OPTIONS request</td>
+	<td class="summary">Make OPTIONS request.</td>
 	</tr>
 	<tr>
 	<td class="name" nowrap><a href="#http.put">http.put (url, body, options)</a></td>
-	<td class="summary">PUT request</td>
+	<td class="summary">Make PUT request.</td>
 	</tr>
 	<tr>
 	<td class="name" nowrap><a href="#http.post">http.post (url, body, options)</a></td>
-	<td class="summary">POST request</td>
+	<td class="summary">Make POST request.</td>
 	</tr>
 	<tr>
 	<td class="name" nowrap><a href="#http.patch">http.patch (url, body, options)</a></td>
-	<td class="summary">PATCH request</td>
+	<td class="summary">Make PATCH request.</td>
 	</tr>
 	<tr>
-	<td class="name" nowrap><a href="#http.serializers">http.serializers</a></td>
-	<td class="summary">HTTP Serializers
- Serializers can transform your request/response to for example
- automatically conver tables to json and vice versa.</td>
-	</tr>
-	<tr>
-	<td class="name" nowrap><a href="#http.serializers.urlencoded">http.serializers.urlencoded (req)</a></td>
+	<td class="name" nowrap><a href="#HTTP.urlencoded">HTTP.urlencoded</a></td>
 	<td class="summary">Urlencoded serializer
- Serializes your data to application/x-www-form-urlencoded format
+ Serializes your data to <code>application/x-www-form-urlencoded</code> format
  and sets correct Content-Type header.</td>
 	</tr>
 	<tr>
-	<td class="name" nowrap><a href="#http.serializers.json">http.serializers.json (req)</a></td>
+	<td class="name" nowrap><a href="#HTTP.json">HTTP.json</a></td>
 	<td class="summary">JSON serializer
- Converts the body to JSON unless it is already a string and sets correct Content-Type.</td>
-	</tr>
-	<tr>
-	<td class="name" nowrap><a href="#http.serializers.default">http.serializers.default (req)</a></td>
-	<td class="summary">Default serializer
- Used by default.</td>
+ Converts the body to JSON unless it is already a string
+ and sets correct Content-Type <code>application/json</code>.</td>
 	</tr>
 	<tr>
 	<td class="name" nowrap><a href="#HTTP.response">HTTP.response</a></td>
@@ -390,8 +373,7 @@
     <strong>console</strong>
     </dt>
     <dd>
-    console like in the browser
- see <a href="index.html#Console">Console</a> for all the available methods
+    <a href="index.html#Console">Console</a> for all the available methods.  Almost like in the browser.
 
 
 
@@ -491,8 +473,8 @@
     <strong>base64.decode (str)</strong>
     </dt>
     <dd>
-    decode base64
- Decodes the str argument as a base64 digest to the raw form.  Returns nil if str is not well formed.
+    Decodes the str argument as a base64 digest to the raw form.
+ Returns nil if str is not well formed.
 
 
     <h3>Parameters:</h3>
@@ -519,8 +501,7 @@
     <strong>base64.encode (str)</strong>
     </dt>
     <dd>
-    encode base64
- Encode str to a base64 digest.
+    Encode str to a base64 digest.
 
 
     <h3>Parameters:</h3>
@@ -576,8 +557,7 @@
     <strong>send.event (event)</strong>
     </dt>
     <dd>
-    Create event
- Creates <a href="index.html#Event">Event</a>
+    Create <a href="index.html#Event">Event</a>
 
 
     <h3>Parameters:</h3>
@@ -691,8 +671,7 @@
     <strong>json.encode (object)</strong>
     </dt>
     <dd>
-    JSON Encode
- Encodes given table to a JSON.
+    JSON Encode table to a JSON string.
 
 
     <h3>Parameters:</h3>
@@ -719,8 +698,7 @@
     <strong>json.decode (string)</strong>
     </dt>
     <dd>
-    JSON Decode
- Decodes JSON to an object.
+    Decode JSON string to an object.
 
 
     <h3>Parameters:</h3>
@@ -747,8 +725,7 @@
     <strong>hmac.sha256 (str, key)</strong>
     </dt>
     <dd>
-    HMAC-SHA-256
- create keyed-hash message authentication code by SHA-256 hashing function
+    Create keyed-hash message authentication code using HMAC-SHA-256.
 
 
     <h3>Parameters:</h3>
@@ -1024,7 +1001,7 @@
     <strong>http.get (url, options)</strong>
     </dt>
     <dd>
-    GET request
+    Make GET request.
 
 
     <h3>Parameters:</h3>
@@ -1036,7 +1013,7 @@
 
         </li>
         <li><span class="parameter">options</span>
-            <span class="types"><a class="type" href="http://www.lua.org/manual/5.2/manual.html#6.5">table</a></span>
+            <span class="types"><a class="type" href="index.html#http.options">options</a></span>
 
 
 
@@ -1059,7 +1036,7 @@
     <strong>http.head (url, options)</strong>
     </dt>
     <dd>
-    HEAD request
+    Make HEAD request.
 
 
     <h3>Parameters:</h3>
@@ -1071,7 +1048,7 @@
 
         </li>
         <li><span class="parameter">options</span>
-            <span class="types"><a class="type" href="http://www.lua.org/manual/5.2/manual.html#6.5">table</a></span>
+            <span class="types"><a class="type" href="index.html#http.options">options</a></span>
 
 
 
@@ -1094,7 +1071,7 @@
     <strong>http.delete (url, options)</strong>
     </dt>
     <dd>
-    DELETE request
+    Make DELETE request.
 
 
     <h3>Parameters:</h3>
@@ -1106,7 +1083,7 @@
 
         </li>
         <li><span class="parameter">options</span>
-            <span class="types"><a class="type" href="http://www.lua.org/manual/5.2/manual.html#6.5">table</a></span>
+            <span class="types"><a class="type" href="index.html#http.options">options</a></span>
 
 
 
@@ -1129,7 +1106,7 @@
     <strong>http.options (url, options)</strong>
     </dt>
     <dd>
-    OPTIONS request
+    Make OPTIONS request.
 
 
     <h3>Parameters:</h3>
@@ -1141,7 +1118,7 @@
 
         </li>
         <li><span class="parameter">options</span>
-            <span class="types"><a class="type" href="http://www.lua.org/manual/5.2/manual.html#6.5">table</a></span>
+            <span class="types"><a class="type" href="index.html#http.options">options</a></span>
 
 
 
@@ -1164,89 +1141,8 @@
     <strong>http.put (url, body, options)</strong>
     </dt>
     <dd>
-    PUT request
-
-
-    <h3>Parameters:</h3>
-    <ul>
-        <li><span class="parameter">url</span>
-            <span class="types"><a class="type" href="http://www.lua.org/manual/5.2/manual.html#6.4">string</a></span>
-
-
-
-        </li>
-        <li><span class="parameter">body</span>
-            <span class="types"><a class="type" href="http://www.lua.org/manual/5.2/manual.html#6.4">string</a> or <a class="type" href="http://www.lua.org/manual/5.2/manual.html#6.5">table</a></span>
-
-
-
-        </li>
-        <li><span class="parameter">options</span>
-            <span class="types"><a class="type" href="http://www.lua.org/manual/5.2/manual.html#6.5">table</a></span>
-
-
-
-        </li>
-    </ul>
-
-    <h3>Returns:</h3>
-    <ol>
-
-           <span class="types"><a class="type" href="index.html#HTTP.response">response</a></span>
-        a response
-    </ol>
-
-
-
-
-</dd>
-    <dt>
-    <a name = "http.post"></a>
-    <strong>http.post (url, body, options)</strong>
-    </dt>
-    <dd>
-    POST request
-
-
-    <h3>Parameters:</h3>
-    <ul>
-        <li><span class="parameter">url</span>
-            <span class="types"><a class="type" href="http://www.lua.org/manual/5.2/manual.html#6.4">string</a></span>
-
-
-
-        </li>
-        <li><span class="parameter">body</span>
-            <span class="types"><a class="type" href="http://www.lua.org/manual/5.2/manual.html#6.4">string</a> or <a class="type" href="http://www.lua.org/manual/5.2/manual.html#6.5">table</a></span>
-
-
-
-        </li>
-        <li><span class="parameter">options</span>
-            <span class="types"><a class="type" href="http://www.lua.org/manual/5.2/manual.html#6.5">table</a></span>
-
-
-
-        </li>
-    </ul>
-
-    <h3>Returns:</h3>
-    <ol>
-
-           <span class="types"><a class="type" href="index.html#HTTP.response">response</a></span>
-        a response
-    </ol>
-
-
-
-
-</dd>
-    <dt>
-    <a name = "http.patch"></a>
-    <strong>http.patch (url, body, options)</strong>
-    </dt>
-    <dd>
-    PATCH request
+    Make PUT request.
+ The <strong>body</strong> is serialized by <a href="index.html#HTTP.urlencoded">HTTP.urlencoded</a> unless you used different serializer.
 
 
     <h3>Parameters:</h3>
@@ -1283,45 +1179,99 @@
 
 </dd>
     <dt>
-    <a name = "http.serializers"></a>
-    <strong>http.serializers</strong>
+    <a name = "http.post"></a>
+    <strong>http.post (url, body, options)</strong>
     </dt>
     <dd>
-    HTTP Serializers
- Serializers can transform your request/response to for example
- automatically conver tables to json and vice versa.
-
-
-
-
-
-
-    <h3>Usage:</h3>
-    <ul>
-        <pre class="example">
- http.serializers.custom = <span class="keyword">function</span>(req) ... <span class="keyword">end</span>
- http.custom.get(...)</pre>
-    </ul>
-
-</dd>
-    <dt>
-    <a name = "http.serializers.urlencoded"></a>
-    <strong>http.serializers.urlencoded (req)</strong>
-    </dt>
-    <dd>
-    Urlencoded serializer
- Serializes your data to application/x-www-form-urlencoded format
- and sets correct Content-Type header.
+    Make POST request.
+ The <strong>body</strong> is serialized by <a href="index.html#HTTP.urlencoded">HTTP.urlencoded</a> unless you used different serializer.
 
 
     <h3>Parameters:</h3>
     <ul>
-        <li><span class="parameter">req</span>
+        <li><span class="parameter">url</span>
+            <span class="types"><a class="type" href="http://www.lua.org/manual/5.2/manual.html#6.4">string</a></span>
+
+
+
+        </li>
+        <li><span class="parameter">body</span>
+            <span class="types"><a class="type" href="http://www.lua.org/manual/5.2/manual.html#6.4">string</a> or <a class="type" href="http://www.lua.org/manual/5.2/manual.html#6.5">table</a></span>
+
+
+
+        </li>
+        <li><span class="parameter">options</span>
+            <span class="types"><a class="type" href="index.html#http.options">options</a></span>
 
 
 
         </li>
     </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+           <span class="types"><a class="type" href="index.html#HTTP.response">response</a></span>
+        a response
+    </ol>
+
+
+
+
+</dd>
+    <dt>
+    <a name = "http.patch"></a>
+    <strong>http.patch (url, body, options)</strong>
+    </dt>
+    <dd>
+    Make PATCH request.
+ The <strong>body</strong> is serialized by <a href="index.html#HTTP.urlencoded">HTTP.urlencoded</a> unless you used different serializer.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">url</span>
+            <span class="types"><a class="type" href="http://www.lua.org/manual/5.2/manual.html#6.4">string</a></span>
+
+
+
+        </li>
+        <li><span class="parameter">body</span>
+            <span class="types"><a class="type" href="http://www.lua.org/manual/5.2/manual.html#6.4">string</a> or <a class="type" href="http://www.lua.org/manual/5.2/manual.html#6.5">table</a></span>
+
+
+
+        </li>
+        <li><span class="parameter">options</span>
+            <span class="types"><a class="type" href="index.html#http.options">options</a></span>
+
+
+
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+           <span class="types"><a class="type" href="index.html#HTTP.response">response</a></span>
+        a response
+    </ol>
+
+
+
+
+</dd>
+    <dt>
+    <a name = "HTTP.urlencoded"></a>
+    <strong>HTTP.urlencoded</strong>
+    </dt>
+    <dd>
+    Urlencoded serializer
+ Serializes your data to <code>application/x-www-form-urlencoded</code> format
+ and sets correct Content-Type header.
+
+
 
 
 
@@ -1333,53 +1283,27 @@
 
 </dd>
     <dt>
-    <a name = "http.serializers.json"></a>
-    <strong>http.serializers.json (req)</strong>
+    <a name = "HTTP.json"></a>
+    <strong>HTTP.json</strong>
     </dt>
     <dd>
     JSON serializer
- Converts the body to JSON unless it is already a string and sets correct Content-Type.
+ Converts the body to JSON unless it is already a string
+ and sets correct Content-Type <code>application/json</code>.
 
 
-    <h3>Parameters:</h3>
+
+
+
+    <h3>See also:</h3>
     <ul>
-        <li><span class="parameter">req</span>
-
-
-
-        </li>
+         <a href="index.html#http.post">http.post</a>
     </ul>
-
-
-
 
     <h3>Usage:</h3>
     <ul>
         <pre class="example">http.json.post(url, { example = <span class="string">'table'</span> })</pre>
     </ul>
-
-</dd>
-    <dt>
-    <a name = "http.serializers.default"></a>
-    <strong>http.serializers.default (req)</strong>
-    </dt>
-    <dd>
-    Default serializer
- Used by default.  Unless body is a string, will use urlencoded, else string.
-
-
-    <h3>Parameters:</h3>
-    <ul>
-        <li><span class="parameter">req</span>
-
-
-
-        </li>
-    </ul>
-
-
-
-
 
 </dd>
     <dt>
@@ -1805,7 +1729,7 @@
 </div> <!-- id="main" -->
 <div id="about">
 <i>generated by <a href="http://github.com/stevedonovan/LDoc">LDoc 1.4.3</a></i>
-<i style="float:right;">Last updated 2014-11-20 17:51:19 </i>
+<i style="float:right;">Last updated 2014-11-21 12:35:32 </i>
 </div> <!-- id="about" -->
 </div> <!-- id="container" -->
 </body>

@@ -131,8 +131,7 @@ local use_middleware = function(rack, middleware, trace, service_id)
     error(err)
   end
 
-  --- console like in the browser
-  -- see @{Console} for all the available methods
+  --- @{Console} for all the available methods. Almost like in the browser.
   -- @console console
   local console           = Console.new(service_id, middleware.uuid)
 
@@ -140,15 +139,14 @@ local use_middleware = function(rack, middleware, trace, service_id)
   local service_bucket    = Bucket.for_service(service_id)
 
   local base64 = {
-    --- decode base64
-    -- Decodes the str argument as a base64 digest to the raw form. Returns nil if str is not well formed.
+    --- Decodes the str argument as a base64 digest to the raw form.
+    -- Returns nil if str is not well formed.
     -- @tparam string str base64 encoded string
     -- @treturn ?string decoded string
     -- @function base64.decode
     decode = ngx.decode_base64,
 
-    --- encode base64
-    -- Encode str to a base64 digest.
+    --- Encode str to a base64 digest.
     -- @tparam string str a string
     -- @treturn string base64 encoded string
     -- @function base64.encode
@@ -163,8 +161,7 @@ local use_middleware = function(rack, middleware, trace, service_id)
     email = send_email,
     mail = send_email,
 
-    ---  Create event
-    -- Creates @{Event}
+    ---  Create @{Event}
     -- @param[type=table] event the event to be created
     -- @function send.event
     event = send_event,
@@ -211,14 +208,12 @@ local use_middleware = function(rack, middleware, trace, service_id)
   }
 
   local json = {
-    --- JSON Encode
-    -- Encodes given table to a JSON.
+    --- JSON Encode table to a JSON string.
     -- @param[type=table] object to be serialized
     -- @return[type=string] JSON string
     -- @function json.encode
     encode = luajson.encode,
-    --- JSON Decode
-    -- Decodes JSON to an object.
+    --- Decode JSON string to an object.
     -- @param[type=string] string to be deserialized
     -- @return[type=table] deserialized object
     -- @function json.decode
@@ -235,8 +230,7 @@ local use_middleware = function(rack, middleware, trace, service_id)
   end
 
   local hmac = {
-    --- HMAC-SHA-256
-    -- create keyed-hash message authentication code by SHA-256 hashing function
+    --- Create keyed-hash message authentication code using HMAC-SHA-256.
     -- @param[type=string] str string to be signed
     -- @param[type=string] key to sign it with
     -- @return[type=string] digest
