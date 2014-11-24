@@ -9,6 +9,8 @@ local jor             = require 'jor'
 local crontab         = require 'crontab'
 local statsd          = require 'statsd_wrapper'
 
+local redis           = require 'concurredis'
+
 System.is_initialized = function()
   return Config.get().initialized
 end
@@ -34,6 +36,14 @@ end
 
 System.cron_stats = function()
   return crontab.stats()
+end
+
+System.status = function()
+  local cron = System.cron_stats()
+  local redis = redis.status()
+  local pid = ngx.worker.pid()
+
+  return { cron = cron, redis = redis, pid = pid }
 end
 
 System.logfile = os.getenv('SLUG_LOGFILE')

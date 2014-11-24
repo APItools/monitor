@@ -177,6 +177,7 @@ router:get(    '/api/system/log'                             , r('system.log'))
 router:get(    '/api/system/cron/stats'                      , r('system.cron_stats'))
 router:post(   '/api/system/cron/flush'                      , r('system.cron_flush'))
 router:post(   '/api/system/cron/:timer_id'                  , r('system.timer'))
+router:get(    '/api/system/status'                          , r('system.status'))
 
 router:get(    '/api/config'                                 , r('config.show'))
 router:post(   '/api/config'                                 , r('config.update'))
