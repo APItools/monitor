@@ -7,7 +7,7 @@ RUN luarocks install luajson \
 
 RUN ln -sf /var/www/brainslug/config/supervisor.conf /etc/supervisor/conf.d/openresty.conf \
  && ln -sf /var/www/brainslug/config/logrotate.conf /etc/logrotate.d/nginx \
- && echo '* * * * * curl http://localhost:7071/api/mails/send' | crontab
+ && rm /etc/supervisor/conf.c/cron.conf
 
 # let nginx to write to redis backup folder
 ENV SLUG_REDIS_DUMP_FOLDER_PATH /var/lib/redis/

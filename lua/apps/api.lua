@@ -215,11 +215,6 @@ make_crud('/api/filters/events/', 'filters-events')
 make_crud('/api/metrics/', 'metrics')
 make_crud('/api/autoswagger/', 'autoswagger_hosts')
 
-router:get('/api/mails/send', function()
-  local mail = require 'consumers.mail'
-  mail.run()
-end)
-
 local method = ngx.req.get_method():lower()
 
 local ok, route_found = error_handler.execute_and_report(function()

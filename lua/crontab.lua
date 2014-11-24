@@ -111,7 +111,7 @@ local TIMERS = {
     offset = 10,
     action = function()
       local mail  = require 'consumers.mail'
-      mail.trigger_run()
+      mail.run()
     end
   },
   { id     = 'send_redis_stats',
