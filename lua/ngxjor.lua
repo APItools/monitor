@@ -407,15 +407,7 @@ local function _check_collection(collection)
   if type(collection) ~= 'string' then
     return false, 'Collection must be a string'
   end
-  return redis.execute(function(red)
-    local res, err = red:sismember(_NAMESPACE .. '/collections', collection)
-    if res == nil then
-      return false, err
-    elseif res == 0 then
-      return false, 'Collection not found: ' .. collection
-    end
-    return true
-  end)
+  return true
 end
 
 
@@ -622,7 +614,7 @@ end
 
 local function use_or_generate_id(collection, doc)
   return redis.execute(function(red)
-    local autoinc = red:get(_NAMESPACE .. "/collection/" .. collection .. "/auto-increment") == 'true'
+    local autoinc = red:get(_NAMESPACE .. "/collection/" .. collection .. "/auto-increment") ~= 'false'
 
     if autoinc and doc._id then
       error("collection ".. collection .." is autoincremental, you can't provide _id = " .. inspect(doc))
@@ -816,7 +808,7 @@ function ngxjor.create_collection(self, name, auto_increment)
       return nil, err
 
     elseif res == 1 then
-      res, err = red:set(_NAMESPACE .. "/collection/" .. name .. "/auto-increment", tostring(auto_increment) )
+      res, err = red:set(_NAMESPACE .. "/collection/" .. name .. "/auto-increment", tostring(auto_increment or false) )
 
       if res then return true
       else return false, "couldn't set autoincrement"

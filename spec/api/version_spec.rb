@@ -2,6 +2,8 @@ require 'spec_helper'
 
 describe "Version" do
 
+  before { jor.create_collection('versions', auto_increment: true) }
+
   let(:host)        { 'http://localhost:7071' }
   let(:service)     { load_fixture('services', 'twitter', true) }
   let(:pipeline)    { load_fixture('pipelines', 'updated', true) }

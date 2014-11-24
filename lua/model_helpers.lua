@@ -27,10 +27,6 @@ local check_collection = function(collection)
   if type(collection) ~= 'string' then
     error("A collection name was needed, but received " .. tostring(collection))
   end
-  local ok, err = jor:create_collection(collection, true)
-  if not ok then
-    error("Could not create collection " .. tostring(collection) .. ". Error: " .. tostring(err))
-  end
 end
 
 model_helpers.delete_collection = function(name)

@@ -195,13 +195,12 @@ end
 crontab.schedule = function(timer, offset)
   assert(dict:get(timer.id), "can't schedule timer " .. timer.id .. " because it is not initialized")
 
-  local delay = timer.every
+  local at = 0
   if timer.at == 'midnight' then
-    delay = get_seconds_to_midnight()
+    at = get_seconds_to_midnight()
   end
-  delay = delay + (offset or 0)
 
-  local delay      = timer.every + (offset or 0) -- randomizer offset
+  local delay      = timer.every + at + (offset or 0) -- randomizer offset
   local job_id     = crontab.uuid(timer)
   local scheduled  = dict:add(job_id, timer.id)
 
@@ -264,7 +263,9 @@ end
 
 crontab.randomizer = function(timer)
   if timer.offset then
-    return math.random(0, timer.offset)
+    return math.random(0, timer.offset) -- integer between 0 and timer.offset
+  else
+    return math.random() -- float between 0 and 1
   end
 end
 
