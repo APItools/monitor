@@ -5,7 +5,10 @@ local redis = require 'resty.redis'
 local backups = {}
 
 function backups.export()
+  crontab.shutdown()
   concurredis.save()
+
+  crontab.initialize()
 
   local folder_path = os.getenv('SLUG_REDIS_DUMP_FOLDER_PATH')
   local file_path   = folder_path .. 'dump.rdb'
