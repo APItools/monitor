@@ -102,7 +102,10 @@ concurredis.config = function(key, value)
 end
 
 concurredis.shutdown = function()
-  concurredis.execute(function(red) assert(red:shutdown()) end)
+  concurredis.execute(function(red)
+    local _, message = red:shutdown()
+    assert(message == 'closed', message)
+  end)
 end
 
 concurredis.stats = function(section)
