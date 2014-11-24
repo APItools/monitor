@@ -65,6 +65,14 @@ Config.csrf_secret = function()
   return ngx.shared.config_dict:get('csrf_secret')
 end
 
+Config.update = function(...)
+  local update = Model.update(...)
+  ngx.shared.config_dict:flush_all()
+  return update
+end
+
+local EMPTY_NAME = '<empty-name>'
+
 Config.get_slug_name = function(no_jor)
   local an_hour = 60 * 60
   local slug_name = ngx.shared.config_dict:get('slug_name')
@@ -79,13 +87,14 @@ Config.get_slug_name = function(no_jor)
       slug_name = Config.get().slug_name
     end
 
-    if slug_name then -- it's in the db, cache it for an hour
-      local success, err, forcible = ngx.shared.config_dict:set('slug_name', slug_name, an_hour)
-    else
-      return false -- not in the db
-    end
+    ngx.shared.config_dict:set('slug_name', slug_name or EMPTY_NAME, an_hour)
   end
-  return slug_name
+
+  if slug_name == EMPTY_NAME then
+    return nil
+  else
+    return slug_name
+  end
 end
 
 Config.set_slug_name = function(str)
