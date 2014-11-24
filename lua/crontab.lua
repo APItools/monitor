@@ -333,6 +333,11 @@ crontab.run = function(timer, job_id)
   dict:delete(job_id)
 end
 
+crontab.shutdown = function()
+  crontab.halt()
+  crontab.flush()
+end
+
 crontab.halt = function()
   dict:flush_all()
   dict:flush_expired()
