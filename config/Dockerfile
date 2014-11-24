@@ -17,11 +17,10 @@ ENV SLUG_REDIS_PORT 6379
 ENV SLUG_LOGFILE /var/log/supervisor/supervisord.log
 ENV SLUG_CSRF_PROTECTION 1;
 
-RUN chmod o+w $SLUG_REDIS_DUMP_FOLDER_PATH
+RUN chmod o+w ${SLUG_REDIS_DUMP_FOLDER_PATH}
 
 CMD ["supervisord", "-n"]
 EXPOSE 7071 10002
 
-
+WORKDIR /var/www/brainslug
 ADD . /var/www/brainslug
-
