@@ -41,6 +41,10 @@ local system = {
     h.send_json(Metric:delete_indices())
   end,
 
+  status = function()
+    h.send_json(System.status())
+  end,
+
   timer = function(params)
     local timer_id = params.timer_id
 

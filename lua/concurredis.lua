@@ -110,6 +110,12 @@ concurredis.stats = function(section)
   return expand_gmatch(info, '(\\w+?):(.+)\r')
 end
 
+concurredis.status = function()
+  local ping = pcall(concurredis.execute, function(red) return red:ping() end)
+  local info = ping and concurredis.stats()
+  return { ping = ping, info = info }
+end
+
 concurredis.keys = function()
   return concurredis.execute(function(red)
     local keys = red:keys("*")
