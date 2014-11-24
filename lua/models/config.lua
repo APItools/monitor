@@ -67,8 +67,12 @@ end
 
 Config.update = function(...)
   local update = Model.update(...)
-  ngx.shared.config_dict:flush_all()
+  Config.flush()
   return update
+end
+
+Config.flush = function()
+  ngx.shared.config_dict:flush_all()
 end
 
 local EMPTY_NAME = '<empty-name>'

@@ -1,6 +1,7 @@
 local concurredis    = require "concurredis"
 local crontab  = require "crontab"
 local redis = require 'resty.redis'
+local Config = require 'models.config'
 
 local backups = {}
 
@@ -71,6 +72,7 @@ function backups.import(params)
 
   red:close()
 
+  Config.flush() -- flush cache
   --redis should be started here (by the process manager)
   crontab.initialize()
 end
