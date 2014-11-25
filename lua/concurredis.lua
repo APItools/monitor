@@ -86,6 +86,12 @@ concurredis.save = function()
     local backoff = 0.01
     local total = 0
 
+    red:config('set', 'appendonly', 'no')
+    red:config('set', 'appendonly', 'yes')
+    red:config('set', 'appendfsync', 'always')
+
+    red:set('last-save', ngx.now())
+
     while not red:save() do
       total = total + backoff
       ngx.sleep(backoff)

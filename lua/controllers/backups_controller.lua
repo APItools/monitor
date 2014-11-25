@@ -14,7 +14,6 @@ function backups.export(params)
 
   crontab.initialize()
 
-  concurredis.config('appendonly', 'yes')
   local file = params.file or RDB -- AOF
 
   ngx.header["Content-Type"]        = 'application/octet-stream';
