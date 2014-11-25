@@ -89,8 +89,19 @@ concurredis.save = function()
     red:config('set', 'appendonly', 'no')
     red:config('set', 'appendonly', 'yes')
     red:config('set', 'appendfsync', 'always')
-
     red:set('last-save', ngx.now())
+    red:bgrewriteaof()
+
+    local appendonly = false
+    while not appendonly do
+      local progress = red:info('persistence'):match('aof_rewrite_in_progress:(%d)')
+
+      if progress == '0' then
+        appendonly = true
+      end
+
+      ngx.sleep(backoff)
+    end
 
     while not red:save() do
       total = total + backoff
