@@ -74,8 +74,9 @@ concurredis.disable_bgsave = function(fun)
     local save = red:config('get', 'save')
 
     local res, err = pcall(fun, red)
-
-    assert(red:config('set', unpack(save)))
+    if save then
+      assert(red:config('set', unpack(save)))
+    end
     assert(res, err)
   end)
 

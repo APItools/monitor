@@ -1,6 +1,6 @@
 return function(req, next_middleware, config)
   if req.headers then
-    req.headers.Host = config.endpoint
+    req.headers.Host = string.match(req.endpoint,  "://([^/]+)")
   end
   local res = next_middleware()
   if res.headers then

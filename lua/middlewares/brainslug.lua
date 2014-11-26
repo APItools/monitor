@@ -4,13 +4,11 @@ local collector       = require 'collector'
 local Service         = require 'models.service'
 local statsd          = require 'statsd_wrapper'
 
-local function get_endpoint_host()
-  return string.match(ngx.var._endpoint_url, "^.+://([^/]+)")
+local function extract_host(url)
+  return string.match(url, "^.+://([^/]+)")
 end
 
-local pass_response = function(req, res, endpoint_url)
-  local start    = ngx.now()
-
+local pass_response = function(req, res)
   -- override original request body with middelware's version
   -- TODO: if req.body= would set the request body, we would not have to do it here
   if req.body then
@@ -21,11 +19,12 @@ local pass_response = function(req, res, endpoint_url)
   -- nginx is unable to resolve private names like localhost.  We
   -- hardcode the resolution of localhost to 127.0.0.0 for now,
   -- and remove trailing slash
-  ngx.var._endpoint_url  = endpoint_url:gsub('localhost', '127.0.0.1', 1):gsub('/$', '')
-  ngx.var._endpoint_host = get_endpoint_host()
+  ngx.var._endpoint_url  = req.endpoint:gsub('localhost', '127.0.0.1', 1):gsub('/$', '')
+  ngx.var._endpoint_host = extract_host(ngx.var._endpoint_url)
 
   ngx.var._path = req.uri or '/'
 
+  local start    = ngx.now()
   local response_data = ngx.location.capture("/___pass", {
     method         = ngx["HTTP_" .. req.method],
     args           = req.args,
@@ -33,7 +32,6 @@ local pass_response = function(req, res, endpoint_url)
     always_forward_body = true,
     copy_all_vars = true
   })
-
   local elapsed_time = ngx.now() - start
 
   statsd.time('proxy.real_request', elapsed_time)
@@ -50,7 +48,8 @@ end
 
 local function get_generic_path(req, service_id, status)
   -- if successful request, we must build the swagger spec
-  local generic_path = nil
+  local generic_path
+
   if status >= 200 and status < 300 then
     local service = Service:find(service_id)
     if not service then
@@ -86,7 +85,6 @@ end
 return function(req, next_middleware, config)
   local start        = ngx.now()
   local trace        = config.trace
-  local endpoint_url = config.endpoint_url
   local service_id   = tonumber(config.service_id)
 
   fill_trace_with_req(trace, req)
@@ -95,9 +93,9 @@ return function(req, next_middleware, config)
 
   local res = next_middleware()
 
-  trace.time          = pass_response(req, res, endpoint_url)
+  trace.time          = pass_response(req, res)
   trace.generic_path  = get_generic_path(req, service_id, res.status)
-  trace.endpoint      = assert(get_endpoint_host(), "Endpoint host expected")
+  trace.endpoint      = assert(extract_host(req.endpoint), "Endpoint host expected")
 
   -- Feel free to refactor this one, but we needed to show full original url in the UI
   trace.req.endpoint = ngx.var._endpoint_url

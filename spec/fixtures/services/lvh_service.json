@@ -1,0 +1,9 @@
+{ "_id": 2,
+  "name": "lvh",
+  "description": "the echo api",
+  "endpoints": [
+    { "url": "http://lvh.me:8081",
+      "code": "lvh"
+    }
+  ]
+}

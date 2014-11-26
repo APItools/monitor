@@ -13,6 +13,8 @@ describe "echo" do
   let(:service) { load_fixture('services',  'echo_service') }
   before(:each) { service }
 
+  let(:headers) { get_response_key('headers') }
+
   it 'returns the request as a query string when using the echo pipeline' do
     load_fixture('pipelines', 'empty_pipeline')
 
@@ -23,6 +25,13 @@ describe "echo" do
     load_fixture('pipelines', 'echo_pipeline')
 
     get_response_key('path').should eq("/echo")
+  end
+
+  it 'can change endpoint' do
+    load_fixture('services',  'lvh_service')
+    load_fixture('pipelines', 'service_two_pipeline')
+    load_fixture('pipelines', 'change_endpoint_pipeline')
+    expect(headers).to include('host' => 'lvh.me:8081')
   end
 
   it 'uses a minimal middleware that does nothing. different url' do
@@ -109,7 +118,7 @@ describe "echo" do
     jor.wait_for_async_locks
     last_trace_id = get_json('http://localhost:7071/api/traces/last_id')['last_id']
     last_trace = get_json("http://localhost:7071/api/traces/#{last_trace_id}")
-    expect(last_trace).to include('endpoint' => '127.0.0.1:8081')
+    expect(last_trace).to include('endpoint' => 'localhost:8081')
     expect(last_trace).to include('service_id' => service['_id'])
     expect(last_trace).to include('starred' => false)
   end
