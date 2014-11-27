@@ -3,7 +3,7 @@ local json = require('cjson')
 local inspect = require 'inspect'
 
 local cachejor = {}
-local cache = { version = 1 }
+local cache = { version = 1, ttl = 60 }
 local redisstore = {}
 
 local store = redisstore
@@ -29,6 +29,7 @@ function redisstore:save(value, ...)
 
   redis.execute(function(red)
     red:hset(key, field, value)
+    red:expire(key, cache.ttl)
   end)
 end
 
