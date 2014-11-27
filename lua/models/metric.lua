@@ -62,9 +62,7 @@ local function compact_projections(metric)
         sum_p90 = sum_p90 + pr.p90 * pr.len
         sum_p95 = sum_p95 + pr.p95 * pr.len
         sum_p99 = sum_p99 + pr.p99 * pr.len
-      else
-        ngx.log(0, '[metric] comacting failed, skipping projection ' .. inspect(pr))
-     end
+      end
     end
     metric.projections = {
       len = len,
