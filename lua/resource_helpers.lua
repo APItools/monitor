@@ -5,7 +5,9 @@ local Event          = require 'models.event'
 local resource_helpers = {}
 
 resource_helpers.index = function(resource, params)
-  helpers.send_json(model_helpers.all(resource, {}))
+  params.stream = true
+  local conditions, options = helpers.jor_conditions_and_options(params)
+  helpers.send_json(model_helpers.all(resource, conditions, options))
 end
 
 resource_helpers.show = function(resource, params)
