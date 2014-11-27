@@ -10,14 +10,24 @@ local store = redisstore
 
 -- redis backend store
 function redisstore:encode(...)
-  return json.encode({value = ... })
+  local obj = {value = ... }
+  local ok, str = pcall(json.encode, obj)
+
+  if ok then
+    return str
+  else
+    return nil, str
+  end
 end
 
 function redisstore:decode(str)
-  local obj = json.decode(str)
-  local value = obj.value
+  local ok, obj = pcall(json.decode, str)
 
-  return value
+  if ok then
+    return obj.value
+  else
+    return nil, obj
+  end
 end
 
 function redisstore:save(value, ...)
@@ -25,12 +35,16 @@ function redisstore:save(value, ...)
     return
   end
   local key, field = cache:key(...)
-  local value = redisstore:encode(value)
+  local value, err = redisstore:encode(value)
 
   redis.execute(function(red)
     red:hset(key, field, value)
     red:expire(key, cache.ttl)
   end)
+end
+
+function redisstore:remove(key, field)
+  redis.execute(function(red) red:hdel(key, field) end)
 end
 
 function redisstore:load(...)
@@ -40,7 +54,14 @@ function redisstore:load(...)
   redis.execute(function(red) value = red:hget(key,field) end)
 
   if value and value ~= ngx.null then
-    return redisstore:decode(value)
+    local ok, err = redisstore:decode(value)
+
+    if not ok and err then
+      ngx.log(ngx.ERR, '[cachejor] failed to decode key: ' .. key .. '.' .. field .. ' with value: ' .. value)
+      redisstore:remove(key, field)
+    end
+
+    return ok
   end
 end
 
