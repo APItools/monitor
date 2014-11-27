@@ -42,6 +42,10 @@ helpers.send_json = function(object_to_serialize, status)
   end
 end
 
+local OPEN_ARRAY = '[\n'
+local CLOSE_ARRAY = '\n]'
+local NEXT_ARRAY = ',\n'
+
 helpers.stream = function(iterator)
   local head_request = ngx.req.get_method() == 'HEAD'
 
@@ -51,11 +55,19 @@ helpers.stream = function(iterator)
 
   ngx.send_headers()
 
-  ngx.print('[')
+  ngx.print(OPEN_ARRAY)
+
+  local first = true
+
   for line in iterator do
+    if not first then
+      ngx.print(NEXT_ARRAY)
+    end
     ngx.print(line)
+    first = false
   end
-  ngx.print(']')
+
+  ngx.print(CLOSE_ARRAY)
   ngx.eof()
 end
 
