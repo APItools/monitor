@@ -62,9 +62,7 @@ local function compact_projections(metric)
         sum_p90 = sum_p90 + pr.p90 * pr.len
         sum_p95 = sum_p95 + pr.p95 * pr.len
         sum_p99 = sum_p99 + pr.p99 * pr.len
-      else
-        ngx.log(0, '[metric] comacting failed, skipping projection ' .. inspect(pr))
-     end
+      end
     end
     metric.projections = {
       len = len,
@@ -88,26 +86,34 @@ end
 local function do_compact(dict, ids_to_delete)
   local keys= {}; for k,_ in pairs(dict) do keys[#keys+1] = k end
 
+  ngx.log(ngx.NOTICE, '[metric] will compact ' .. #ids_to_delete .. ' metrics to ' .. #keys)
+
   for _,compacted_metric in pairs(dict) do
     compact_projections(compacted_metric)
     Metric:create(compacted_metric)
   end
 
-  ngx.log(ngx.NOTICE, '[metric] compacted ' .. #ids_to_delete .. ' metrics')
+  ngx.log(ngx.NOTICE, '[metric] done compacting ' .. #keys .. ' metrics')
 
-  Metric:delete({_id = {['$in'] = ids_to_delete}})
+  Metric:delete_ids(ids_to_delete)
 end
 
 function Metric:ids(conditions)
   return Metric:all(conditions, { only_ids = true, max_documents = -1 })
 end
 
-function Metric:delete(conditions)
-  local metrics = Metric:ids(conditions)
-  for i, m in ipairs(metrics) do
+function Metric:delete_ids(ids)
+  for _, m in ipairs(ids) do
     jor.driver:wipe_object(self.collection, m)
   end
+  ngx.log(ngx.NOTICE, '[metric] deleted ' .. #ids .. ' metrics')
   return metrics
+end
+
+function Metric:delete(conditions)
+  local metrics = Metric:ids(conditions)
+
+  return Metric:delete_ids(metrics)
 end
 
 function Metric:delete_collection()
@@ -124,7 +130,7 @@ end
 function Metric:delete_indices(id)
   local conditions = { ['_id'] = id }
   local metrics = Metric:ids(conditions)
-  for i, m in ipairs(metrics) do
+  for _, m in ipairs(metrics) do
     jor.driver:delete_reverse_indices(self.collection, m)
   end
 end
@@ -139,7 +145,7 @@ function Metric:compact(start_epoch, end_epoch, granularity)
   conditions.granularity = granularity
 
   local metrics = Metric:all(conditions, { max_documents = -1 })
-  ngx.log(ngx.INFO, '[metric] found ' .. #metrics .. ' metrics to compact')
+  ngx.log(ngx.NOTICE, '[metric] found ' .. #metrics .. ' metrics to compact')
 
   table.sort(metrics, sort_by_created_at)
 
