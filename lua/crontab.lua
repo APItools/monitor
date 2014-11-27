@@ -294,9 +294,11 @@ crontab.initialize = function()
 end
 
 crontab.flush = function()
-  for _,timer in ipairs(TIMERS) do
-    crontab.run(timer, 'forced')
-  end
+  crontab.lock(function()
+    for _,timer in ipairs(TIMERS) do
+      crontab.run(timer, 'forced')
+    end
+  end)
 end
 
 crontab.timer = function(id)
@@ -317,7 +319,7 @@ end
 crontab.run = function(timer, job_id)
   ngx.log(ngx.INFO, '[cron] running ' .. timer.id .. ' job  ' .. job_id)
 
-  if job_id == 'forced' or crontab.enabled() then
+  if job_id == 'forced' or job_id == 'manual' or crontab.enabled() then
     -- it locks cron, so initialize can't be run
     crontab.lock(function()
       statsd.timer('cron.' .. timer.id, function()
