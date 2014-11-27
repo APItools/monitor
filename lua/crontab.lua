@@ -270,6 +270,8 @@ crontab.randomizer = function(timer)
 end
 
 crontab.initialize = function()
+  crontab.enable()
+
   if crontab.disabled then return end
 
   -- it wont run initialize when locked
@@ -308,9 +310,6 @@ local has_slug_name = function()
   return Config.get_slug_name()
 end
 
-crontab.disabled = os.getenv('SLUG_DISABLE_CRON')
-crontab.forced = os.getenv('SLUG_CRON_FORCED')
-
 crontab.enabled = function()
   return not crontab.disabled and (crontab.forced or has_slug_name())
 end
@@ -340,8 +339,15 @@ crontab.shutdown = function()
 end
 
 crontab.halt = function()
+  crontab.disabled = true
+  crontab.forced = false
   dict:flush_all()
   dict:flush_expired()
+end
+
+crontab.enable = function()
+  crontab.disabled = os.getenv('SLUG_DISABLE_CRON')
+  crontab.forced = os.getenv('SLUG_CRON_FORCED')
 end
 
 crontab.reset = function()

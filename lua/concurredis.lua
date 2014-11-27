@@ -86,6 +86,23 @@ concurredis.save = function()
     local backoff = 0.01
     local total = 0
 
+    red:config('set', 'appendonly', 'no')
+    red:config('set', 'appendonly', 'yes')
+    red:config('set', 'appendfsync', 'always')
+    red:set('last-save', ngx.now())
+    red:bgrewriteaof()
+
+    local appendonly = false
+    while not appendonly do
+      local progress = red:info('persistence'):match('aof_rewrite_in_progress:(%d)')
+
+      if progress == '0' then
+        appendonly = true
+      end
+
+      ngx.sleep(backoff)
+    end
+
     while not red:save() do
       total = total + backoff
       ngx.sleep(backoff)
@@ -102,7 +119,10 @@ concurredis.config = function(key, value)
 end
 
 concurredis.shutdown = function()
-  concurredis.execute(function(red) assert(red:shutdown()) end)
+  concurredis.execute(function(red)
+    local _, message = red:shutdown()
+    assert(message == 'closed', message)
+  end)
 end
 
 concurredis.stats = function(section)
