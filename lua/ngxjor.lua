@@ -172,6 +172,14 @@ local function get_path_to_from_index(index)
   return index:sub(ini_pos, end_pos-1)
 end
 
+local function _check_collection(collection)
+  if type(collection) ~= 'string' then
+    return false, 'Collection must be a string'
+  end
+  return true
+end
+
+
 local function _remove_index(collection, index, id)
   local type_of_index = index:sub(-5)
   local real_index = index:sub(1, -6)
@@ -282,6 +290,47 @@ local function _add_index(collection, path, id)
   end)
 end
 
+local function delete_reverse_indices(red, res, collection, id)
+
+  red:init_pipeline()
+  for i, index in ipairs(res) do
+    local index_name, ends_with = index:match("^(.*)_([zs]rem)$")
+    if ends_with == "zrem"  then
+      red:zrem(index_name, id)
+    elseif ends_with == "srem" then
+      red:srem(index_name ,id)
+    else
+      error("delete by id with wrong type of column")
+      -- this should not happen
+    end
+  end
+
+  red:del(_idx_set_key(collection, id))
+  red:zrem(_doc_set_key(collection),id)
+  red:del(_doc_key(collection,id))
+
+  local res, err = red:commit_pipeline()
+  if res==nil then return nil, err end
+  return true
+end
+
+local function _delete_by_id(collection, id)
+  local res, err = _check_collection(collection)
+  if not res then return nil, err end
+
+  return redis.execute(function(red)
+    local res, err = red:smembers(_idx_set_key(collection, id))
+    if (res==nil) then return nil, err end
+
+    delete_reverse_indices(red, res, collection, id)
+  end)
+end
+
+local function _remove_missing_document(collection, id)
+  ngx.log(ngx.WARN, 'removing document ' .. id .. ' from ' .. collection .. ' because it has no content')
+  _delete_by_id(collection, id)
+end
+
 local function _load_documents(collection, ids)
   return redis.execute(function(red)
 
@@ -297,7 +346,8 @@ local function _load_documents(collection, ids)
     for i=1, #res do
       -- ngx.null is equivalent to null and can't be decoded to json
       if ngx.null == res[i] then
-        table.insert(docs, 'null')
+        table.insert(docs, nil)
+        _remove_missing_document(collection, ids[i])
       else
         table.insert(docs, luajson.decode(res[i]))
       end
@@ -403,14 +453,6 @@ end -- DebugFunction
 
 -- DebugFunction("get_doc_paths")
 
-local function _check_collection(collection)
-  if type(collection) ~= 'string' then
-    return false, 'Collection must be a string'
-  end
-  return true
-end
-
-
 local function _next_id(collection)
 
   local res, err = _check_collection(collection)
@@ -426,41 +468,6 @@ local function _next_id(collection)
   end)
 end
 
-local function delete_reverse_indices(red, res, collection, id)
-
-  red:init_pipeline()
-  for i, index in ipairs(res) do
-    local index_name, ends_with = index:match("^(.*)_([zs]rem)$")
-    if ends_with == "zrem"  then
-      red:zrem(index_name, id)
-    elseif ends_with == "srem" then
-      red:srem(index_name ,id)
-    else
-      error("delete by id with wrong type of column")
-      -- this should not happen
-    end
-  end
-
-  red:del(_idx_set_key(collection, id))
-  red:zrem(_doc_set_key(collection),id)
-  red:del(_doc_key(collection,id))
-
-  local res, err = red:commit_pipeline()
-  if res==nil then return nil, err end
-  return true
-end
-
-local function _delete_by_id(collection, id)
-  local res, err = _check_collection(collection)
-  if not res then return nil, err end
-
-  return redis.execute(function(red)
-    local res, err = red:smembers(_idx_set_key(collection, id))
-    if (res==nil) then return nil, err end
-
-    delete_reverse_indices(red, res, collection, id)
-  end)
-end
 
 -- returns the key of _SELECTORS where selectors belong.
 local function _check_selectors(selectors)

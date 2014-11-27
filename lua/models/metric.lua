@@ -143,13 +143,16 @@ function Metric:compact(start_epoch, end_epoch, granularity)
 
   table.sort(metrics, sort_by_created_at)
 
-  local start = ngx.now()
-
   local dict, ids_to_delete, bucket, granularity
 
   for i=1, #metrics do
     local metric = metrics[i]
     local new_bucket, new_granularity = Metric:get_compacted_bucket(metric._created_at)
+
+    if not new_bucket then
+      ngx.log(ngx.WARN, "failed to compact metrics: " .. inspect(metric))
+      break
+    end
 
     if new_bucket ~= bucket then
       if dict then do_compact(dict, ids_to_delete) end
@@ -203,7 +206,10 @@ function Metric:get_granularity_for(epoch)
 end
 
 function Metric:get_compacted_bucket(epoch)
-  assert(epoch, 'an epoch is needed')
+  if not epoch then
+    return nil, 'an epoch is needed'
+  end
+
   local granularity = Metric:get_granularity_for(epoch)
 
   if granularity then
