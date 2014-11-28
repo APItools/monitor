@@ -1,6 +1,12 @@
 local statsd = require 'statsd'
 local statsd_wrapper = {}
 
+local statsd_server = os.getenv('STATSD_PORT_8125_UDP_ADDR') or os.getenv('SLUG_STATSD_SERVER')
+
+if statsd_server then
+  ngx.log(ngx.INFO, 'using statsd server on ' .. statsd_server)
+end
+
 local statsd_null = {
   time = function() end,
   timer = function() end,
@@ -12,7 +18,6 @@ local statsd_null = {
 local function get_instance()
   if not ngx.ctx.statsd_instance then
     local instance
-    local statsd_server = os.getenv('STATSD_PORT_8125_TCP_ADDR') or os.getenv('SLUG_STATSD_SERVER')
     if statsd_server then
       local statsd_port = os.getenv('SLUG_STATSD_PORT') or 8125
       local Config      = require 'models.config'
