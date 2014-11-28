@@ -32,6 +32,11 @@ local system = {
     h.send_json({status = 'ok'})
   end,
 
+  cron_trigger = function(params)
+    ngx.timer.at(0, System.cron_flush)
+    h.send_json({status = 'scheduled'})
+  end,
+
   cron_stats = function()
     h.send_json({ cron_stats = System.cron_stats() })
   end,
