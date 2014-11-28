@@ -7,4 +7,4 @@ export SLUG_REDIS_HOST=127.0.0.1
 
 eval $(luarocks path) # include luarocks load paths
 
-exec bundle exec rake integrate
+exec bundle exec ${1-"rake integrate"}

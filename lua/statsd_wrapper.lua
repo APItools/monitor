@@ -12,9 +12,9 @@ local statsd_null = {
 local function get_instance()
   if not ngx.ctx.statsd_instance then
     local instance
-    local statsd_server = os.getenv('SLUG_STATSD_SERVER')
+    local statsd_server = os.getenv('STATSD_PORT_8125_TCP_ADDR') or os.getenv('SLUG_STATSD_SERVER')
     if statsd_server then
-      local statsd_port = os.getenv('SLUG_STATSD_PORT')
+      local statsd_port = os.getenv('SLUG_STATSD_PORT') or 8125
       local Config      = require 'models.config'
       local instance_id = Config and Config.get_slug_name(true) or 'no_host'
       local env         = os.getenv('SLUG_ENV') or 'dev'

@@ -1,0 +1,15 @@
+redis:
+  image: redis:latest
+monitor:
+  build: .
+  command: bash -c 'bundle config without "" && bundle install && bundle exec foreman start'
+  volumes:
+    - .:/opt/slug
+  environment:
+    RELEASE: development
+    SLUG_ENV: development
+  ports:
+    - 7071
+    - 10002
+  links:
+    - redis
