@@ -31,7 +31,7 @@ local expand_gmatch = function(text, match)
   return result
 end
 
-concurredis.host = os.getenv("SLUG_REDIS_HOST")
+concurredis.host = os.getenv('REDIS_PORT_6379_TCP_ADDR') or os.getenv("SLUG_REDIS_HOST")
 concurredis.port = os.getenv("SLUG_REDIS_PORT")
 concurredis.port = concurredis.port or 6379
 

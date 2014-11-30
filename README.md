@@ -20,6 +20,12 @@ You will need running redis server.
 # Tests
 We have several test suites for differrent components. First are API tests that require `ruby` and you can run them by `rake test:api`. You need to have an instance running on ports 7071 and 10002. Then there is `rake test:integration` which runs cucumber tests with real browsers simulating user interactions. Next are `rake test:lua` which are lua tests. They require openresty version at least `1.7.4.1`. Last are Angular tests, that require `nodejs`. You can install all dependencies by `npm install` and then just `rake test:angular`.
 
+## Docker
+
+You can use [fig](http://www.fig.sh/index.html) to start the developer environment.
+Or you can use our `make bash` to start similar environment without fig.
+
+
 ## Installing Openresty
 
 

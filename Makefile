@@ -1,4 +1,4 @@
-PROJECT := $(subst @,,$(notdir $(shell pwd)))
+PROJECT := $(subst @,,$(notdir $(shell pwd)))_monitor
 NAME = $(PROJECT)-build
 RUN = docker run --rm --env CI=jenkins
 
@@ -11,8 +11,8 @@ pull :
 
 test : clean
 	$(RUN) --name $(NAME) $(PROJECT)
-bash :
-	$(RUN) -t -i -v $(shell pwd):/opt/slug  $(PROJECT) bash
+bash : build
+	$(RUN) -t -i -v $(shell pwd):/opt/slug $(PROJECT) script/docker.sh
 build :
 	docker build -t $(PROJECT) .
 
