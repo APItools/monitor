@@ -122,7 +122,7 @@ local TIMERS = {
 
       for k,v in pairs(stats) do
         if  tonumber(v)          -- ignore non-numerical values
-        and not k:match('^aof_') -- also ignore aof values (deactivated)
+        and not k:match('^rdb_') -- also ignore rdb values (deactivated)
         then
           statsd.gauge('redis.' .. k, tonumber(v))
         end
@@ -250,13 +250,29 @@ crontab.block = function(fun, ...)
 end
 
 crontab.lock = function(fun, ...)
-  local lock = resty_lock:new('locks')
+  if ngx.ctx.crontab_lock then -- short cirguit when locking inside already locked ctx
+    ngx.log(ngx.INFO, 'lock already acquired, skipping locking')
+    return pcall(fun, ...)
+  end
 
+  local lock = resty_lock:new('locks')
   local elapsed, err = lock:lock('crontab')
 
+  if not elapsed and err then
+    ngx.log(ngx.ERR, 'failed to acquire lock')
+    return nil, err
+  end
+
+  ngx.log(ngx.INFO, 'acquired lock in ' .. tostring(elapsed) .. ' seconds')
+  ngx.ctx.crontab_lock = true
+
+  local start = ngx.now()
   local ret, err = pcall(fun, ...)
+  local elapsed = ngx.now() - start
 
   lock:unlock()
+  ngx.ctx.crontab_lock = nil
+  ngx.log(ngx.INFO, 'released lock after ' .. tostring(elapsed) .. ' seconds')
 
   return ret, err
 end
@@ -319,8 +335,9 @@ end
 crontab.run = function(timer, job_id)
   ngx.log(ngx.INFO, '[cron] running ' .. timer.id .. ' job  ' .. job_id)
 
-  if job_id == 'forced' or job_id == 'manual' or crontab.enabled() then
-    -- it locks cron, so initialize can't be run
+  local forced = job_id == 'forced' or job_id == 'manual'
+
+  if forced or crontab.enabled() then
     crontab.lock(function()
       statsd.timer('cron.' .. timer.id, function()
         error_handler.execute(timer.action)
