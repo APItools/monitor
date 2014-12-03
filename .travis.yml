@@ -21,7 +21,7 @@ install:
   - wget -T 60 -qO- http://luarocks.org/releases/luarocks-${LUAROCKS_VERSION}.tar.gz | tar xvz -C /tmp/
   - cd /tmp/ngx_openresty-${OPENRESTY_VERSION}
   - curl https://gist.githubusercontent.com/mikz/4dae10a0ef94de7c8139/raw/33d6d5f9baf68fc5a0748b072b4d94951e463eae/system-ssl.patch | patch -p0
-  - ./configure --prefix=${OPENRESTY} --with-luajit-xcflags=-DLUAJIT_ENABLE_LUA52COMPAT --with-http_gunzip_module && make -j
+  - ./configure --prefix=${OPENRESTY} --with-luajit-xcflags=-DLUAJIT_ENABLE_LUA52COMPAT --with-http_gunzip_module && make
   - sudo make install
   - sudo ln -sf ${OPENRESTY}/luajit/bin/luajit-2.1.0-alpha ${OPENRESTY}/luajit/bin/lua
   - sudo ln -sf ${OPENRESTY}/luajit/bin/lua /usr/local/bin/lua
