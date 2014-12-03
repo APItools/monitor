@@ -6,6 +6,7 @@ file = {
   'lua/http_ng/response.lua',
   'lua/http_ng/request.lua',
   'lua/console.lua',
+  'lua/rack.lua',
   'lua/bucket.lua'
 }
 project = 'APItools'

@@ -22,7 +22,9 @@ local Trace        = require 'models.trace'
 local Event        = require 'models.event'
 local http_mw      = require 'http_mw'
 local luajson      = require 'json'
+
 local brainslug    = require 'middlewares.brainslug'
+
 local statsd       = require 'statsd_wrapper'
 local sanitizer    = require 'middlewares.sanitizer'
 local collector    = require 'collector'

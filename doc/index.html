@@ -38,6 +38,7 @@
 <li><a href="#Class_Event">Class Event </a></li>
 <li><a href="#Class_HTTP">Class HTTP </a></li>
 <li><a href="#Class_Console">Class Console </a></li>
+<li><a href="#Class_Rack">Class Rack </a></li>
 <li><a href="#Class_Bucket">Class Bucket </a></li>
 </ul>
 
@@ -277,6 +278,25 @@
 	<tr>
 	<td class="name" nowrap><a href="#console.error">console.error (...)</a></td>
 	<td class="summary">error</td>
+	</tr>
+</table>
+<h2><a href="#Class_Rack">Class Rack </a></h2>
+<table class="function_list">
+	<tr>
+	<td class="name" nowrap><a href="#Rack.Response">Rack.Response</a></td>
+	<td class="summary">Response</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#Rack:next_middleware">Rack:next_middleware ()</a></td>
+	<td class="summary">evaluates other middlewares and returns a response</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#Rack:middleware">Rack:middleware (request, next_middleware)</a></td>
+	<td class="summary">executing a middleware</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#Rack.Request">Rack.Request</a></td>
+	<td class="summary">Request</td>
 	</tr>
 </table>
 <h2><a href="#Class_Bucket">Class Bucket </a></h2>
@@ -1013,7 +1033,7 @@
 
         </li>
         <li><span class="parameter">options</span>
-            <span class="types"><a class="type" href="index.html#http.options">options</a></span>
+            <span class="types"><a class="type" href="index.html#HTTP.options">options</a></span>
 
 
 
@@ -1048,7 +1068,7 @@
 
         </li>
         <li><span class="parameter">options</span>
-            <span class="types"><a class="type" href="index.html#http.options">options</a></span>
+            <span class="types"><a class="type" href="index.html#HTTP.options">options</a></span>
 
 
 
@@ -1083,7 +1103,7 @@
 
         </li>
         <li><span class="parameter">options</span>
-            <span class="types"><a class="type" href="index.html#http.options">options</a></span>
+            <span class="types"><a class="type" href="index.html#HTTP.options">options</a></span>
 
 
 
@@ -1118,7 +1138,7 @@
 
         </li>
         <li><span class="parameter">options</span>
-            <span class="types"><a class="type" href="index.html#http.options">options</a></span>
+            <span class="types"><a class="type" href="index.html#HTTP.options">options</a></span>
 
 
 
@@ -1160,7 +1180,7 @@
 
         </li>
         <li><span class="parameter">options</span>
-            <span class="types"><a class="type" href="index.html#http.options">options</a></span>
+            <span class="types"><a class="type" href="index.html#HTTP.options">options</a></span>
 
 
 
@@ -1202,7 +1222,7 @@
 
         </li>
         <li><span class="parameter">options</span>
-            <span class="types"><a class="type" href="index.html#http.options">options</a></span>
+            <span class="types"><a class="type" href="index.html#HTTP.options">options</a></span>
 
 
 
@@ -1244,7 +1264,7 @@
 
         </li>
         <li><span class="parameter">options</span>
-            <span class="types"><a class="type" href="index.html#http.options">options</a></span>
+            <span class="types"><a class="type" href="index.html#HTTP.options">options</a></span>
 
 
 
@@ -1474,6 +1494,163 @@
 
 
 
+
+</dd>
+</dl>
+    <h2><a name="Class_Rack"></a>Class Rack </h2>
+
+        Rack
+    <dl class="function">
+    <dt>
+    <a name = "Rack.Response"></a>
+    <strong>Rack.Response</strong>
+    </dt>
+    <dd>
+    Response
+
+
+    <h3>Fields:</h3>
+    <ul>
+        <li><span class="parameter">body</span>
+            <span class="types"><a class="type" href="http://www.lua.org/manual/5.2/manual.html#6.4">string</a></span>
+
+
+
+        </li>
+        <li><span class="parameter">status</span>
+            <span class="types"><span class="type">int</span></span>
+
+
+
+        </li>
+        <li><span class="parameter">headers</span>
+            <span class="types"><a class="type" href="http://www.lua.org/manual/5.2/manual.html#6.5">table</a></span>
+
+
+
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "Rack:next_middleware"></a>
+    <strong>Rack:next_middleware ()</strong>
+    </dt>
+    <dd>
+    evaluates other middlewares and returns a response
+
+
+
+    <h3>Returns:</h3>
+    <ol>
+
+           <span class="types"><a class="type" href="index.html#Rack.Response">Rack.Response</a></span>
+
+
+
+    </ol>
+
+
+
+
+</dd>
+    <dt>
+    <a name = "Rack:middleware"></a>
+    <strong>Rack:middleware (request, next_middleware)</strong>
+    </dt>
+    <dd>
+    executing a middleware
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">request</span>
+            <span class="types"><a class="type" href="index.html#Rack.Request">Rack.Request</a></span>
+
+
+
+        </li>
+        <li><span class="parameter">next_middleware</span>
+         <a href="index.html#Rack:next_middleware">Rack:next_middleware</a>
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "Rack.Request"></a>
+    <strong>Rack.Request</strong>
+    </dt>
+    <dd>
+    Request
+
+
+    <h3>Fields:</h3>
+    <ul>
+        <li><span class="parameter">query</span>
+            <span class="types"><a class="type" href="http://www.lua.org/manual/5.2/manual.html#6.4">string</a></span>
+
+
+
+        </li>
+        <li><span class="parameter">headers</span>
+            <span class="types"><a class="type" href="http://www.lua.org/manual/5.2/manual.html#6.5">table</a></span>
+
+
+
+        </li>
+        <li><span class="parameter">method</span>
+            <span class="types"><a class="type" href="http://www.lua.org/manual/5.2/manual.html#6.4">string</a></span>
+         HTTP method
+        </li>
+        <li><span class="parameter">scheme</span>
+            <span class="types"><a class="type" href="http://www.lua.org/manual/5.2/manual.html#6.4">string</a></span>
+         http/https
+        </li>
+        <li><span class="parameter">uri_full</span>
+            <span class="types"><a class="type" href="http://www.lua.org/manual/5.2/manual.html#6.4">string</a></span>
+         full uri with scheme, host and query string
+        </li>
+        <li><span class="parameter">uri_relative</span>
+            <span class="types"><a class="type" href="http://www.lua.org/manual/5.2/manual.html#6.4">string</a></span>
+         just path
+        </li>
+        <li><span class="parameter">uri</span>
+            <span class="types"><a class="type" href="http://www.lua.org/manual/5.2/manual.html#6.4">string</a></span>
+         path with query string
+        </li>
+        <li><span class="parameter">host</span>
+            <span class="types"><a class="type" href="http://www.lua.org/manual/5.2/manual.html#6.4">string</a></span>
+
+
+
+        </li>
+        <li><span class="parameter">args</span>
+            <span class="types"><a class="type" href="http://www.lua.org/manual/5.2/manual.html#6.5">table</a></span>
+
+
+
+        </li>
+    </ul>
+
+
+
+
+    <h3>Usage:</h3>
+    <ul>
+        <pre class="example">
+ <span class="keyword">return</span> <span class="keyword">function</span>(request, next_middleware)
+   request.uri = <span class="string">'/different'</span>
+   <span class="keyword">return</span> next_middleware()
+ <span class="keyword">end</span></pre>
+    </ul>
 
 </dd>
 </dl>
@@ -1729,7 +1906,7 @@
 </div> <!-- id="main" -->
 <div id="about">
 <i>generated by <a href="http://github.com/stevedonovan/LDoc">LDoc 1.4.3</a></i>
-<i style="float:right;">Last updated 2014-11-21 12:35:32 </i>
+<i style="float:right;">Last updated 2014-12-03 13:05:48 </i>
 </div> <!-- id="about" -->
 </div> <!-- id="container" -->
 </body>
