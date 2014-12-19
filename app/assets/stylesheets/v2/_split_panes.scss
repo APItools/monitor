@@ -58,6 +58,7 @@ $split-pane-arrows-color: darken($split-pane-color,20%);
   > .split-pane {
     min-width: 100%;
     height: 50%;
+    width: inherit;
   }
 
   > .split-pane-first {
