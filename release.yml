@@ -6,6 +6,7 @@ nginx:
   lua_code_cache: 'on'
   # this one is a function directly in release.rb
   # logging:
+  logging: false
   include:
     - shared_dict.conf
     - global.conf
