@@ -10,7 +10,7 @@ namespace :github do
     system('git', 'push', '--tags')
 
     puts "Created release archive: #{tar}"
-    puts 'Upload it to: https://github.com/APItools/monitor/releases/new'
+    puts "Upload it to: https://github.com/APItools/monitor/releases/new?tag=#{version}"
 
     puts "Version: #{version}"
   end
