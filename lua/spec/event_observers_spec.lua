@@ -1,5 +1,3 @@
-require 'spec.spec_helper'
-
 local Event         = require 'models.event'
 local EventObserver = require 'models.event_observer'
 

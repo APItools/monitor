@@ -1,3 +1,16 @@
+------------
+-- @module middleware
+
+--- options
+-- @type HTTP
+
+--- Options that can be passed to @{http} calls.
+-- @table options
+-- @field[type=table] headers table of HTTP headers
+-- @field[type=table] ssl table with ssl options
+-- @usage http.get(uri, { ssl = { verify = false }})
+-- @usage http.get(uri, { headers = { my_header = 'value' }})
+
 local headers = require 'http_ng.headers'
 local request = { headers = headers }
 
@@ -27,7 +40,7 @@ function request.new(req)
 
   setmetatable(req, {
     __index =  {
-      serialize = req.client.serializer or function() end
+      serialize = req.serializer or function() end
     }
   })
 

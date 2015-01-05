@@ -1,26 +1,28 @@
-# Vagrantfile API/syntax version. Don't touch unless you know what you're doing!
-VAGRANTFILE_API_VERSION = '2'
+require 'yaml'
 
-Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
-  config.vm.box = '3scale/docker'
-  config.vm.box_version = '>= 0.10.0.2'
+Vagrant.configure('2') do |config|
+  config.vm.box = 'ubuntu/trusty64'
 
-#  ip = '10.17.42.2'
-#  # https://www.virtualbox.org/manual/ch06.html#network_internal
-#  # network just between host and vms
-#  config.vm.network :private_network, ip: ip, netmask: '255.255.0.0'
+  config.vm.provision 'shell', inline: <<-RUBY
+apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 80F70E11F0F0D5F10CB20E62F5DA5F09C3173AA6
+echo 'deb http://ppa.launchpad.net/brightbox/ruby-ng/ubuntu trusty main' > /etc/apt/sources.list.d/ruby-ng.list
+apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 136221EE520DDFAF0A905689B9316A7BC7917B12
+echo 'deb http://ppa.launchpad.net/chris-lea/node.js/ubuntu precise main' > /etc/apt/sources.list.d/nodejs.list
+apt-get update && apt-get -y install ruby2.1 bundler git ruby2.1-dev nodejs
+gem install bundler
+RUBY
 
-#  config.vm.provision :shell, inline: <<-docker
-#    echo 'DOCKER_OPTS="-H tcp://0.0.0.0:4243 -H unix:// -bip=#{ip}/16"' > /etc/default/docker
-#  docker
+  travis = YAML.load_file('.travis.yml')
+  env = travis.fetch('env').values.flatten
+  env << 'TRAVIS_BUILD_DIR=/vagrant'
 
-#  config.vm.provision :shell, inline: <<-network
-#    echo "#!/bin/sh -e" > /etc/rc.local
-#    echo ip addr del #{ip}/16 dev eth1 >> /etc/rc.local
-#    echo ip link set eth1 master docker0 >> /etc/rc.local
-#    echo service docker restart >> /etc/rc.local
-#    chmod +x /etc/rc.local 2> /dev/null
-#  network
-#
-#  config.vm.provision :shell, inline: '/etc/rc.local'
+  environment = env.map{|env| "echo #{env} >> /etc/environment" }.join("\n")
+  config.vm.provision 'shell', inline: environment
+
+  install = ['set -e', env]
+
+  install << travis.fetch('before_install')
+  install << travis.fetch('install')
+
+  config.vm.provision 'shell', inline: install.join("\n")
 end

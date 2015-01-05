@@ -176,7 +176,9 @@ router:post(   '/api/system/clean_metrics'                   , r('system.metrics
 router:get(    '/api/system/log'                             , r('system.log'))
 router:get(    '/api/system/cron/stats'                      , r('system.cron_stats'))
 router:post(   '/api/system/cron/flush'                      , r('system.cron_flush'))
+router:post(   '/api/system/cron'                            , r('system.cron_trigger')) -- async
 router:post(   '/api/system/cron/:timer_id'                  , r('system.timer'))
+router:get(    '/api/system/status'                          , r('system.status'))
 
 router:get(    '/api/config'                                 , r('config.show'))
 router:post(   '/api/config'                                 , r('config.update'))
@@ -216,11 +218,6 @@ make_crud('/api/filters/events/', 'filters-events')
 
 make_crud('/api/metrics/', 'metrics')
 make_crud('/api/autoswagger/', 'autoswagger_hosts')
-
-router:get('/api/mails/send', function()
-  local mail = require 'consumers.mail'
-  mail.run()
-end)
 
 local method = ngx.req.get_method():lower()
 

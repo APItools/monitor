@@ -111,7 +111,7 @@ local TIMERS = {
     offset = 10,
     action = function()
       local mail  = require 'consumers.mail'
-      mail.trigger_run()
+      mail.run()
     end
   },
   { id     = 'send_redis_stats',
@@ -122,7 +122,7 @@ local TIMERS = {
 
       for k,v in pairs(stats) do
         if  tonumber(v)          -- ignore non-numerical values
-        and not k:match('^aof_') -- also ignore aof values (deactivated)
+        and not k:match('^rdb_') -- also ignore rdb values (deactivated)
         then
           statsd.gauge('redis.' .. k, tonumber(v))
         end
@@ -195,13 +195,12 @@ end
 crontab.schedule = function(timer, offset)
   assert(dict:get(timer.id), "can't schedule timer " .. timer.id .. " because it is not initialized")
 
-  local delay = timer.every
+  local at = 0
   if timer.at == 'midnight' then
-    delay = get_seconds_to_midnight()
+    at = get_seconds_to_midnight()
   end
-  delay = delay + (offset or 0)
 
-  local delay      = timer.every + (offset or 0) -- randomizer offset
+  local delay      = timer.every + at + (offset or 0) -- randomizer offset
   local job_id     = crontab.uuid(timer)
   local scheduled  = dict:add(job_id, timer.id)
 
@@ -251,24 +250,44 @@ crontab.block = function(fun, ...)
 end
 
 crontab.lock = function(fun, ...)
-  local lock = resty_lock:new('locks')
+  if ngx.ctx.crontab_lock then -- short cirguit when locking inside already locked ctx
+    ngx.log(ngx.INFO, 'lock already acquired, skipping locking')
+    return pcall(fun, ...)
+  end
 
+  local lock = resty_lock:new('locks')
   local elapsed, err = lock:lock('crontab')
 
+  if not elapsed and err then
+    ngx.log(ngx.ERR, 'failed to acquire lock')
+    return nil, err
+  end
+
+  ngx.log(ngx.INFO, 'acquired lock in ' .. tostring(elapsed) .. ' seconds')
+  ngx.ctx.crontab_lock = true
+
+  local start = ngx.now()
   local ret, err = pcall(fun, ...)
+  local elapsed = ngx.now() - start
 
   lock:unlock()
+  ngx.ctx.crontab_lock = nil
+  ngx.log(ngx.INFO, 'released lock after ' .. tostring(elapsed) .. ' seconds')
 
   return ret, err
 end
 
 crontab.randomizer = function(timer)
   if timer.offset then
-    return math.random(0, timer.offset)
+    return math.random(0, timer.offset) -- integer between 0 and timer.offset
+  else
+    return math.random() -- float between 0 and 1
   end
 end
 
 crontab.initialize = function()
+  crontab.enable()
+
   if crontab.disabled then return end
 
   -- it wont run initialize when locked
@@ -291,9 +310,11 @@ crontab.initialize = function()
 end
 
 crontab.flush = function()
-  for _,timer in ipairs(TIMERS) do
-    crontab.run(timer, 'forced')
-  end
+  crontab.lock(function()
+    for _,timer in ipairs(TIMERS) do
+      crontab.run(timer, 'forced')
+    end
+  end)
 end
 
 crontab.timer = function(id)
@@ -307,9 +328,6 @@ local has_slug_name = function()
   return Config.get_slug_name()
 end
 
-crontab.disabled = os.getenv('SLUG_DISABLE_CRON')
-crontab.forced = os.getenv('SLUG_CRON_FORCED')
-
 crontab.enabled = function()
   return not crontab.disabled and (crontab.forced or has_slug_name())
 end
@@ -317,8 +335,9 @@ end
 crontab.run = function(timer, job_id)
   ngx.log(ngx.INFO, '[cron] running ' .. timer.id .. ' job  ' .. job_id)
 
-  if job_id == 'forced' or crontab.enabled() then
-    -- it locks cron, so initialize can't be run
+  local forced = job_id == 'forced' or job_id == 'manual'
+
+  if forced or crontab.enabled() then
     crontab.lock(function()
       statsd.timer('cron.' .. timer.id, function()
         error_handler.execute(timer.action)
@@ -333,9 +352,21 @@ crontab.run = function(timer, job_id)
   dict:delete(job_id)
 end
 
+crontab.shutdown = function()
+  crontab.halt()
+  crontab.flush()
+end
+
 crontab.halt = function()
+  crontab.disabled = true
+  crontab.forced = false
   dict:flush_all()
   dict:flush_expired()
+end
+
+crontab.enable = function()
+  crontab.disabled = os.getenv('SLUG_DISABLE_CRON')
+  crontab.forced = os.getenv('SLUG_CRON_FORCED')
 end
 
 crontab.reset = function()

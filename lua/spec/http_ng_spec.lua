@@ -1,14 +1,12 @@
-require 'spec.spec_helper'
-
 local http_ng = require 'http_ng'
 local fake_backend = require 'spec.util.fake_backend'
 
-spy.on(fake_backend, 'send')
 
 describe('http_ng', function()
   local http
   before_each(function()
-    http = http_ng.new{backend = fake_backend}
+    http = http_ng.new{backend = fake_backend.reset() }
+    spy.on(fake_backend, 'send')
   end)
 
   for _,method in ipairs{ 'get', 'head', 'options', 'delete' } do
@@ -35,6 +33,54 @@ describe('http_ng', function()
     end)
   end
 
+  describe('x-www-form-urlencoded', function()
+    local body = { value = 'some' }
+
+    it('serializes table as form-urlencoded', function()
+      local response = http.post('http://example.com', body)
+      local last_request = assert(fake_backend.last_request)
+      assert.equal('application/x-www-form-urlencoded', last_request.headers.content_type)
+      assert.equal('value=some', last_request.body)
+    end)
+  end)
+
+  describe('array syntax', function()
+    it('works for get', function()
+      local response = http.get{'http://example.com', headers = { custom = 'value'} }
+      local last_request = assert(fake_backend.last_request)
+      assert.equal('value', last_request.headers.custom)
+    end)
+
+    it('works for post', function()
+      local response = http.post{'http://example.com', 'body', headers = { custom = 'value'} }
+      local last_request = assert(fake_backend.last_request)
+      assert.equal('value', last_request.headers.Custom)
+      assert.equal('body', last_request.body)
+    end)
+  end)
+
+  describe('headers', function()
+    local headers = { custom_header = 'value' }
+
+    it('can override Host header', function()
+      local response = http.get('http://example.com', { headers = { host = 'overriden' }})
+      local last_request = assert(fake_backend.last_request)
+      assert.equal('overriden', last_request.headers.host)
+    end)
+
+    it('passed headers for requests with body', function()
+      local response = http.post('http://example.com', '', { headers = headers })
+      local last_request = assert(fake_backend.last_request)
+      assert.equal('value', last_request.headers['Custom-Header'])
+    end)
+
+    it('passed headers for requests without body', function()
+      local response = http.get('http://example.com', { headers = headers })
+      local last_request = assert(fake_backend.last_request)
+      assert.equal('value', last_request.headers['Custom-Header'])
+    end)
+  end)
+
   describe('json', function()
     it('has serializer', function()
       assert.equal(http_ng.serializers.json, http.json.serializer)
@@ -49,6 +95,21 @@ describe('http_ng', function()
       assert.spy(http.backend.send).was_called()
       assert.equal('{"table":"value"}', fake_backend.last_request.body)
       assert.equal(#'{"table":"value"}', fake_backend.last_request.headers['Content-Length'])
+      assert.equal('application/json', fake_backend.last_request.headers['Content-Type'])
+    end)
+
+    it('accepts json as a string', function()
+      http.json.post('http://example.com', '{"table" : "value"}')
+      assert.spy(http.backend.send).was_called()
+      assert.equal('{"table" : "value"}', fake_backend.last_request.body)
+      assert.equal(#'{"table" : "value"}', fake_backend.last_request.headers['Content-Length'])
+      assert.equal('application/json', fake_backend.last_request.headers['Content-Type'])
+    end)
+
+    it('does not override passed headers', function()
+      http.json.post('http://example.com', '{}', { headers = { content_type = 'custom/format' }})
+      assert.spy(http.backend.send).was_called()
+      assert.equal('custom/format', fake_backend.last_request.headers['Content-Type'])
     end)
   end)
 
@@ -81,6 +142,15 @@ describe('http_ng', function()
 
     it('has error', function()
       assert.equal('connection refused', response.error)
+    end)
+  end)
+
+  describe('works with api.twitter.com', function()
+
+    it('connects #twitter', function()
+      local http = http_ng.new{}
+      local response = http.get('http://api.twitter.com/')
+      assert(response.ok, 'response is not ok')
     end)
   end)
 end)

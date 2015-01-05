@@ -1,5 +1,3 @@
-require 'spec.spec_helper'
-
 local backend = require 'http_ng.backend.async_resty'
 
 describe('resty backend', function()
@@ -15,7 +13,7 @@ describe('resty backend', function()
     end)
 
     it('works with ssl', function()
-      local response, err = backend.send{method = method, url = 'https://www.google.com/' }
+      local response, err = backend.send{method = method, url = 'https://google.com/' }
       assert.falsy(err)
       assert.truthy(response)
       assert(response.headers.location:match('^https://'))

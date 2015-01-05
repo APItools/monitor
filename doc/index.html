@@ -1,0 +1,1913 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<head>
+    <title>APItools Middleware Documentation</title>
+    <link rel="stylesheet" href="ldoc.css" type="text/css" />
+</head>
+<body>
+
+<div id="container">
+
+<div id="product">
+	<div id="product_logo"></div>
+	<div id="product_name"><big><b></b></big></div>
+	<div id="product_description"></div>
+</div> <!-- id="product" -->
+
+
+<div id="main">
+
+
+<!-- Menu -->
+
+<div id="navigation">
+<br/>
+<h1>APItools</h1>
+
+
+<h2>Contents</h2>
+<ul>
+<li><a href="#Bucket">Bucket</a></li>
+<li><a href="#Console">Console</a></li>
+<li><a href="#HTTP">HTTP</a></li>
+<li><a href="#Functions">Functions</a></li>
+<li><a href="#Tables">Tables</a></li>
+<li><a href="#Class_Trace">Class Trace </a></li>
+<li><a href="#Class_Event">Class Event </a></li>
+<li><a href="#Class_HTTP">Class HTTP </a></li>
+<li><a href="#Class_Console">Class Console </a></li>
+<li><a href="#Class_Rack">Class Rack </a></li>
+<li><a href="#Class_Bucket">Class Bucket </a></li>
+</ul>
+
+
+<h2>Modules</h2>
+<ul class="$(kind=='Topics' and '' or 'nowrap'">
+  <li><strong>middleware</strong></li>
+</ul>
+
+</div>
+
+<div id="content">
+
+<h1>Module <code>middleware</code></h1>
+<p>APItools Middleware</p>
+
+<p> Middleware documentation of <a href="https://www.apitools.com">APItools</a>.</p>
+<p> All this should be available when middleware is evaluated.</p>
+
+<p> Check out our <a href="https://github.com/apitools/monitor">GitHub Repository</a> and
+ <a href="https://github.com/apitools/middleware">Middleware repository</a>.</p>
+
+<p> If you don't have enough, we have a <a href="https://docs.apitools.com/blog">blog</a> and a
+ <a href="https://docs.apitools.com/docs">documentation</a>.</p>
+    <h3>Info:</h3>
+    <ul>
+        <li><strong>Copyright</strong>: APItools 2014</li>
+        <li><strong>License</strong>: MIT</li>
+    </ul>
+
+
+<h2><a href="#Bucket">Bucket</a></h2>
+<table class="function_list">
+	<tr>
+	<td class="name" nowrap><a href="#bucket.middleware">bucket.middleware</a></td>
+	<td class="summary">Middleware Bucket
+ Every middleware has own bucket.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#bucket.service">bucket.service</a></td>
+	<td class="summary">Service Bucket
+ Every service has own bucket.</td>
+	</tr>
+</table>
+<h2><a href="#Console">Console</a></h2>
+<table class="function_list">
+	<tr>
+	<td class="name" nowrap><a href="#console">console</a></td>
+	<td class="summary"><a href="index.html#Console">Console</a> for all the available methods.</td>
+	</tr>
+</table>
+<h2><a href="#HTTP">HTTP</a></h2>
+<table class="function_list">
+	<tr>
+	<td class="name" nowrap><a href="#http">http</a></td>
+	<td class="summary">HTTP Client
+ Check <a href="index.html#http.get">http.get</a> for details.</td>
+	</tr>
+</table>
+<h2><a href="#Functions">Functions</a></h2>
+<table class="function_list">
+	<tr>
+	<td class="name" nowrap><a href="#metric.count">metric.count (metric[, increment=1])</a></td>
+	<td class="summary">store integer values as simple count</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#metric.set">metric.set (metric, value)</a></td>
+	<td class="summary">store integer values as set
+ then you can get avg,p99 and other statistic</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#base64.decode">base64.decode (str)</a></td>
+	<td class="summary">Decodes the str argument as a base64 digest to the raw form.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#base64.encode">base64.encode (str)</a></td>
+	<td class="summary">Encode str to a base64 digest.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#send.email">send.email (to, subject, msg)</a></td>
+	<td class="summary">Send email</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#send.event">send.event (event)</a></td>
+	<td class="summary">Create <a href="index.html#Event">Event</a></td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#send.notification">send.notification (event)</a></td>
+	<td class="summary">Create middleware notification
+ Creates <a href="index.html#Event">Event</a> and will be overriden to middleware channel.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#time.seconds">time.seconds ()</a></td>
+	<td class="summary">Current time in seconds
+ Returns the elapsed seconds from the epoch.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#time.http">time.http (sec)</a></td>
+	<td class="summary">Formats number of seconds to a HTTP-date string
+ Returns a formated string in "HTTP-date" format specified by the <a href="http://tools.ietf.org/html/rfc7231">RFC 7231</a>.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#time.now">time.now ()</a></td>
+	<td class="summary">Returns a floating-point number for the elapsed time in seconds
+ (including milliseconds as the decimal part) from the epoch for the current time stamp.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#json.encode">json.encode (object)</a></td>
+	<td class="summary">JSON Encode table to a JSON string.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#json.decode">json.decode (string)</a></td>
+	<td class="summary">Decode JSON string to an object.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#hmac.sha256">hmac.sha256 (str, key)</a></td>
+	<td class="summary">Create keyed-hash message authentication code using HMAC-SHA-256.</td>
+	</tr>
+</table>
+<h2><a href="#Tables">Tables</a></h2>
+<table class="function_list">
+	<tr>
+	<td class="name" nowrap><a href="#trace">trace</a></td>
+	<td class="summary"><a href="index.html#Trace">Trace</a> object of current request.</td>
+	</tr>
+</table>
+<h2><a href="#Class_Trace">Class Trace </a></h2>
+<table class="function_list">
+	<tr>
+	<td class="name" nowrap><a href="#Trace.req">Trace.req</a></td>
+	<td class="summary">Current HTTP Request like it will be stored and displayed in the UI.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#Trace.res">Trace.res</a></td>
+	<td class="summary">Will contain the response like it will be stored (once it is processed).</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#Trace.total_time">Trace.total_time</a></td>
+	<td class="summary">time in seconds how long it took APItools to return the request</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#Trace.service_id">Trace.service_id</a></td>
+	<td class="summary">id of the service that processed the request</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#Trace.starred">Trace.starred</a></td>
+	<td class="summary">starred</td>
+	</tr>
+</table>
+<h2><a href="#Class_Event">Class Event </a></h2>
+<table class="function_list">
+	<tr>
+	<td class="name" nowrap><a href="#event.channel">event.channel</a></td>
+	<td class="summary">channel
+ required attribute, can be for example middleware, email, stats, ...</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#event.level">event.level</a></td>
+	<td class="summary">level
+ one of the {'log', 'debug', 'info', 'warn', 'error' }</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#event.msg">event.msg</a></td>
+	<td class="summary">msg
+ required attribute, a message of the event</td>
+	</tr>
+</table>
+<h2><a href="#Class_HTTP">Class HTTP </a></h2>
+<table class="function_list">
+	<tr>
+	<td class="name" nowrap><a href="#http.get">http.get (url, options)</a></td>
+	<td class="summary">Make GET request.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#http.head">http.head (url, options)</a></td>
+	<td class="summary">Make HEAD request.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#http.delete">http.delete (url, options)</a></td>
+	<td class="summary">Make DELETE request.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#http.options">http.options (url, options)</a></td>
+	<td class="summary">Make OPTIONS request.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#http.put">http.put (url, body, options)</a></td>
+	<td class="summary">Make PUT request.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#http.post">http.post (url, body, options)</a></td>
+	<td class="summary">Make POST request.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#http.patch">http.patch (url, body, options)</a></td>
+	<td class="summary">Make PATCH request.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#HTTP.urlencoded">HTTP.urlencoded</a></td>
+	<td class="summary">Urlencoded serializer
+ Serializes your data to <code>application/x-www-form-urlencoded</code> format
+ and sets correct Content-Type header.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#HTTP.json">HTTP.json</a></td>
+	<td class="summary">JSON serializer
+ Converts the body to JSON unless it is already a string
+ and sets correct Content-Type <code>application/json</code>.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#HTTP.response">HTTP.response</a></td>
+	<td class="summary">Response returned by http.get and similar calls</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#HTTP.options">HTTP.options</a></td>
+	<td class="summary">Options that can be passed to <a href="index.html#http">http</a> calls.</td>
+	</tr>
+</table>
+<h2><a href="#Class_Console">Class Console </a></h2>
+<table class="function_list">
+	<tr>
+	<td class="name" nowrap><a href="#console.log">console.log (...)</a></td>
+	<td class="summary">log</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#console.debug">console.debug (...)</a></td>
+	<td class="summary">debug</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#console.info">console.info (...)</a></td>
+	<td class="summary">info</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#console.warn">console.warn (...)</a></td>
+	<td class="summary">warn</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#console.error">console.error (...)</a></td>
+	<td class="summary">error</td>
+	</tr>
+</table>
+<h2><a href="#Class_Rack">Class Rack </a></h2>
+<table class="function_list">
+	<tr>
+	<td class="name" nowrap><a href="#Rack.Response">Rack.Response</a></td>
+	<td class="summary">Response</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#Rack:next_middleware">Rack:next_middleware ()</a></td>
+	<td class="summary">evaluates other middlewares and returns a response</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#Rack:middleware">Rack:middleware (request, next_middleware)</a></td>
+	<td class="summary">executing a middleware</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#Rack.Request">Rack.Request</a></td>
+	<td class="summary">Request</td>
+	</tr>
+</table>
+<h2><a href="#Class_Bucket">Class Bucket </a></h2>
+<table class="function_list">
+	<tr>
+	<td class="name" nowrap><a href="#Bucket.get">Bucket.get (field_name)</a></td>
+	<td class="summary">get a value</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#Bucket.set">Bucket.set (field_name, value, exptime)</a></td>
+	<td class="summary">set a value</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#Bucket.delete">Bucket.delete (field_name)</a></td>
+	<td class="summary">delete a value</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#Bucket.incr">Bucket.incr (field_name[, amount=1])</a></td>
+	<td class="summary">increment a value</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#Bucket.add">Bucket.add (field_name, value, exptime)</a></td>
+	<td class="summary">set the value if it does not exist</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#Bucket.delete_all">Bucket.delete_all ()</a></td>
+	<td class="summary">delete all values</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#Bucket.get_keys">Bucket.get_keys ()</a></td>
+	<td class="summary">get all keys</td>
+	</tr>
+</table>
+
+<br/>
+<br/>
+
+
+    <h2><a name="Bucket"></a>Bucket</h2>
+
+    <dl class="function">
+    <dt>
+    <a name = "bucket.middleware"></a>
+    <strong>bucket.middleware</strong>
+    </dt>
+    <dd>
+    Middleware Bucket
+ Every middleware has own bucket.  You can access it by using methods of <a href="index.html#Bucket">Bucket</a> methods as <a href="index.html#bucket.middleware">bucket.middleware</a>.
+
+
+
+
+
+    <h3>See also:</h3>
+    <ul>
+         <a href="index.html#Bucket.get">Bucket.get</a>
+    </ul>
+
+    <h3>Usage:</h3>
+    <ul>
+        <pre class="example"><span class="keyword">local</span> cached = bucket.middleware.get(<span class="string">'my-cached-value'</span>)</pre>
+    </ul>
+
+</dd>
+    <dt>
+    <a name = "bucket.service"></a>
+    <strong>bucket.service</strong>
+    </dt>
+    <dd>
+    Service Bucket
+ Every service has own bucket.  All middlewares can access it by using <a href="index.html#Bucket">Bucket</a> methods as <a href="index.html#bucket.service">bucket.service</a>.
+
+
+
+
+
+    <h3>See also:</h3>
+    <ul>
+         <a href="index.html#Bucket.get">Bucket.get</a>
+    </ul>
+
+    <h3>Usage:</h3>
+    <ul>
+        <pre class="example"><span class="keyword">local</span> cached = bucket.service.get(<span class="string">'my-cached-value'</span>)</pre>
+    </ul>
+
+</dd>
+</dl>
+    <h2><a name="Console"></a>Console</h2>
+
+    <dl class="function">
+    <dt>
+    <a name = "console"></a>
+    <strong>console</strong>
+    </dt>
+    <dd>
+    <a href="index.html#Console">Console</a> for all the available methods.  Almost like in the browser.
+
+
+
+
+
+
+
+</dd>
+</dl>
+    <h2><a name="HTTP"></a>HTTP</h2>
+
+    <dl class="function">
+    <dt>
+    <a name = "http"></a>
+    <strong>http</strong>
+    </dt>
+    <dd>
+    HTTP Client
+ Check <a href="index.html#http.get">http.get</a> for details.
+
+
+
+
+
+    <h3>See also:</h3>
+    <ul>
+         <li><a href="index.html#http.get">http.get</a></li>
+         <li><a href="index.html#http.put">http.put</a></li>
+         <li><a href="index.html#http.post">http.post</a></li>
+         <li><a href="index.html#http.patch">http.patch</a></li>
+    </ul>
+
+
+</dd>
+</dl>
+    <h2><a name="Functions"></a>Functions</h2>
+
+    <dl class="function">
+    <dt>
+    <a name = "metric.count"></a>
+    <strong>metric.count (metric[, increment=1])</strong>
+    </dt>
+    <dd>
+    store integer values as simple count
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">metric</span>
+            <span class="types"><a class="type" href="http://www.lua.org/manual/5.2/manual.html#6.4">string</a></span>
+         name
+        </li>
+        <li><span class="parameter">increment</span>
+            <span class="types"><span class="type">int</span></span>
+
+
+
+         (<em>default</em> 1)
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "metric.set"></a>
+    <strong>metric.set (metric, value)</strong>
+    </dt>
+    <dd>
+    store integer values as set
+ then you can get avg,p99 and other statistic
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">metric</span>
+            <span class="types"><a class="type" href="http://www.lua.org/manual/5.2/manual.html#6.4">string</a></span>
+         name
+        </li>
+        <li><span class="parameter">value</span>
+            <span class="types"><span class="type">number</span></span>
+
+
+
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "base64.decode"></a>
+    <strong>base64.decode (str)</strong>
+    </dt>
+    <dd>
+    Decodes the str argument as a base64 digest to the raw form.
+ Returns nil if str is not well formed.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">str</span>
+            <span class="types"><a class="type" href="http://www.lua.org/manual/5.2/manual.html#6.4">string</a></span>
+         base64 encoded string
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+           <span class="types">optional <a class="type" href="http://www.lua.org/manual/5.2/manual.html#6.4">string</a></span>
+        decoded string
+    </ol>
+
+
+
+
+</dd>
+    <dt>
+    <a name = "base64.encode"></a>
+    <strong>base64.encode (str)</strong>
+    </dt>
+    <dd>
+    Encode str to a base64 digest.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">str</span>
+            <span class="types"><a class="type" href="http://www.lua.org/manual/5.2/manual.html#6.4">string</a></span>
+         a string
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+           <span class="types"><a class="type" href="http://www.lua.org/manual/5.2/manual.html#6.4">string</a></span>
+        base64 encoded string
+    </ol>
+
+
+
+
+</dd>
+    <dt>
+    <a name = "send.email"></a>
+    <strong>send.email (to, subject, msg)</strong>
+    </dt>
+    <dd>
+    Send email
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">to</span>
+            <span class="types"><a class="type" href="http://www.lua.org/manual/5.2/manual.html#6.4">string</a></span>
+         email address of the receiver
+        </li>
+        <li><span class="parameter">subject</span>
+            <span class="types"><a class="type" href="http://www.lua.org/manual/5.2/manual.html#6.4">string</a></span>
+         email subject
+        </li>
+        <li><span class="parameter">msg</span>
+            <span class="types"><a class="type" href="http://www.lua.org/manual/5.2/manual.html#6.4">string</a></span>
+         the email body
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "send.event"></a>
+    <strong>send.event (event)</strong>
+    </dt>
+    <dd>
+    Create <a href="index.html#Event">Event</a>
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">event</span>
+            <span class="types"><a class="type" href="http://www.lua.org/manual/5.2/manual.html#6.5">table</a></span>
+         the event to be created
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "send.notification"></a>
+    <strong>send.notification (event)</strong>
+    </dt>
+    <dd>
+    Create middleware notification
+ Creates <a href="index.html#Event">Event</a> and will be overriden to middleware channel.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">event</span>
+            <span class="types"><a class="type" href="http://www.lua.org/manual/5.2/manual.html#6.5">table</a></span>
+         the event to be created
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "time.seconds"></a>
+    <strong>time.seconds ()</strong>
+    </dt>
+    <dd>
+    Current time in seconds
+ Returns the elapsed seconds from the epoch.
+
+
+
+    <h3>Returns:</h3>
+    <ol>
+
+           <span class="types"><span class="type">int</span></span>
+        elapsed seconds from the epoch
+    </ol>
+
+
+
+
+</dd>
+    <dt>
+    <a name = "time.http"></a>
+    <strong>time.http (sec)</strong>
+    </dt>
+    <dd>
+    Formats number of seconds to a HTTP-date string
+ Returns a formated string in "HTTP-date" format specified by the <a href="http://tools.ietf.org/html/rfc7231">RFC 7231</a>.
+ It is used for example in Last-Modified header and looks like "<code>Tue, 15 Nov 2014 08:12:31 GMT</code>".
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">sec</span>
+            <span class="types"><span class="type">int</span></span>
+         timestamp in seconds (like those returned from time.seconds)
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+           <span class="types"><a class="type" href="http://www.lua.org/manual/5.2/manual.html#6.4">string</a></span>
+        HTTP-date formatted string
+    </ol>
+
+
+
+
+</dd>
+    <dt>
+    <a name = "time.now"></a>
+    <strong>time.now ()</strong>
+    </dt>
+    <dd>
+    Returns a floating-point number for the elapsed time in seconds
+ (including milliseconds as the decimal part) from the epoch for the current time stamp.
+
+
+
+    <h3>Returns:</h3>
+    <ol>
+
+           <span class="types"><span class="type">float</span></span>
+        elapsed seconds from the epoch (including miliseconds)
+    </ol>
+
+
+
+
+</dd>
+    <dt>
+    <a name = "json.encode"></a>
+    <strong>json.encode (object)</strong>
+    </dt>
+    <dd>
+    JSON Encode table to a JSON string.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">object</span>
+            <span class="types"><a class="type" href="http://www.lua.org/manual/5.2/manual.html#6.5">table</a></span>
+         to be serialized
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+           <span class="types"><a class="type" href="http://www.lua.org/manual/5.2/manual.html#6.4">string</a></span>
+        JSON string
+    </ol>
+
+
+
+
+</dd>
+    <dt>
+    <a name = "json.decode"></a>
+    <strong>json.decode (string)</strong>
+    </dt>
+    <dd>
+    Decode JSON string to an object.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">string</span>
+            <span class="types"><a class="type" href="http://www.lua.org/manual/5.2/manual.html#6.4">string</a></span>
+         to be deserialized
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+           <span class="types"><a class="type" href="http://www.lua.org/manual/5.2/manual.html#6.5">table</a></span>
+        deserialized object
+    </ol>
+
+
+
+
+</dd>
+    <dt>
+    <a name = "hmac.sha256"></a>
+    <strong>hmac.sha256 (str, key)</strong>
+    </dt>
+    <dd>
+    Create keyed-hash message authentication code using HMAC-SHA-256.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">str</span>
+            <span class="types"><a class="type" href="http://www.lua.org/manual/5.2/manual.html#6.4">string</a></span>
+         string to be signed
+        </li>
+        <li><span class="parameter">key</span>
+            <span class="types"><a class="type" href="http://www.lua.org/manual/5.2/manual.html#6.4">string</a></span>
+         to sign it with
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+           <span class="types"><a class="type" href="http://www.lua.org/manual/5.2/manual.html#6.4">string</a></span>
+        digest
+    </ol>
+
+
+
+
+</dd>
+</dl>
+    <h2><a name="Tables"></a>Tables</h2>
+
+    <dl class="function">
+    <dt>
+    <a name = "trace"></a>
+    <strong>trace</strong>
+    </dt>
+    <dd>
+    <a href="index.html#Trace">Trace</a> object of current request.
+ After all the middleware finish, it will be persisted for later search.
+
+
+
+
+
+    <h3>See also:</h3>
+    <ul>
+         <li><a href="index.html#Trace.req">Trace.req</a></li>
+         <li><a href="index.html#Trace.res">Trace.res</a></li>
+    </ul>
+
+    <h3>Usage:</h3>
+    <ul>
+        <li><pre class="example">trace.my_middleware = <span class="string">'some metadata'</span></pre></li>
+        <li><pre class="example">trace.res.processed = <span class="keyword">true</span></pre></li>
+    </ul>
+
+</dd>
+</dl>
+    <h2><a name="Class_Trace"></a>Class Trace </h2>
+
+        Trace
+    <dl class="function">
+    <dt>
+    <a name = "Trace.req"></a>
+    <strong>Trace.req</strong>
+    </dt>
+    <dd>
+    Current HTTP Request like it will be stored and displayed in the UI.
+
+
+    <h3>Fields:</h3>
+    <ul>
+        <li><span class="parameter">query</span>
+            <span class="types"><a class="type" href="http://www.lua.org/manual/5.2/manual.html#6.4">string</a></span>
+         query string
+        </li>
+        <li><span class="parameter">headers</span>
+            <span class="types"><a class="type" href="http://www.lua.org/manual/5.2/manual.html#6.5">table</a></span>
+
+
+
+        </li>
+        <li><span class="parameter">uri_full</span>
+            <span class="types"><a class="type" href="http://www.lua.org/manual/5.2/manual.html#6.4">string</a></span>
+         whole URI including scheme, host, port, path and query string
+        </li>
+        <li><span class="parameter">uri_relative</span>
+            <span class="types"><a class="type" href="http://www.lua.org/manual/5.2/manual.html#6.4">string</a></span>
+         path + query string
+        </li>
+        <li><span class="parameter">args</span>
+            <span class="types"><a class="type" href="http://www.lua.org/manual/5.2/manual.html#6.5">table</a></span>
+         parsed query string
+        </li>
+        <li><span class="parameter">method</span>
+            <span class="types"><a class="type" href="http://www.lua.org/manual/5.2/manual.html#6.4">string</a></span>
+         HTTP Method
+        </li>
+        <li><span class="parameter">scheme</span>
+            <span class="types"><a class="type" href="http://www.lua.org/manual/5.2/manual.html#6.4">string</a></span>
+         HTTP Scheme (http/https)
+        </li>
+        <li><span class="parameter">uri</span>
+            <span class="types"><a class="type" href="http://www.lua.org/manual/5.2/manual.html#6.4">string</a></span>
+         just the path
+        </li>
+        <li><span class="parameter">host</span>
+            <span class="types"><a class="type" href="http://www.lua.org/manual/5.2/manual.html#6.4">string</a></span>
+         value of Host header
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "Trace.res"></a>
+    <strong>Trace.res</strong>
+    </dt>
+    <dd>
+    Will contain the response like it will be stored (once it is processed).
+
+
+    <h3>Fields:</h3>
+    <ul>
+        <li><span class="parameter">body</span>
+            <span class="types"><a class="type" href="http://www.lua.org/manual/5.2/manual.html#6.4">string</a></span>
+
+
+
+        </li>
+        <li><span class="parameter">status</span>
+            <span class="types"><span class="type">int</span></span>
+
+
+
+        </li>
+        <li><span class="parameter">headers</span>
+            <span class="types"><a class="type" href="http://www.lua.org/manual/5.2/manual.html#6.5">table</a></span>
+
+
+
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "Trace.total_time"></a>
+    <strong>Trace.total_time</strong>
+    </dt>
+    <dd>
+    time in seconds how long it took APItools to return the request
+
+
+    <ul>
+        <li><span class="parameter">total_time</span>
+            <span class="types"><span class="type">number</span></span>
+
+
+
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "Trace.service_id"></a>
+    <strong>Trace.service_id</strong>
+    </dt>
+    <dd>
+    id of the service that processed the request
+
+
+    <ul>
+        <li><span class="parameter">service_id</span>
+            <span class="types"><span class="type">number</span></span>
+
+
+
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "Trace.starred"></a>
+    <strong>Trace.starred</strong>
+    </dt>
+    <dd>
+    starred
+
+
+    <ul>
+        <li><span class="parameter">starred</span>
+            <span class="types"><span class="type">boolean</span></span>
+
+
+
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+</dl>
+    <h2><a name="Class_Event"></a>Class Event </h2>
+
+        Event
+    <dl class="function">
+    <dt>
+    <a name = "event.channel"></a>
+    <strong>event.channel</strong>
+    </dt>
+    <dd>
+    channel
+ required attribute, can be for example middleware, email, stats, ...
+
+
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "event.level"></a>
+    <strong>event.level</strong>
+    </dt>
+    <dd>
+    level
+ one of the {'log', 'debug', 'info', 'warn', 'error' }
+
+
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "event.msg"></a>
+    <strong>event.msg</strong>
+    </dt>
+    <dd>
+    msg
+ required attribute, a message of the event
+
+
+
+
+
+
+
+</dd>
+</dl>
+    <h2><a name="Class_HTTP"></a>Class HTTP </h2>
+
+        HTTP
+    <dl class="function">
+    <dt>
+    <a name = "http.get"></a>
+    <strong>http.get (url, options)</strong>
+    </dt>
+    <dd>
+    Make GET request.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">url</span>
+            <span class="types"><a class="type" href="http://www.lua.org/manual/5.2/manual.html#6.4">string</a></span>
+
+
+
+        </li>
+        <li><span class="parameter">options</span>
+            <span class="types"><a class="type" href="index.html#HTTP.options">options</a></span>
+
+
+
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+           <span class="types"><a class="type" href="index.html#HTTP.response">response</a></span>
+        a response
+    </ol>
+
+
+
+
+</dd>
+    <dt>
+    <a name = "http.head"></a>
+    <strong>http.head (url, options)</strong>
+    </dt>
+    <dd>
+    Make HEAD request.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">url</span>
+            <span class="types"><a class="type" href="http://www.lua.org/manual/5.2/manual.html#6.4">string</a></span>
+
+
+
+        </li>
+        <li><span class="parameter">options</span>
+            <span class="types"><a class="type" href="index.html#HTTP.options">options</a></span>
+
+
+
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+           <span class="types"><a class="type" href="index.html#HTTP.response">response</a></span>
+        a response
+    </ol>
+
+
+
+
+</dd>
+    <dt>
+    <a name = "http.delete"></a>
+    <strong>http.delete (url, options)</strong>
+    </dt>
+    <dd>
+    Make DELETE request.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">url</span>
+            <span class="types"><a class="type" href="http://www.lua.org/manual/5.2/manual.html#6.4">string</a></span>
+
+
+
+        </li>
+        <li><span class="parameter">options</span>
+            <span class="types"><a class="type" href="index.html#HTTP.options">options</a></span>
+
+
+
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+           <span class="types"><a class="type" href="index.html#HTTP.response">response</a></span>
+        a response
+    </ol>
+
+
+
+
+</dd>
+    <dt>
+    <a name = "http.options"></a>
+    <strong>http.options (url, options)</strong>
+    </dt>
+    <dd>
+    Make OPTIONS request.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">url</span>
+            <span class="types"><a class="type" href="http://www.lua.org/manual/5.2/manual.html#6.4">string</a></span>
+
+
+
+        </li>
+        <li><span class="parameter">options</span>
+            <span class="types"><a class="type" href="index.html#HTTP.options">options</a></span>
+
+
+
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+           <span class="types"><a class="type" href="index.html#HTTP.response">response</a></span>
+        a response
+    </ol>
+
+
+
+
+</dd>
+    <dt>
+    <a name = "http.put"></a>
+    <strong>http.put (url, body, options)</strong>
+    </dt>
+    <dd>
+    Make PUT request.
+ The <strong>body</strong> is serialized by <a href="index.html#HTTP.urlencoded">HTTP.urlencoded</a> unless you used different serializer.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">url</span>
+            <span class="types"><a class="type" href="http://www.lua.org/manual/5.2/manual.html#6.4">string</a></span>
+
+
+
+        </li>
+        <li><span class="parameter">body</span>
+            <span class="types"><a class="type" href="http://www.lua.org/manual/5.2/manual.html#6.4">string</a> or <a class="type" href="http://www.lua.org/manual/5.2/manual.html#6.5">table</a></span>
+
+
+
+        </li>
+        <li><span class="parameter">options</span>
+            <span class="types"><a class="type" href="index.html#HTTP.options">options</a></span>
+
+
+
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+           <span class="types"><a class="type" href="index.html#HTTP.response">response</a></span>
+        a response
+    </ol>
+
+
+
+
+</dd>
+    <dt>
+    <a name = "http.post"></a>
+    <strong>http.post (url, body, options)</strong>
+    </dt>
+    <dd>
+    Make POST request.
+ The <strong>body</strong> is serialized by <a href="index.html#HTTP.urlencoded">HTTP.urlencoded</a> unless you used different serializer.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">url</span>
+            <span class="types"><a class="type" href="http://www.lua.org/manual/5.2/manual.html#6.4">string</a></span>
+
+
+
+        </li>
+        <li><span class="parameter">body</span>
+            <span class="types"><a class="type" href="http://www.lua.org/manual/5.2/manual.html#6.4">string</a> or <a class="type" href="http://www.lua.org/manual/5.2/manual.html#6.5">table</a></span>
+
+
+
+        </li>
+        <li><span class="parameter">options</span>
+            <span class="types"><a class="type" href="index.html#HTTP.options">options</a></span>
+
+
+
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+           <span class="types"><a class="type" href="index.html#HTTP.response">response</a></span>
+        a response
+    </ol>
+
+
+
+
+</dd>
+    <dt>
+    <a name = "http.patch"></a>
+    <strong>http.patch (url, body, options)</strong>
+    </dt>
+    <dd>
+    Make PATCH request.
+ The <strong>body</strong> is serialized by <a href="index.html#HTTP.urlencoded">HTTP.urlencoded</a> unless you used different serializer.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">url</span>
+            <span class="types"><a class="type" href="http://www.lua.org/manual/5.2/manual.html#6.4">string</a></span>
+
+
+
+        </li>
+        <li><span class="parameter">body</span>
+            <span class="types"><a class="type" href="http://www.lua.org/manual/5.2/manual.html#6.4">string</a> or <a class="type" href="http://www.lua.org/manual/5.2/manual.html#6.5">table</a></span>
+
+
+
+        </li>
+        <li><span class="parameter">options</span>
+            <span class="types"><a class="type" href="index.html#HTTP.options">options</a></span>
+
+
+
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+           <span class="types"><a class="type" href="index.html#HTTP.response">response</a></span>
+        a response
+    </ol>
+
+
+
+
+</dd>
+    <dt>
+    <a name = "HTTP.urlencoded"></a>
+    <strong>HTTP.urlencoded</strong>
+    </dt>
+    <dd>
+    Urlencoded serializer
+ Serializes your data to <code>application/x-www-form-urlencoded</code> format
+ and sets correct Content-Type header.
+
+
+
+
+
+
+    <h3>Usage:</h3>
+    <ul>
+        <pre class="example">http.urlencoded.post(url, { example = <span class="string">'table'</span> })</pre>
+    </ul>
+
+</dd>
+    <dt>
+    <a name = "HTTP.json"></a>
+    <strong>HTTP.json</strong>
+    </dt>
+    <dd>
+    JSON serializer
+ Converts the body to JSON unless it is already a string
+ and sets correct Content-Type <code>application/json</code>.
+
+
+
+
+
+    <h3>See also:</h3>
+    <ul>
+         <a href="index.html#http.post">http.post</a>
+    </ul>
+
+    <h3>Usage:</h3>
+    <ul>
+        <pre class="example">http.json.post(url, { example = <span class="string">'table'</span> })</pre>
+    </ul>
+
+</dd>
+    <dt>
+    <a name = "HTTP.response"></a>
+    <strong>HTTP.response</strong>
+    </dt>
+    <dd>
+    Response returned by http.get and similar calls
+
+
+    <h3>Fields:</h3>
+    <ul>
+        <li><span class="parameter">status</span>
+            <span class="types"><span class="type">int</span></span>
+         HTTP Status Code
+        </li>
+        <li><span class="parameter">headers</span>
+            <span class="types"><a class="type" href="http://www.lua.org/manual/5.2/manual.html#6.5">table</a></span>
+         HTTP Headers
+        </li>
+        <li><span class="parameter">body</span>
+            <span class="types"><a class="type" href="http://www.lua.org/manual/5.2/manual.html#6.4">string</a></span>
+         response body
+        </li>
+        <li><span class="parameter">ok</span>
+            <span class="types"><span class="type">bool</span></span>
+
+
+
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "HTTP.options"></a>
+    <strong>HTTP.options</strong>
+    </dt>
+    <dd>
+    Options that can be passed to <a href="index.html#http">http</a> calls.
+
+
+    <h3>Fields:</h3>
+    <ul>
+        <li><span class="parameter">headers</span>
+            <span class="types"><a class="type" href="http://www.lua.org/manual/5.2/manual.html#6.5">table</a></span>
+         table of HTTP headers
+        </li>
+        <li><span class="parameter">ssl</span>
+            <span class="types"><a class="type" href="http://www.lua.org/manual/5.2/manual.html#6.5">table</a></span>
+         table with ssl options
+        </li>
+    </ul>
+
+
+
+
+    <h3>Usage:</h3>
+    <ul>
+        <li><pre class="example">http.get(uri, { ssl = { verify = <span class="keyword">false</span> }})</pre></li>
+        <li><pre class="example">http.get(uri, { headers = { my_header = <span class="string">'value'</span> }})</pre></li>
+    </ul>
+
+</dd>
+</dl>
+    <h2><a name="Class_Console"></a>Class Console </h2>
+
+        Console
+    <dl class="function">
+    <dt>
+    <a name = "console.log"></a>
+    <strong>console.log (...)</strong>
+    </dt>
+    <dd>
+    log
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">...</span>
+         objects to be printed
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "console.debug"></a>
+    <strong>console.debug (...)</strong>
+    </dt>
+    <dd>
+    debug
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">...</span>
+         objects to be printed
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "console.info"></a>
+    <strong>console.info (...)</strong>
+    </dt>
+    <dd>
+    info
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">...</span>
+         objects to be printed
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "console.warn"></a>
+    <strong>console.warn (...)</strong>
+    </dt>
+    <dd>
+    warn
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">...</span>
+         objects to be printed
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "console.error"></a>
+    <strong>console.error (...)</strong>
+    </dt>
+    <dd>
+    error
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">...</span>
+         objects to be printed
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+</dl>
+    <h2><a name="Class_Rack"></a>Class Rack </h2>
+
+        Rack
+    <dl class="function">
+    <dt>
+    <a name = "Rack.Response"></a>
+    <strong>Rack.Response</strong>
+    </dt>
+    <dd>
+    Response
+
+
+    <h3>Fields:</h3>
+    <ul>
+        <li><span class="parameter">body</span>
+            <span class="types"><a class="type" href="http://www.lua.org/manual/5.2/manual.html#6.4">string</a></span>
+
+
+
+        </li>
+        <li><span class="parameter">status</span>
+            <span class="types"><span class="type">int</span></span>
+
+
+
+        </li>
+        <li><span class="parameter">headers</span>
+            <span class="types"><a class="type" href="http://www.lua.org/manual/5.2/manual.html#6.5">table</a></span>
+
+
+
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "Rack:next_middleware"></a>
+    <strong>Rack:next_middleware ()</strong>
+    </dt>
+    <dd>
+    evaluates other middlewares and returns a response
+
+
+
+    <h3>Returns:</h3>
+    <ol>
+
+           <span class="types"><a class="type" href="index.html#Rack.Response">Rack.Response</a></span>
+
+
+
+    </ol>
+
+
+
+
+</dd>
+    <dt>
+    <a name = "Rack:middleware"></a>
+    <strong>Rack:middleware (request, next_middleware)</strong>
+    </dt>
+    <dd>
+    executing a middleware
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">request</span>
+            <span class="types"><a class="type" href="index.html#Rack.Request">Rack.Request</a></span>
+
+
+
+        </li>
+        <li><span class="parameter">next_middleware</span>
+         <a href="index.html#Rack:next_middleware">Rack:next_middleware</a>
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "Rack.Request"></a>
+    <strong>Rack.Request</strong>
+    </dt>
+    <dd>
+    Request
+
+
+    <h3>Fields:</h3>
+    <ul>
+        <li><span class="parameter">query</span>
+            <span class="types"><a class="type" href="http://www.lua.org/manual/5.2/manual.html#6.4">string</a></span>
+
+
+
+        </li>
+        <li><span class="parameter">headers</span>
+            <span class="types"><a class="type" href="http://www.lua.org/manual/5.2/manual.html#6.5">table</a></span>
+
+
+
+        </li>
+        <li><span class="parameter">method</span>
+            <span class="types"><a class="type" href="http://www.lua.org/manual/5.2/manual.html#6.4">string</a></span>
+         HTTP method
+        </li>
+        <li><span class="parameter">scheme</span>
+            <span class="types"><a class="type" href="http://www.lua.org/manual/5.2/manual.html#6.4">string</a></span>
+         http/https
+        </li>
+        <li><span class="parameter">uri_full</span>
+            <span class="types"><a class="type" href="http://www.lua.org/manual/5.2/manual.html#6.4">string</a></span>
+         full uri with scheme, host and query string
+        </li>
+        <li><span class="parameter">uri_relative</span>
+            <span class="types"><a class="type" href="http://www.lua.org/manual/5.2/manual.html#6.4">string</a></span>
+         just path
+        </li>
+        <li><span class="parameter">uri</span>
+            <span class="types"><a class="type" href="http://www.lua.org/manual/5.2/manual.html#6.4">string</a></span>
+         path with query string
+        </li>
+        <li><span class="parameter">host</span>
+            <span class="types"><a class="type" href="http://www.lua.org/manual/5.2/manual.html#6.4">string</a></span>
+
+
+
+        </li>
+        <li><span class="parameter">args</span>
+            <span class="types"><a class="type" href="http://www.lua.org/manual/5.2/manual.html#6.5">table</a></span>
+
+
+
+        </li>
+    </ul>
+
+
+
+
+    <h3>Usage:</h3>
+    <ul>
+        <pre class="example">
+ <span class="keyword">return</span> <span class="keyword">function</span>(request, next_middleware)
+   request.uri = <span class="string">'/different'</span>
+   <span class="keyword">return</span> next_middleware()
+ <span class="keyword">end</span></pre>
+    </ul>
+
+</dd>
+</dl>
+    <h2><a name="Class_Bucket"></a>Class Bucket </h2>
+
+        Bucket
+    <dl class="function">
+    <dt>
+    <a name = "Bucket.get"></a>
+    <strong>Bucket.get (field_name)</strong>
+    </dt>
+    <dd>
+    get a value
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">field_name</span>
+            <span class="types"><a class="type" href="http://www.lua.org/manual/5.2/manual.html#6.4">string</a></span>
+         name
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+        value previously stored
+    </ol>
+
+
+
+    <h3>Usage:</h3>
+    <ul>
+        <li><pre class="example"><span class="keyword">local</span> response = bucket.middleware.get(<span class="string">'cached-response'</span>')</pre></li>
+        <li><pre class="example"><span class="keyword">local</span> val = bucket.service.get(key)</pre></li>
+    </ul>
+
+</dd>
+    <dt>
+    <a name = "Bucket.set"></a>
+    <strong>Bucket.set (field_name, value, exptime)</strong>
+    </dt>
+    <dd>
+    set a value
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">field_name</span>
+            <span class="types"><a class="type" href="http://www.lua.org/manual/5.2/manual.html#6.4">string</a></span>
+         key name
+        </li>
+        <li><span class="parameter">value</span>
+            <span class="types"><span class="type">boolean</span>, <span class="type">number</span>, <a class="type" href="http://www.lua.org/manual/5.2/manual.html#6.4">string</a> or <span class="type">nil</span></span>
+         a value to be stored
+        </li>
+        <li><span class="parameter">exptime</span>
+            <span class="types"><span class="type">int</span></span>
+         time to expire in seconds
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+        <li>
+           <span class="types"><span class="type">bool</span></span>
+        indicates whether the key-value pair is stored or not</li>
+        <li>
+           <span class="types">optional <a class="type" href="http://www.lua.org/manual/5.2/manual.html#6.4">string</a></span>
+        error message, can be "no memory"</li>
+        <li>
+           <span class="types"><span class="type">bool</span></span>
+        indicates whether other valid items have been removed forcibly when out of storage in the shared memory zone</li>
+    </ol>
+
+
+
+    <h3>Usage:</h3>
+    <ul>
+        <li><pre class="example"><span class="keyword">local</span> ok, err = bucket.middleware.set(<span class="string">'cached-api-key'</span>, <span class="string">'secret-api-key'</span>, <span class="number">3600</span>)</pre></li>
+        <li><pre class="example">bucket.middleware.set(<span class="string">'cached-response'</span>, response, <span class="number">60</span>)</pre></li>
+    </ul>
+
+</dd>
+    <dt>
+    <a name = "Bucket.delete"></a>
+    <strong>Bucket.delete (field_name)</strong>
+    </dt>
+    <dd>
+    delete a value
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">field_name</span>
+            <span class="types"><a class="type" href="http://www.lua.org/manual/5.2/manual.html#6.4">string</a></span>
+         a key
+        </li>
+    </ul>
+
+
+
+
+    <h3>Usage:</h3>
+    <ul>
+        <li><pre class="example">bucket.middleware.delete(key)</pre></li>
+        <li><pre class="example">bucket.service.delete(key)</pre></li>
+    </ul>
+
+</dd>
+    <dt>
+    <a name = "Bucket.incr"></a>
+    <strong>Bucket.incr (field_name[, amount=1])</strong>
+    </dt>
+    <dd>
+    increment a value
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">field_name</span>
+            <span class="types"><a class="type" href="http://www.lua.org/manual/5.2/manual.html#6.4">string</a></span>
+         a key
+        </li>
+        <li><span class="parameter">amount</span>
+            <span class="types"><span class="type">number</span></span>
+         amount to increment/decrement
+         (<em>default</em> 1)
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+           <span class="types"><span class="type">number</span></span>
+        new value
+    </ol>
+     <h3>Or</h3>
+    <ol>
+        <li>
+           <span class="types"><span class="type">nil</span></span>
+
+
+</li>
+        <li>
+           <span class="types"><a class="type" href="http://www.lua.org/manual/5.2/manual.html#6.4">string</a></span>
+        not found</li>
+    </ol>
+     <h3>Or</h3>
+    <ol>
+        <li>
+           <span class="types"><span class="type">nil</span></span>
+
+
+</li>
+        <li>
+           <span class="types"><a class="type" href="http://www.lua.org/manual/5.2/manual.html#6.4">string</a></span>
+        not a number</li>
+    </ol>
+
+
+
+    <h3>Usage:</h3>
+    <ul>
+        <li><pre class="example">bucket.middleware.incr(<span class="string">'hits'</span>) -- default is <span class="number">1</span></pre></li>
+        <li><pre class="example">bucket.middleware.incr(<span class="string">'downloaded-kb'</span>, <span class="number">3500</span>)</pre></li>
+    </ul>
+
+</dd>
+    <dt>
+    <a name = "Bucket.add"></a>
+    <strong>Bucket.add (field_name, value, exptime)</strong>
+    </dt>
+    <dd>
+    set the value if it does not exist
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">field_name</span>
+            <span class="types"><a class="type" href="http://www.lua.org/manual/5.2/manual.html#6.4">string</a></span>
+         a key
+        </li>
+        <li><span class="parameter">value</span>
+            <span class="types"><span class="type">boolean</span>, <span class="type">number</span>, <a class="type" href="http://www.lua.org/manual/5.2/manual.html#6.4">string</a> or <span class="type">nil</span></span>
+         a value to be stored
+        </li>
+        <li><span class="parameter">exptime</span>
+            <span class="types"><span class="type">int</span></span>
+         expire time in seconds
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+        <li>
+           <span class="types"><span class="type">bool</span></span>
+        indicates whether the key-value pair is stored or not</li>
+        <li>
+           <span class="types">optional <a class="type" href="http://www.lua.org/manual/5.2/manual.html#6.4">string</a></span>
+        error message, can be "no memory"</li>
+        <li>
+           <span class="types"><span class="type">bool</span></span>
+        indicates whether other valid items have been removed forcibly when out of storage in the shared memory zone</li>
+    </ol>
+
+
+
+    <h3>Usage:</h3>
+    <ul>
+        <pre class="example"><span class="keyword">if</span> bucket.middleware.add(<span class="string">'first-call'</span>, <span class="keyword">true</span>) <span class="keyword">then</span> response.body = <span class="string">'you won!'</span> <span class="keyword">end</span></pre>
+    </ul>
+
+</dd>
+    <dt>
+    <a name = "Bucket.delete_all"></a>
+    <strong>Bucket.delete_all ()</strong>
+    </dt>
+    <dd>
+    delete all values
+
+
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "Bucket.get_keys"></a>
+    <strong>Bucket.get_keys ()</strong>
+    </dt>
+    <dd>
+    get all keys
+
+
+
+    <h3>Returns:</h3>
+    <ol>
+
+           <span class="types"><a class="type" href="http://www.lua.org/manual/5.2/manual.html#6.4">{string,</a></span>
+        ...} all keys
+    </ol>
+
+
+
+
+</dd>
+</dl>
+
+
+</div> <!-- id="content" -->
+</div> <!-- id="main" -->
+<div id="about">
+<i>generated by <a href="http://github.com/stevedonovan/LDoc">LDoc 1.4.3</a></i>
+<i style="float:right;">Last updated 2014-12-03 13:05:48 </i>
+</div> <!-- id="about" -->
+</div> <!-- id="container" -->
+</body>
+</html>

@@ -1,8 +1,14 @@
+------------
+--- Console
+-- Like window.console. For Lua.
+-- @module middleware
+
 local inspect = require 'inspect'
 local Event   = require 'models.event'
 local Console = {}
 
------------------------
+--- Console
+-- @type Console
 
 local Console_methods = {}
 
@@ -24,22 +30,37 @@ end
 
 local function sort_by_at(a,b) return a.at < b.at end
 
+--- log
+-- @param ... objects to be printed
+-- @function console.log
 function Console_methods:log(...)
   log(self, 'log', ...)
 end
 
+--- debug
+-- @param ... objects to be printed
+-- @function console.debug
 function Console_methods:debug(...)
   log(self, 'debug', ...)
 end
 
+--- info
+-- @param ... objects to be printed
+-- @function console.info
 function Console_methods:info(...)
   log(self, 'info', ...)
 end
 
+--- warn
+-- @param ... objects to be printed
+-- @function console.warn
 function Console_methods:warn(...)
   log(self, 'warn', ...)
 end
 
+--- error
+-- @param ... objects to be printed
+-- @function console.error
 function Console_methods:error(...)
   log(self, 'error', ...)
 end

@@ -1,3 +1,8 @@
+------------
+--- Rack
+-- Lua Rack. Processes middleware pipeline.
+-- @module middleware
+
 local rack = {
   _VERSION     = 'lua-resty-rack 0.3',
   _DESCRIPTION = 'rack for openresty',
@@ -86,6 +91,16 @@ local bodybuilder_index = function(t, k)
   end
 end
 
+--- Rack
+-- @type Rack
+local Rack = {}
+
+--- Response
+-- @table Rack.Response
+-- @field[type=string] body
+-- @field[type=int] status
+-- @field[type=table] headers
+
 local function create_initial_response()
   return {
     body     = nil,
@@ -93,9 +108,6 @@ local function create_initial_response()
     headers  = setmetatable({}, create_headers_mt())
   }
 end
-
-local Rack = {}
-
 ----------------- PUBLIC INTERFACE ----------------------
 
 function Rack:use(f, ...)
@@ -107,11 +119,19 @@ function Rack:run(req)
   req = req or self:create_initial_request()
   local res = create_initial_response()
 
+  --- evaluates other middlewares and returns a response
+  -- @function next_middleware
+  -- @return[type=Rack.Response]
+
   local function next_middleware()
     local len = #(self.middlewares)
     if len == 0 then return res end
 
     local mw = table.remove(self.middlewares, 1)
+    --- executing a middleware
+    -- @function middleware
+    -- @param[type=Rack.Request] request
+    -- @param next_middleware @{Rack:next_middleware}
     local res = mw.f(req, next_middleware, unpack(mw.args))
     if type(res) ~= 'table' then
       error("A middleware did not return a valid response. Check that all your middlewares return a response of type 'table'")
@@ -133,6 +153,8 @@ function Rack:respond(res)
   end
 end
 
+
+
 function Rack:create_initial_request()
   local query  = ngx.var.query_string or ""
   local scheme = ngx.var.scheme
@@ -148,6 +170,23 @@ function Rack:create_initial_request()
   setmetatable(headers, create_headers_mt())
 
   local bodybuilder_mt = {__index = bodybuilder_index }
+
+  --- Request
+  -- @usage
+  -- return function(request, next_middleware)
+  --   request.uri = '/different'
+  --   return next_middleware()
+  -- end
+  -- @table Rack.Request
+  -- @field[type=string] query
+  -- @field[type=table] headers
+  -- @field[type=string] method HTTP method
+  -- @field[type=string] scheme http/https
+  -- @field[type=string] uri_full full uri with scheme, host and query string
+  -- @field[type=string] uri_relative just path
+  -- @field[type=string] uri path with query string
+  -- @field[type=string] host
+  -- @field[type=table] args
 
   return setmetatable({
     query         = query,

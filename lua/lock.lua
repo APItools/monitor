@@ -5,10 +5,16 @@ lock.around = function(name, func, ...)
   local lock = resty_lock:new('locks')
   lock:lock(name)
   ngx.log(ngx.DEBUG, 'locking around ' .. name)
-  local ret, err = pcall(func, ...)
+  local res = {pcall(func, ...) }
+  local ok = table.remove(res, 1)
   lock:unlock()
   ngx.log(ngx.DEBUG, 'unlocked ' .. name)
-  return ret, err
+
+  if ok then
+    return unpack(res)
+  else
+    return nil, res[1]
+  end
 end
 
 lock.wrapper = function(name, fun)

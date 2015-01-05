@@ -1,5 +1,3 @@
-require 'spec.spec_helper'
-
 local Event = require 'models.event'
 
 describe("Event", function()

@@ -26,7 +26,7 @@ namespace :test do
     require 'headless'
 
     if !system('karma', '--version') || `karma --version` !~ /Karma version:/
-      print "Karma not found. Install it by: `npm install -g karma`"
+      puts 'Karma not found. Install it by: `npm install -g karma-cli`'
       exit(1)
     end
 
@@ -47,7 +47,6 @@ namespace :test do
   desc "Run integration tests"
   task :integration do
     statuses = CUCUMBER_DRIVERS.map{|driver| system('cucumber', '-f', 'progress', '-p', driver) }
-    puts statuses.inspect
     exit statuses.all?
   end
 
@@ -61,11 +60,24 @@ namespace :test do
   end
 end
 
+FAILED = "\033[31mFAILED\033[0m"
+PASSED = "\033[32mPASSED\033[0m"
+
 desc "Run all tests"
 task test: %w[jor:clear]  do
   results = %w|lua api angular integration sample performance|.map do |kind|
     status = system("rake", "test:#{kind}")
-    puts "TEST: #{kind} #{status ? 'PASSED' : 'FAILED' }"
+    msg = "TEST FINISHED (#{kind}) "
+    line = "\033[1m" + '+' + '-' * (msg.length + 8) + '+' + "\033[22m"
+
+    msg += status ? PASSED : FAILED
+
+    puts
+    puts line
+    puts "\033[1m| " + msg + " |\033[22m"
+    puts line
+    puts
+
     status
   end
 

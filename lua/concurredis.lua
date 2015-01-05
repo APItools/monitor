@@ -31,7 +31,7 @@ local expand_gmatch = function(text, match)
   return result
 end
 
-concurredis.host = os.getenv('DB_PORT_6379_TCP_ADDR') or os.getenv("SLUG_REDIS_HOST")
+concurredis.host = os.getenv('DB_PORT_6379_TCP_ADDR') os.getenv('REDIS_PORT_6379_TCP_ADDR') or os.getenv("SLUG_REDIS_HOST")
 concurredis.port = os.getenv('DB_PORT_6379_TCP_PORT') or os.getenv("SLUG_REDIS_PORT") or 6379
 
 ngx.log(ngx.INFO, "Using redis server: " .. tostring(concurredis.host) .. ":" .. tostring(concurredis.port))
@@ -85,6 +85,23 @@ concurredis.save = function()
     local backoff = 0.01
     local total = 0
 
+    red:config('set', 'appendonly', 'no')
+    red:config('set', 'appendonly', 'yes')
+    red:config('set', 'appendfsync', 'always')
+    red:set('last-save', ngx.now())
+    red:bgrewriteaof()
+
+    local appendonly = false
+    while not appendonly do
+      local progress = red:info('persistence'):match('aof_rewrite_in_progress:(%d)')
+
+      if progress == '0' then
+        appendonly = true
+      end
+
+      ngx.sleep(backoff)
+    end
+
     while not red:save() do
       total = total + backoff
       ngx.sleep(backoff)
@@ -101,12 +118,21 @@ concurredis.config = function(key, value)
 end
 
 concurredis.shutdown = function()
-  concurredis.execute(function(red) assert(red:shutdown()) end)
+  concurredis.execute(function(red)
+    local _, message = red:shutdown()
+    assert(message == 'closed', message)
+  end)
 end
 
 concurredis.stats = function(section)
   local info = concurredis.execute(function(red) return red:info(section) end)
   return expand_gmatch(info, '(\\w+?):(.+)\r')
+end
+
+concurredis.status = function()
+  local ping = pcall(concurredis.execute, function(red) return red:ping() end)
+  local info = ping and concurredis.stats()
+  return { ping = ping, info = info }
 end
 
 concurredis.keys = function()

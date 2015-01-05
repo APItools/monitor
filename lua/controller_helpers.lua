@@ -27,6 +27,7 @@ helpers.print = function(str)
 end
 
 helpers.send_json = function(object_to_serialize, status)
+  ngx.header['Content-Type'] = 'application/json'
   ngx.status = status or ngx.HTTP_OK
 
   if ngx.var.arg_download then
@@ -41,26 +42,36 @@ helpers.send_json = function(object_to_serialize, status)
   end
 end
 
+local OPEN_ARRAY = '[\n'
+local CLOSE_ARRAY = '\n]'
+local NEXT_ARRAY = ',\n'
+
 helpers.stream = function(iterator)
   local head_request = ngx.req.get_method() == 'HEAD'
-
-  ngx.header['Transfer-Encoding'] = 'chunked'
 
   if head_request then
     return ngx.eof()
   end
 
-  ngx.print('[')
+  ngx.send_headers()
+
+  ngx.print(OPEN_ARRAY)
+
+  local first = true
+
   for line in iterator do
+    if not first then
+      ngx.print(NEXT_ARRAY)
+    end
     ngx.print(line)
+    first = false
   end
-  ngx.print(']')
+
+  ngx.print(CLOSE_ARRAY)
   ngx.eof()
 end
 
 helpers.json_response = function(object_to_serialize, status)
-  ngx.header['Content-Type'] = 'application/json'
-
   if type(object_to_serialize) == 'table' and (next(object_to_serialize) == nil) then
     return '[]'
   elseif type(object_to_serialize) == 'string' then
@@ -83,8 +94,9 @@ helpers.jor_options = function(params)
   local per_page = params and tonumber(params.per_page) or 20
   local max_per_page = 100
 
-  if params.download then
+  if params.download or params.stream then
     options.iterator = true
+    options.max_documents = -1
   else
     options.reversed = not not params.reversed
     options.max_documents = per_page > max_per_page and max_per_page or per_page

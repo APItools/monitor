@@ -1,5 +1,3 @@
-require 'spec.spec_helper'
-
 local test_backend = require 'http_ng.backend.test'
 local request = require 'http_ng.request'
 

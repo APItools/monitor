@@ -7,7 +7,7 @@ RUN luarocks install luajson \
 
 RUN ln -sf /var/www/brainslug/config/supervisor.conf /etc/supervisor/conf.d/openresty.conf \
  && ln -sf /var/www/brainslug/config/logrotate.conf /etc/logrotate.d/nginx \
- && echo '* * * * * curl http://localhost:7071/api/mails/send' | crontab
+ && rm /etc/supervisor/conf.d/cron.conf
 
 ENV SLUG_LOGFILE /var/log/supervisor/supervisord.log
 ENV SLUG_CSRF_PROTECTION 1;
@@ -15,6 +15,5 @@ ENV SLUG_CSRF_PROTECTION 1;
 CMD ["supervisord", "-n"]
 EXPOSE 7071 10002
 
-
+WORKDIR /var/www/brainslug
 ADD . /var/www/brainslug
-

@@ -1,0 +1,22 @@
+redis:
+  image: redis:latest
+statsd:
+  image: mikz/grafana:latest
+  ports:
+    - 80:80
+    - 8086:8086
+    - 8083:8083
+monitor:
+  build: .
+  command: bash -c 'bundle config without "" && bundle install && bundle exec foreman start'
+  volumes:
+    - .:/opt/slug
+  environment:
+    RELEASE: development
+    SLUG_ENV: development
+  ports:
+    - 7071:7071
+    - 10002:10002
+  links:
+    - redis
+    - statsd

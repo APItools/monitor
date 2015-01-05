@@ -1,3 +1,20 @@
+------------
+-- APItools Middleware
+--
+-- Middleware documentation of [APItools](https://www.apitools.com).
+-- All this should be available when middleware is evaluated.
+--
+-- Check out our [GitHub Repository](https://github.com/apitools/monitor) and
+-- [Middleware repository](https://github.com/apitools/middleware).
+--
+-- If you don't have enough, we have a [blog](https://docs.apitools.com/blog) and a
+-- [documentation](https://docs.apitools.com/docs).
+--
+-- @module middleware
+-- @license MIT
+-- @copyright APItools 2014
+
+
 local inspect      = require 'inspect'
 local rack_module  = require 'rack'
 local sandbox      = require 'sandbox'
@@ -5,20 +22,30 @@ local Trace        = require 'models.trace'
 local Event        = require 'models.event'
 local http_mw      = require 'http_mw'
 local luajson      = require 'json'
+
 local brainslug    = require 'middlewares.brainslug'
+
 local statsd       = require 'statsd_wrapper'
 local sanitizer    = require 'middlewares.sanitizer'
 local collector    = require 'collector'
 local Console      = require 'console'
 local Bucket       = require 'bucket'
 local Model        = require 'model'
-local xml          = require 'lxp'
+local lxp          = require 'lxp'
 local http_ng      = require 'http_ng'
 local async_resty  = require 'http_ng.backend.async_resty'
 
 local Pipeline = Model:new()
 Pipeline.collection = 'pipelines'
 Pipeline.excluded_fields_to_index = Model.build_excluded_fields('name', 'middlewares')
+
+--- HTTP Client
+-- Check @{http.get} for details.
+-- @http http
+-- @see http.get
+-- @see http.put
+-- @see http.post
+-- @see http.patch
 
 local http = http_ng.new{ backend = async_resty,
                           simple = http_mw.simple, multi = http_mw.multi }
@@ -61,7 +88,7 @@ end
 local send_event = function(ev) Event:create(ev) end
 local send_notification = function(ev) ev.channel = 'middleware' Event:create(ev) end
 
-local log = function(x) ngx.log(0, inspect(x)) end
+local log = function(...) ngx.log(0, inspect(...)) end
 
 local send_email = function(to, subject, msg)
   assert(to); assert(subject); assert(msg)
@@ -79,9 +106,18 @@ end
 local metric = function(trace)
 
   return {
+    --- store integer values as simple count
+    -- @param[type=string] metric name
+    -- @param[type=int,opt=1] increment
+    -- @function metric.count
     count = function(name, inc)
       collector.collect(trace.service_id, name, 'count', { trace.req.method, trace.generic_path } , inc or 1)
     end,
+    --- store integer values as set
+    -- then you can get avg,p99 and other statistic
+    -- @param[type=string] metric name
+    -- @param[type=number] value
+    -- @function metric.set
     set = function(name, value)
       collector.collect(trace.service_id, name, 'set', { trace.req.method, trace.generic_path } , value)
     end
@@ -97,14 +133,96 @@ local use_middleware = function(rack, middleware, trace, service_id)
     error(err)
   end
 
+  --- @{Console} for all the available methods. Almost like in the browser.
+  -- @console console
   local console           = Console.new(service_id, middleware.uuid)
+
   local middleware_bucket = Bucket.for_middleware(service_id, middleware.uuid)
   local service_bucket    = Bucket.for_service(service_id)
 
-  local base64 = { decode = ngx.decode_base64, encode = ngx.encode_base64 }
-  local send =   { email = send_email, mail = send_email, event = send_event, notification = send_notification }
-  local time =   { seconds = ngx.time, http = ngx.http_time, now = ngx.now }
-  local bucket = { middleware = middleware_bucket, service = service_bucket }
+  local base64 = {
+    --- Decodes the str argument as a base64 digest to the raw form.
+    -- Returns nil if str is not well formed.
+    -- @tparam string str base64 encoded string
+    -- @treturn ?string decoded string
+    -- @function base64.decode
+    decode = ngx.decode_base64,
+
+    --- Encode str to a base64 digest.
+    -- @tparam string str a string
+    -- @treturn string base64 encoded string
+    -- @function base64.encode
+    encode = ngx.encode_base64
+  }
+  local send   = {
+    ---  Send email
+    -- @param[type=string] to email address of the receiver
+    -- @tparam string subject email subject
+    -- @tparam string msg the email body
+    -- @function send.email
+    email = send_email,
+    mail = send_email,
+
+    ---  Create @{Event}
+    -- @param[type=table] event the event to be created
+    -- @function send.event
+    event = send_event,
+
+    ---  Create middleware notification
+    -- Creates @{Event} and will be overriden to middleware channel.
+    -- @param[type=table] event the event to be created
+    -- @function send.notification
+    notification = send_notification
+  }
+  local time   = {
+    --- Current time in seconds
+    -- Returns the elapsed seconds from the epoch.
+    -- @treturn int elapsed seconds from the epoch
+    -- @function time.seconds
+    seconds = ngx.time,
+    --- Formats number of seconds to a HTTP-date string
+    -- Returns a formated string in "HTTP-date" format specified by the [RFC 7231](http://tools.ietf.org/html/rfc7231).
+    -- It is used for example in Last-Modified header and looks like "`Tue, 15 Nov 2014 08:12:31 GMT`".
+    -- @treturn string  HTTP-date formatted string
+    -- @tparam int sec timestamp in seconds (like those returned from time.seconds)
+    -- @function time.http
+    http = ngx.http_time,
+    --- Returns a floating-point number for the elapsed time in seconds
+    -- (including milliseconds as the decimal part) from the epoch for the current time stamp.
+    -- @treturn float elapsed seconds from the epoch (including miliseconds)
+    -- @function time.now
+    now = ngx.now
+  }
+
+  local bucket = {
+    --- Middleware Bucket
+    -- Every middleware has own bucket. You can access it by using methods of @{Bucket} methods as @{bucket.middleware}.
+    -- @bucket[type=Bucket] bucket.middleware
+    -- @see Bucket.get
+    -- @usage local cached = bucket.middleware.get('my-cached-value')
+    middleware = middleware_bucket,
+    --- Service Bucket
+    -- Every service has own bucket. All middlewares can access it by using @{Bucket} methods as @{bucket.service}.
+    -- @bucket bucket.service
+    -- @usage local cached = bucket.service.get('my-cached-value')
+    -- @see Bucket.get
+    service = service_bucket
+  }
+
+  local json = {
+    --- JSON Encode table to a JSON string.
+    -- @param[type=table] object to be serialized
+    -- @return[type=string] JSON string
+    -- @function json.encode
+    encode = luajson.encode,
+    --- Decode JSON string to an object.
+    -- @param[type=string] string to be deserialized
+    -- @return[type=table] deserialized object
+    -- @function json.decode
+    decode = luajson.decode
+  }
+
+  local xml = { new = lxp.new }
 
   local hmac_sha256 = function(str, key)
     local resty_hmac   = require 'resty.hmac'
@@ -113,7 +231,14 @@ local use_middleware = function(rack, middleware, trace, service_id)
     return digest
   end
 
-  local hmac = { sha256 = hmac_sha256 }
+  local hmac = {
+    --- Create keyed-hash message authentication code using HMAC-SHA-256.
+    -- @param[type=string] str string to be signed
+    -- @param[type=string] key to sign it with
+    -- @return[type=string] digest
+    -- @function hmac.sha256
+    sha256 = hmac_sha256
+  }
 
   local env  = {
     console           = console,
@@ -128,8 +253,15 @@ local use_middleware = function(rack, middleware, trace, service_id)
     send              = send,
     time              = time,
     metric            = metric(trace),
+    --- @{Trace} object of current request.
+    -- After all the middleware finish, it will be persisted for later search.
+    -- @see Trace.req
+    -- @see Trace.res
+    -- @usage trace.my_middleware = 'some metadata'
+    -- @usage trace.res.processed = true
+    -- @table[type=Trace] trace
     trace             = trace,
-    json              = luajson,
+    json              = json,
     xml               = xml
   }
 

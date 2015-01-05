@@ -1,7 +1,14 @@
+------------
+--- Event
+-- Event Model.
+-- @module middleware
+
 local Model   = require 'model'
 local inspect = require 'inspect'
 local e       = require 'consumer_helpers'
 
+--- Event
+-- @type Event
 local Event = Model:new()
 
 local ONE_DAY = 60*60*24 -- secs in a day
@@ -25,7 +32,20 @@ Event.excluded_fields_to_index = {}
 --   return ngx.hmac_sha1(
 -- end
 
+
 function Event:create(event, options)
+  --- channel
+  -- required attribute, can be for example middleware, email, stats, ...
+  -- @field[type=string] event.channel
+
+  --- level
+  -- one of the {'log', 'debug', 'info', 'warn', 'error' }
+  -- @field[type=string] event.level
+
+  --- msg
+  -- required attribute, a message of the event
+  -- @field[type=string] event.msg
+
   if not event or not event.channel or not event.level or not event.msg then
     error("invalid event, it should have at least channel, level and msg")
   end

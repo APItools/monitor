@@ -1,3 +1,8 @@
+------------
+--- Trace
+-- Trace object. Holds both request and response.
+-- @module middleware
+
 local Model    = require 'model'
 local Service  = require 'models.service'
 local Event    = require 'models.event'
@@ -6,6 +11,10 @@ local http     = require 'http'
 local uuid4    = require 'uuid'
 local inspect  = require 'inspect'
 local Config   = require 'models.config'
+
+
+--- Trace
+-- @type Trace
 
 local Trace = Model:new()
 
@@ -32,6 +41,33 @@ local Trace_mt = {
 }
 
 function Trace:new(req)
+  --- Current HTTP Request like it will be stored and displayed in the UI.
+  -- @table Trace.req
+  -- @field[type=string] query query string
+  -- @field[type=table] headers
+  -- @field[type=string] uri_full whole URI including scheme, host, port, path and query string
+  -- @field[type=string] uri_relative path + query string
+  -- @field[type=table] args parsed query string
+  -- @field[type=string] method HTTP Method
+  -- @field[type=string] scheme HTTP Scheme (http/https)
+  -- @field[type=string] uri just the path
+  -- @field[type=string] host value of Host header
+
+  --- Will contain the response like it will be stored (once it is processed).
+  -- @table Trace.res
+  -- @field[type=string] body
+  -- @field[type=int] status
+  -- @field[type=table] headers
+
+  --- time in seconds how long it took APItools to return the request
+  -- @field[type=number] total_time
+
+  --- id of the service that processed the request
+  -- @field[type=number] service_id
+
+  --- starred
+  -- @field[type=boolean] starred
+
   Model:check_dots(self, Trace, 'new')
   local trace = { req = req, uuid = uuid4.getUUID() }
   return setmetatable(trace, Trace_mt)

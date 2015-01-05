@@ -9,7 +9,7 @@ local analytics_consumer = {
   end,
 }
 
-next_job = c.next_job(analytics_consumer)
+local next_job = c.next_job(analytics_consumer)
 
 analytics_consumer.run = function()
   local job = next_job('events:' .. analytics_consumer.name)
