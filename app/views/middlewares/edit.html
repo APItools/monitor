@@ -72,6 +72,9 @@
           <div class='last-trace-response'>
             <div ng-if="!loading">
               <h4>Response Status: {{ last_trace.res.status }}</h4>
+              <h3 ng-hide="last_trace"> No calls yet.
+                <small>After you make your first request it'll be loaded here.</small>
+              </h3>
               <div trace-headers="last_trace.res.headers"></div>
               <pre highlight="last_trace.res.body" ng-if="has_body(last_trace.res)"
                  highlight-content-type="content_type(last_trace.res)"></pre>
