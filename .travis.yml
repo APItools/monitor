@@ -15,7 +15,7 @@ env:
     - SLUG_REDIS_HOST=127.0.0.1
     - RELEASE=test
 before_install:
-  - sudo apt-get -y install make build-essential libpcre3-dev libssl-dev libexpat1-dev unzip redis-server supervisor
+  - sudo apt-get update -y && sudo apt-get -y install make build-essential libpcre3-dev libssl-dev libexpat1-dev unzip redis-server supervisor
 install:
   - wget -T 60 -qO- http://openresty.org/download/ngx_openresty-${OPENRESTY_VERSION}.tar.gz | tar xvz -C /tmp/
   - wget -T 60 -qO- http://luarocks.org/releases/luarocks-${LUAROCKS_VERSION}.tar.gz | tar xvz -C /tmp/
