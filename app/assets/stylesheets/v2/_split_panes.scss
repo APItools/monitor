@@ -1,4 +1,4 @@
-$split-pane-handle-size: 1px !default;
+$split-pane-handle-size: .5em !default;
 $split-pane-margin: $split-pane-handle-size;
 $split-pane-color: #eee;
 $split-pane-arrows-color: darken($split-pane-color,20%);
@@ -22,7 +22,7 @@ $split-pane-arrows-color: darken($split-pane-color,20%);
   &::before {
     color: $split-pane-arrows-color;
     font-family: FontAwesome;
-    font-size: 0.75em;
+    font-size: 1em;
     position: absolute;
     text-align: center;
   }
@@ -32,14 +32,14 @@ $split-pane-arrows-color: darken($split-pane-color,20%);
   &::before {
     content: "\f07d";
     left: 50%;
-    top: -8px;
+    top: -.5em;
   }
 }
 
 .split-panes-handle-width {
   &::before {
     content: "\f07e";
-    left: -5px;
+    left: -.25em;
     top: 25%;
   }
 }
