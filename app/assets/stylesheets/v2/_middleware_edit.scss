@@ -55,31 +55,43 @@
 }
 
 .last-trace-call-box {
-  padding: 0.5em 4em 0.5em 0;
-  position: relative;
+  height:2em;
+  padding: 0.5em 10em 0.5em 0;
+  position: absolute;
+  top: 0;
+  left: 1em;
+  right: 2em;
+  background: white;
+  margin: 0 -0.5em;
 }
 
 .last-trace-call {
   margin: 0;
+  word-break: normal;
+  text-overflow: ellipsis;
+  overflow: hidden;
 }
 
 .last-trace-actions {
   position: absolute;
-  right: 0.5em;
+  right: 0;
   top: 0.5em;
 }
 
 .last-trace-action {
   display: inline-block;
-  font-size: 1.2em;
-  padding: .4em;
-  margin-top: -.4em;
+  font-size: 1em;
+  margin-left: 1em;
 }
 
 .last-trace-request,
 .last-trace-response,
 .log-console {
   padding: 0.5em;
+}
+
+.last-trace-container .last-trace-request {
+  padding-top: 3em;
 }
 
 .last-trace-request,
@@ -109,6 +121,7 @@
 
 .last-trace-container {
   height: 100%;
+  position: relative;
 }
 
 .last-trace-wrap {

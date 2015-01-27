@@ -467,6 +467,7 @@ angular.module('slug.middlewares', [
 
   $scope.redo = (trace) ->
     trace.$redo ->
+      $scope.load_last_trace()
       flash.info = 'Redone'
 
   $scope.has_body = (obj) ->

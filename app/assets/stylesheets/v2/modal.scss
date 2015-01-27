@@ -58,6 +58,16 @@
 
 .modal-open {
   overflow: hidden;
+
+  .slug-alert {
+    position: absolute;
+    top: 0;
+    width: 100%;
+  }
+
+  .uv-icon {
+    display:none;
+  }
 }
 
 .modal-center {

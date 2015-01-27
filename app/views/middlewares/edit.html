@@ -55,13 +55,15 @@
         <div pane-set-height split-panes="vertical" class="last-trace-container">
           <div class='last-trace-request' ng-show="last_trace">
             <div class="last-trace-call-box">
-              <h4 class="last-trace-call">{{ last_trace.req.method }} {{ last_trace.req.uri }}</h4>
+              <h4 class="last-trace-call">{{ last_trace.req.method }}&nbsp;{{ last_trace.req.uri }}</h4>
 
               <div class="last-trace-actions">
                 <a class="last-trace-action" href ng-click="load_last_trace()"
-                   tooltip-append-to-body=true tooltip="reload last trace"><i class="icon icon-refresh"></i></a>
+                   tooltip-append-to-body=true tooltip="reload last trace">
+                   <i class="icon icon-refresh"></i> Refresh</a>
                 <a class="last-trace-action" href ng-click="redo(last_trace)"
-                   tooltip-append-to-body=true tooltip="redo call"><i class="icon icon-play"></i></a>
+                   tooltip-append-to-body=true tooltip="redo call">
+                   <i class="icon icon-play"></i> Redo</a>
               </div>
             </div>
             <div trace-headers="last_trace.req.headers"></div>
@@ -72,6 +74,9 @@
           <div class='last-trace-response'>
             <div ng-if="!loading">
               <h4>Response Status: {{ last_trace.res.status }}</h4>
+              <h3 ng-hide="last_trace"> No calls yet.
+                <small>After you make your first request it'll be loaded here.</small>
+              </h3>
               <div trace-headers="last_trace.res.headers"></div>
               <pre highlight="last_trace.res.body" ng-if="has_body(last_trace.res)"
                  highlight-content-type="content_type(last_trace.res)"></pre>
@@ -94,14 +99,9 @@
       Remove
     </button>
 
-    <button type=button ng-click="saveAndDeploy()" class="btn"
+    <button type=button ng-click="saveAndDeploy()" class="btn btn-primary"
             tooltip="Save & keep working on this middleware" tooltip-append-to-body="true"><i
-        class="icon-magic"></i> Apply
-    </button>
-
-    <button class="btn btn-primary" ng-click="save(middleware)"
-            tooltip="Save & return to the Pipeline" tooltip-placement='left'><i
-        class="icon-save"></i> Save
+        class="icon-save"></i> Apply
     </button>
   </footer>
 </div>
