@@ -90,9 +90,34 @@ local get_host_and_port = function()
   return host, tonumber(port)
 end
 
+local is_loaded = function(red)
+  local info = red:info('persistence')
+  local loading = info:match('loading:(%d)')
+  return loading == '0'
+end
+
 ---
 
+concurredis.restart = function()
+  concurredis.connect():shutdown()
 
+  local host, port = get_host_and_port()
+  local red        = redis:new()
+  local sleep      = 0.1
+  local growth     = 1.2
+
+  while not red:connect(host, port) do
+    ngx.sleep(sleep)
+    sleep = sleep * growth
+  end
+
+  while not is_loaded(red) do
+    ngx.sleep(sleep)
+    sleep = sleep * growth
+  end
+
+  red:close()
+end
 
 concurredis.connect = function()
   local host, port = get_host_and_port()

@@ -1,7 +1,6 @@
-local concurredis    = require "concurredis"
-local crontab  = require "crontab"
-local redis = require 'resty.redis'
-local Config = require 'models.config'
+local concurredis = require "concurredis"
+local crontab     = require "crontab"
+local Config      = require "models.config"
 
 local backups = {}
 
@@ -53,36 +52,7 @@ function backups.import(params)
 
   assert(os.rename(uploaded_file, dump_file))
 
-  pcall(concurredis.shutdown)
-
-  -- TODO: wait until redis starts again
-
-  local connected
-  local red = redis:new()
-  local sleep = 0.1
-  local growth = 1.2
-  local loaded = false
-
-  while not connected do
-    ngx.sleep(sleep)
-    connected = red:connect(concurredis.host, concurredis.port)
-    sleep = sleep * growth
-  end
-
-  while not loaded do
-    ngx.sleep(sleep)
-
-    local info = red:info('persistence')
-    local loading = info:match('loading:(%d)')
-
-    if loading == '0' then
-      loaded = true
-    end
-
-    sleep = sleep * growth
-  end
-
-  red:close()
+  concurredis.restart()
 
   Config.flush() -- flush cache
   --redis should be started here (by the process manager)
