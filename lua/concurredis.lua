@@ -11,8 +11,16 @@
 
 local redis         = require 'resty.redis'
 local error_handler = require 'error_handler'
+local resolver      = require 'resty.dns.resolver'
+local lock          = require 'lock'
 
 local concurredis = {}
+
+local REDIS_NAMESERVER   = os.getenv('SLUG_REDIS_NAMESERVER')
+local REDIS_DNS          = os.getenv('SLUG_REDIS_DNS')
+
+local REDIS_HOST = os.getenv('REDIS_PORT_6379_TCP_ADDR') or os.getenv("SLUG_REDIS_HOST")
+local REDIS_PORT = tonumber(os.getenv("SLUG_REDIS_PORT") or 6379)
 
 local POOL_SIZE = 30
 local KEEPALIVE_TIMEOUT = 30 * 1000 -- 30 seconds in ms
@@ -31,15 +39,66 @@ local expand_gmatch = function(text, match)
   return result
 end
 
-concurredis.host = os.getenv('REDIS_PORT_6379_TCP_ADDR') or os.getenv("SLUG_REDIS_HOST")
-concurredis.port = os.getenv("SLUG_REDIS_PORT")
-concurredis.port = concurredis.port or 6379
+local get_host_and_port = function()
+  local host, port = REDIS_HOST, tonumber(REDIS_PORT)
 
-ngx.log(ngx.INFO, "Using redis server: " .. tostring(concurredis.host) .. ":" .. tostring(concurredis.port))
+  if host and port then
+    ngx.log(ngx.INFO, ("Using redis server: %s:%d"):format(host, port))
+    return host, port
+  end
+
+  local dict = ngx.shared.config_dict
+
+  host = dict:get('redis-host')
+  port = tonumber(dict:get('redis-port'))
+
+  if host and port then
+    ngx.log(ngx.INFO, ("Using cached redis server: %s:%d"):format(host, port))
+    return host, port
+  end
+
+  assert(REDIS_NAMESERVER and REDIS_DNS, "Must set either [SLUG_REDIS_HOST, SLUG_REDIS_PORT] or [SLUG_REDIS_NAMESERVER, SLUG_REDIS_DNS]")
+
+  ngx.log(ngx.INFO, ("Resolving DNS %s in %s"):format(REDIS_DNS, REDIS_NAMESERVER))
+
+  local r = assert(resolver:new({
+    nameservers = { REDIS_NAMESERVER },
+    retrans     = 5,    -- 5 retransmissions on receive timeout
+    timeout     = 2000  -- 2 sec
+  }))
+
+  lock.around('concurredis.resolve', function()
+    local answers = assert(r:query(REDIS_DNS, r.TYPE_SRV))
+
+    if answers.errcode then
+      error(("Nameserver %s resolving DNS %s returned error code %s"):format(REDIS_NAMESERVER, REDIS_DNS, answers.errorcode))
+    end
+
+    if not answers[1] then
+      error(("Nameserver %s resolving DNS %s returned no SRV answers"):format(REDIS_NAMESERVER, REDIS_DNS))
+    end
+
+    host = answers[1].target
+    port = answers[1].port
+  end)
+
+  ngx.log(ngx.INFO, ("Using resolved redis server: %s:%s"):format(host, port))
+
+  dict:set('redis-host', host)
+  dict:set('redis-port', port)
+
+  return host, tonumber(port)
+end
+
+---
+
+
 
 concurredis.connect = function()
+  local host, port = get_host_and_port()
+
   local red = redis:new()
-  assert(red:connect(concurredis.host, concurredis.port))
+  assert(red:connect(host, port))
   return red
 end
 
@@ -78,7 +137,6 @@ concurredis.disable_bgsave = function(fun)
     assert(red:config('set', unpack(save)))
     assert(res, err)
   end)
-
 end
 
 concurredis.save = function()
@@ -115,7 +173,7 @@ concurredis.save = function()
 end
 
 concurredis.config = function(key, value)
-    concurredis.execute(function(red) assert(red:config('set', key, value)) end)
+  concurredis.execute(function(red) assert(red:config('set', key, value)) end)
 end
 
 concurredis.shutdown = function()
