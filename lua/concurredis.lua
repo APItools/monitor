@@ -16,8 +16,8 @@ local lock          = require 'lock'
 
 local concurredis = {}
 
-local REDIS_NAMESERVER   = os.getenv('SLUG_REDIS_NAMESERVER')
-local REDIS_DNS          = os.getenv('SLUG_REDIS_DNS')
+local REDIS_NAME_SERVER  = os.getenv('SLUG_REDIS_NAME_SERVER')
+local REDIS_NAME         = os.getenv('SLUG_REDIS_NAME')
 
 local REDIS_HOST = os.getenv('REDIS_PORT_6379_TCP_ADDR') or os.getenv("SLUG_REDIS_HOST")
 local REDIS_PORT = tonumber(os.getenv("SLUG_REDIS_PORT") or 6379)
@@ -57,25 +57,25 @@ local get_host_and_port = function()
     return host, port
   end
 
-  assert(REDIS_NAMESERVER and REDIS_DNS, "Must set either [SLUG_REDIS_HOST, SLUG_REDIS_PORT] or [SLUG_REDIS_NAMESERVER, SLUG_REDIS_DNS]")
+  assert(REDIS_NAME_SERVER and REDIS_NAME, "Must set either [SLUG_REDIS_HOST, SLUG_REDIS_PORT] or [SLUG_REDIS_NAME_SERVER, SLUG_REDIS_NAME]")
 
-  ngx.log(ngx.INFO, ("Resolving DNS %s in %s"):format(REDIS_DNS, REDIS_NAMESERVER))
+  ngx.log(ngx.INFO, ("Resolving name %s with %s"):format(REDIS_NAME, REDIS_NAME_SERVER))
 
   local r = assert(resolver:new({
-    nameservers = { REDIS_NAMESERVER },
+    nameservers = { REDIS_NAME_SERVER },
     retrans     = 5,    -- 5 retransmissions on receive timeout
     timeout     = 2000  -- 2 sec
   }))
 
   lock.around('concurredis.resolve', function()
-    local answers = assert(r:query(REDIS_DNS, r.TYPE_SRV))
+    local answers = assert(r:query(REDIS_NAME, r.TYPE_SRV))
 
     if answers.errcode then
-      error(("Nameserver %s resolving DNS %s returned error code %s"):format(REDIS_NAMESERVER, REDIS_DNS, answers.errorcode))
+      error(("Name server %s resolving name %s returned error code %s"):format(REDIS_NAME_SERVER, REDIS_NAME, answers.errorcode))
     end
 
     if not answers[1] then
-      error(("Nameserver %s resolving DNS %s returned no SRV answers"):format(REDIS_NAMESERVER, REDIS_DNS))
+      error(("Name server %s resolving name %s returned no SRV answers"):format(REDIS_NAME_SERVER, REDIS_NAME))
     end
 
     host = answers[1].target
