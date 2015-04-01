@@ -9,18 +9,17 @@
 --
 -- See https://github.com/agentzh/lua-resty-redis#limitations for details
 
-local redis         = require 'resty.redis'
-local error_handler = require 'error_handler'
-local resolver      = require 'resty.dns.resolver'
-local lock          = require 'lock'
+local redis          = require 'resty.redis'
+local error_handler  = require 'error_handler'
+local resolver       = require 'resty.dns.resolver'
+local lock           = require 'lock'
 
 local concurredis = {}
 
 local REDIS_NAME_SERVER  = os.getenv('SLUG_REDIS_NAME_SERVER')
 local REDIS_NAME         = os.getenv('SLUG_REDIS_NAME')
-
-local REDIS_HOST = os.getenv('REDIS_PORT_6379_TCP_ADDR') or os.getenv("SLUG_REDIS_HOST")
-local REDIS_PORT = tonumber(os.getenv("SLUG_REDIS_PORT") or 6379)
+local REDIS_HOST         = os.getenv('REDIS_PORT_6379_TCP_ADDR') or os.getenv("SLUG_REDIS_HOST")
+local REDIS_PORT         = tonumber(os.getenv("SLUG_REDIS_PORT") or 6379)
 
 local POOL_SIZE = 30
 local KEEPALIVE_TIMEOUT = 30 * 1000 -- 30 seconds in ms
@@ -39,27 +38,59 @@ local expand_gmatch = function(text, match)
   return result
 end
 
-local get_host_and_port = function()
-  local host, port = REDIS_HOST, tonumber(REDIS_PORT)
+local is_loaded = function(red)
+  local info = red:info('persistence')
+  local loading = info:match('loading:(%d)')
+  return loading == '0'
+end
 
-  if host and port then
-    ngx.log(ngx.INFO, ("Using redis server: %s:%d"):format(host, port))
-    return host, port
-  end
-
+local save_host_and_port_in_cache = function(host, port)
   local dict = ngx.shared.config_dict
+  dict:set('redis-host', host)
+  dict:set('redis-port', port)
+end
 
-  host = dict:get('redis-host')
-  port = tonumber(dict:get('redis-port'))
+local make_dns_query = function(r, name, query_type)
+  local answers = assert(r:query(name, query_type))
 
-  if host and port then
-    ngx.log(ngx.INFO, ("Using cached redis server: %s:%d"):format(host, port))
-    return host, port
+  if answers.errcode then
+    error(("Name server %s resolving name %s with query type %s returned error code %s"):format(REDIS_NAME_SERVER, name, query_type, answers.errorcode))
   end
 
-  assert(REDIS_NAME_SERVER and REDIS_NAME, "Must set either [SLUG_REDIS_HOST, SLUG_REDIS_PORT] or [SLUG_REDIS_NAME_SERVER, SLUG_REDIS_NAME]")
+  if not answers[1] then
+    error(("Name server %s resolving name %s with query type %s returned no answers"):format(REDIS_NAME_SERVER, name, query_type))
+  end
+
+  return answers[1]
+end
+
+local get_connection_from_cache = function()
+  local dict = ngx.shared.config_dict
+  local red, host, port
+
+  host, port = dict:get('redis-host'), tonumber(dict:get('redis-port'))
+
+  if host and port then
+    red = redis:new()
+    if red:connect(host, port) then
+      ngx.log(ngx.INFO, ("Connected with redis using CACHED values - %s:%d"):format(host, port))
+    else
+      red, host, port = nil, nil, nil
+      ngx.log(ngx.INFO, "Redis cached connection expired: %s with %d"):format(host, port)
+      dict:delete('redis-host')
+      dict:delete('redis-port')
+    end
+  end
+
+  return red, host, port
+end
+
+local get_connection_from_dns = function()
+  if not REDIS_NAME_SERVER or not REDIS_NAME then return end
 
   ngx.log(ngx.INFO, ("Resolving name %s with %s"):format(REDIS_NAME, REDIS_NAME_SERVER))
+
+  local red, host, port
 
   local r = assert(resolver:new({
     nameservers = { REDIS_NAME_SERVER },
@@ -68,41 +99,48 @@ local get_host_and_port = function()
   }))
 
   lock.around('concurredis.resolve', function()
-    local answers = assert(r:query(REDIS_NAME, r.TYPE_SRV))
+    local answer_srv   = make_dns_query(r, REDIS_NAME,        r.TYPE_SRV)
+    ngx.log(ngx.INFO, ("Got target %s from DNS SRV request"):format(answer_srv.target))
 
-    if answers.errcode then
-      error(("Name server %s resolving name %s returned error code %s"):format(REDIS_NAME_SERVER, REDIS_NAME, answers.errorcode))
-    end
+    local answer_a     = make_dns_query(r, answer_srv.target, r.TYPE_A)
+    ngx.log(ngx.INFO, ("Got ip %s from DNS A request"):format(answer_srv.address))
 
-    if not answers[1] then
-      error(("Name server %s resolving name %s returned no SRV answers"):format(REDIS_NAME_SERVER, REDIS_NAME))
-    end
-
-    host = answers[1].target
-    port = answers[1].port
+    host, port = answer_a.address, answer_srv.port
   end)
 
-  ngx.log(ngx.INFO, ("Using resolved redis server: %s:%s"):format(host, port))
+  if not host or not port then
+    error(('Could not obtain redis connection from DNS: %s, %s'):format(REDIS_NAME_SERVER, REDIS_NAME))
+  end
 
-  dict:set('redis-host', host)
-  dict:set('redis-port', port)
+  local red = redis:new()
+  assert(red:connect(host, port))
+  save_host_and_port_in_cache(host, port)
 
-  return host, tonumber(port)
+  ngx.log(ngx.INFO, ("Connected with redis using DNS values - %s:%d"):format(host, port))
+
+  return red, host, port
 end
 
-local is_loaded = function(red)
-  local info = red:info('persistence')
-  local loading = info:match('loading:(%d)')
-  return loading == '0'
+local get_connection_from_env = function()
+  local host, port = REDIS_HOST, REDIS_PORT
+
+  if not host or not port then return end
+
+  local red = redis:new()
+  assert(red:connect(host, port))
+  save_host_and_port_in_cache(host, port)
+
+  ngx.log(ngx.INFO, ("Connected with redis using ENV values - %s:%d"):format(host, port))
+  return red
 end
 
 ---
 
 concurredis.restart = function()
-  concurredis.connect():shutdown()
+  local red, host, port = concurredis.connect()
 
-  local host, port = get_host_and_port()
-  local red        = redis:new()
+  red:shutdown()
+
   local sleep      = 0.1
   local growth     = 1.2
 
@@ -120,10 +158,12 @@ concurredis.restart = function()
 end
 
 concurredis.connect = function()
-  local host, port = get_host_and_port()
+  local red = get_connection_from_cache() or get_connection_from_dns() or get_connection_from_env()
 
-  local red = redis:new()
-  assert(red:connect(host, port))
+  if not red then
+    error('Could not connect to redis. Make sure that (SLUG_REDIS_HOST + SLUG_REDIS_PORT) or (SLUG_REDIS_NAME_SERVER + SLUG_REDIS_NAME_SERVER) are set')
+  end
+
   return red
 end
 
