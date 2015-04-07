@@ -61,7 +61,7 @@ loadfile(busted_lua)()
   loader.close
   cmd = [
     "eval $(luarocks path)",
-    "#{resty.shellescape} #{opts.map(&:shellescape).join(' ')} #{loader.path.shellescape}"
+    "resty --nginx=openresty #{opts.map(&:shellescape).join(' ')} #{loader.path.shellescape}"
   ].join(' && ')
   puts cmd
   exec(cmd)
