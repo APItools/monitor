@@ -1,8 +1,8 @@
 local resty_lock = require "resty.lock"
 
-local lock = {}
-lock.around = function(name, func, ...)
-  local lock = resty_lock:new('locks')
+local M = {}
+M.around = function(name, func, ...)
+  local lock = assert(resty_lock:new('locks'))
   lock:lock(name)
   ngx.log(ngx.DEBUG, 'locking around ' .. name)
   local res = {pcall(func, ...) }
@@ -17,10 +17,10 @@ lock.around = function(name, func, ...)
   end
 end
 
-lock.wrapper = function(name, fun)
+M.wrapper = function(name, fun)
   return function(...)
-    return lock.around(name, fun, ...)
+    return M.around(name, fun, ...)
   end
 end
 
-return lock
+return M

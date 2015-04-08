@@ -34,11 +34,18 @@ Or you can use our `make bash` to start similar environment without fig.
 Install [homebrew](http://brew.sh/)
 
 ```bash
-brew tap killercup/homebrew-openresty
-brew install ngx_openresty --with-gunzip --with-luajit-checkhook
-brew install luarocks
+brew tap apitools/openresty
+brew install openresty
+brew install apitools/openresty/luarocks
 
-luarocks install luajson luaexpat
+luarocks install luajson
+luarocks install luaexpat
+
+bundle install
+foreman start
+
+# For tests:
+luarocks intall busted-stable
 ```
 
 ### Linux

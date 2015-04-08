@@ -27,7 +27,7 @@ RUN luarocks install /root/luarocks/lunit*.rock \
  && luarocks install /root/luarocks/luaexpat*.rock \
  && luarocks install /root/luarocks/luajson*.rock \
  && rm -rf /root/luarocks \
- && luarocks install busted
+ && luarocks install busted-stable
 
 ENV RELEASE test
 

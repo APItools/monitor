@@ -18,13 +18,9 @@ files.map!{|path| Pathname(path).expand_path }
 opts = []
 resty = Pathname('script/resty').expand_path.to_s
 
-# busted = Pathname('script/spec.lua').expand_path.to_s
-
-osx_luarocks = Pathname('/usr/local/Cellar/luarocks/2.1.2/share/lua/5.1/')
 osx_luarocks = Pathname('/usr/local/Cellar/luarocks/')
 osx_luarocks = osx_luarocks.children.first             if osx_luarocks.exist?
-osx_luarocks = osx_luarocks.join('share').join('lua')  if osx_luarocks && osx_luarocks.exist?
-osx_luarocks = osx_luarocks.children.first             if osx_luarocks && osx_luarocks.exist?
+osx_luarocks = osx_luarocks.join('share/lua/5.1')      if osx_luarocks && osx_luarocks.exist?
 
 opts << '-I' << osx_luarocks.to_s if osx_luarocks &&  osx_luarocks.exist?
 
@@ -40,8 +36,8 @@ Dir.chdir('lua') do
   args.concat(files)
 
   loader.puts <<-end
-local busted = io.popen('which busted', 'r'):read()
-local busted_lua = io.open(busted, 'r'):read('*a'):match([[([^'"]+/bin/busted)]])
+local busted_bootstrap = io.popen('which busted_bootstrap', 'r'):read()
+local busted_lua = io.open(busted_bootstrap, 'r'):read('*a'):match([[([^'"]+/bin/busted_bootstrap)]])
 
 require "luarocks.loader"
 
@@ -54,7 +50,7 @@ inspect = require "inspect"
 pinspect = function(x) print(inspect(x)) end
 _TEST = true
 
-arg = { #{args.compact.join(',')} }
+arg = { run = '', #{args.compact.join(',')} }
 
 loadfile(busted_lua)()
   end
