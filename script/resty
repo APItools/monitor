@@ -142,7 +142,7 @@ for my $var (sort keys %ENV) {
     $env_list .= "env $var;\n";
 }
 
-my $config_shared_dict = File::Spec->rel2abs('config/shared_dict.conf', '..');
+my $config_shared_dict = File::Spec->rel2abs('../config/shared_dict.conf');
 copy($config_shared_dict, $conf_dir) or die("could not copy $config_shared_dict");
 
 my $conf_file = File::Spec->catfile($conf_dir, "nginx.conf");
