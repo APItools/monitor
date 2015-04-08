@@ -19,7 +19,7 @@ end
 
 M.wrapper = function(name, fun)
   return function(...)
-    return lock.around(name, fun, ...)
+    return M.around(name, fun, ...)
   end
 end
 
