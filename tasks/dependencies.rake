@@ -1,6 +1,6 @@
 namespace :dependencies do
   dependencies = {
-    test: %w[ busted luajson luaexpat ],
+    test: %w[ busted-stable luajson luaexpat ],
     prod: %w[ luajson luaexpat ]
   }
 
