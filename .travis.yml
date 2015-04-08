@@ -32,7 +32,7 @@ install:
   - ./configure --with-lua=${OPENRESTY}/luajit --with-lua-include=${OPENRESTY}/luajit/include/luajit-2.1 --with-lua-lib=${OPENRESTY}/lualib
   - make build && sudo make install
   - sudo luarocks install luacheck
-  - sudo luarocks install busted
+  - sudo luarocks install busted-stable
   - sudo luarocks install luajson
   - sudo luarocks install LuaExpat
   - npm install -g karma-cli
