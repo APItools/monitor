@@ -47,7 +47,7 @@ describe('resty backend', function()
     end)
 
     it('has error', function()
-      assert.same({message = './http_ng/backend/async_resty.lua:49: connection refused'}, response.error)
+      assert.same('connection refused', response.error)
     end)
   end)
 end)
