@@ -18,7 +18,7 @@ files.map!{|path| Pathname(path).expand_path }
 opts = []
 resty = Pathname('script/resty').expand_path.to_s
 
-osx_luarocks = Pathname('/usr/local/Cellar/openresty_luarocks/')
+osx_luarocks = Pathname('/usr/local/Cellar/luarocks/')
 osx_luarocks = osx_luarocks.children.first             if osx_luarocks.exist?
 osx_luarocks = osx_luarocks.join('share/lua/5.1')      if osx_luarocks && osx_luarocks.exist?
 
