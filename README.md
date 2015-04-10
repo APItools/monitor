@@ -42,6 +42,7 @@ luarocks install luajson
 luarocks install luaexpat
 
 bundle install
+npm install
 foreman start
 
 # For tests:
