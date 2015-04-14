@@ -51,7 +51,7 @@ local save_host_and_port_in_cache = function(host, port)
 end
 
 local make_dns_query = function(r, name, query_type)
-  local answers = assert(r:query(name, query_type))
+  local answers = assert(r:query(name, {qtype = query_type}))
 
   if answers.errcode then
     error(("Name server %s resolving name %s with query type %s returned error code %s"):format(REDIS_NAME_SERVER, name, query_type, answers.errorcode))
