@@ -109,7 +109,7 @@ local get_connection_from_dns = function()
   end)
 
   if not host or not port then
-    error(('Could not obtain redis connection from DNS: %s, %s'):format(REDIS_NAME_SERVER, REDIS_NAME))
+    error(('Could not obtain redis host and port from DNS: %s, %s. Obtained host: %s, port: %s'):format(REDIS_NAME_SERVER, REDIS_NAME, host, port))
   end
 
   local red = redis:new()
