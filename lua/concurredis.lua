@@ -51,6 +51,7 @@ local save_host_and_port_in_cache = function(host, port)
 end
 
 local make_dns_query = function(r, name, query_type)
+  ngx.log(ngx.INFO, ("Performing DNS query for %s"):format(name))
   local answers = assert(r:query(name, {qtype = query_type}))
 
   if answers.errcode then
@@ -60,6 +61,8 @@ local make_dns_query = function(r, name, query_type)
   if not answers[1] then
     error(("Name server %s resolving name %s with query type %s returned no answers"):format(REDIS_NAME_SERVER, name, query_type))
   end
+
+  ngx.log(ngx.INFO, ("Got DNS answer: %s"):format(inspect(answers)))
 
   return answers[1]
 end
