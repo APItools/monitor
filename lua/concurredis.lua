@@ -51,7 +51,7 @@ local save_host_and_port_in_cache = function(host, port)
 end
 
 local make_dns_query = function(r, name, query_type)
-  ngx.log(ngx.INFO, ("Performing DNS query for %s"):format(name))
+  ngx.log(ngx.INFO, ("Performing DNS query of type %s for %s"):format(query_type, name))
   local answers = assert(r:query(name, {qtype = query_type}))
 
   if answers.errcode then
@@ -62,9 +62,7 @@ local make_dns_query = function(r, name, query_type)
     error(("Name server %s resolving name %s with query type %s returned no answers"):format(REDIS_NAME_SERVER, name, query_type))
   end
 
-  ngx.log(ngx.INFO, ("Got DNS answer: %s"):format(inspect(answers)))
-
-  return answers[1]
+  return answers
 end
 
 local get_connection_from_cache = function()
@@ -91,7 +89,7 @@ end
 local get_connection_from_dns = function()
   if not REDIS_NAME_SERVER or not REDIS_NAME then return end
 
-  ngx.log(ngx.INFO, ("Resolving name %s with %s"):format(REDIS_NAME, REDIS_NAME_SERVER))
+  ngx.log(ngx.INFO, ("Resolving name %s with server %s"):format(REDIS_NAME, REDIS_NAME_SERVER))
 
   local red, host, port
 
@@ -102,13 +100,19 @@ local get_connection_from_dns = function()
   }))
 
   lock.around('concurredis.resolve', function()
-    local answer_srv   = make_dns_query(r, REDIS_NAME,        r.TYPE_SRV)
-    ngx.log(ngx.INFO, ("Got target %s from DNS SRV request"):format(answer_srv.target))
+    local answer_srv = make_dns_query(r, REDIS_NAME, r.TYPE_SRV)[1]
+    port = answer_srv.port
 
-    local answer_a     = make_dns_query(r, answer_srv.target, r.TYPE_A)
-    ngx.log(ngx.INFO, ("Got ip %s from DNS A request"):format(answer_srv.address))
+    ngx.log(ngx.INFO, ("Got target %s and port %s from DNS SRV request"):format(answer_srv.target, port))
 
-    host, port = answer_a.address, answer_srv.port
+    local answer_a = make_dns_query(r, answer_srv.target, r.TYPE_A)
+    for i=1,#answer_a do
+      if answer_a[i].address then
+        host = answer_a[i].address
+        ngx.log(ngx.INFO, ("Got host %s from DNS A request"):format(host))
+        break
+      end
+    end
   end)
 
   if not host or not port then
