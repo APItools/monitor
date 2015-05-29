@@ -205,8 +205,12 @@ crontab.schedule = function(timer, offset)
   local scheduled  = dict:add(job_id, timer.id)
 
   if scheduled then
-    ngx.timer.at(delay, crontab.run_and_reschedule, timer, job_id)
-    ngx.log(ngx.INFO, '[cron] scheduled ' .. timer.id .. ' with as ' .. job_id .. ' in ' .. delay .. ' seconds')
+    local ok, err = ngx.timer.at(delay, crontab.run_and_reschedule, timer, job_id)
+    if ok then
+      ngx.log(ngx.INFO, '[cron] scheduled ' .. timer.id .. ' with as ' .. job_id .. ' in ' .. delay .. ' seconds')
+    else
+      ngx.log(ngx.ERR, '[cron] could not execute ngx.timer.at for ' .. timer.id .. ' error: ' .. err )
+    end
   else
     ngx.log(ngx.ERR, '[cron] could not schedule ' .. timer.id .. ' with as ' .. job_id)
   end
