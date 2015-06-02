@@ -1,5 +1,6 @@
 nginx:
-  worker_processes: 1
+  # 1 main worker + 1 background worker
+  worker_processes: 2
   master_process: 'on'
   error_log_level: notice
   daemon: 'off'
