@@ -393,6 +393,4 @@ crontab.stats = function()
   }
 end
 
-crontab.initialize()
-
 return crontab
