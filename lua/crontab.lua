@@ -189,30 +189,36 @@ local get_seconds_to_midnight = function()
   return next_midnight - ngx.now()
 end
 
+local get_seconds_to_next_execution = function(timer, offset)
+  offset = offset or 0
+  if timer.at == 'midnight' then
+    return get_seconds_to_midnight() + offset
+  else
+    return timer.every + offset
+  end
+end
+
 
 -- Public functions
 
 crontab.schedule = function(timer, offset)
-  assert(dict:get(timer.id), "can't schedule timer " .. timer.id .. " because it is not initialized")
+  if dict:get(timer.id) then
+    local delay      = get_seconds_to_next_execution(timer, offset)
+    local job_id     = crontab.uuid(timer)
+    local scheduled  = dict:add(job_id, timer.id)
 
-  local at = 0
-  if timer.at == 'midnight' then
-    at = get_seconds_to_midnight()
-  end
-
-  local delay      = timer.every + at + (offset or 0) -- randomizer offset
-  local job_id     = crontab.uuid(timer)
-  local scheduled  = dict:add(job_id, timer.id)
-
-  if scheduled then
-    local ok, err = ngx.timer.at(delay, crontab.run_and_reschedule, timer, job_id)
-    if ok then
-      ngx.log(ngx.INFO, '[cron] scheduled ' .. timer.id .. ' with as ' .. job_id .. ' in ' .. delay .. ' seconds')
+    if scheduled then
+      local ok, err = ngx.timer.at(delay, crontab.run_and_reschedule, timer, job_id)
+      if ok then
+        ngx.log(ngx.INFO, '[cron] scheduled ' .. timer.id .. ' with as ' .. job_id .. ' in ' .. delay .. ' seconds')
+      else
+        ngx.log(ngx.ERR, '[cron] could not execute ngx.timer.at for ' .. timer.id .. ' error: ' .. err )
+      end
     else
-      ngx.log(ngx.ERR, '[cron] could not execute ngx.timer.at for ' .. timer.id .. ' error: ' .. err )
+      ngx.log(ngx.ERR, '[cron] could not schedule ' .. timer.id .. ' with as ' .. job_id)
     end
   else
-    ngx.log(ngx.ERR, '[cron] could not schedule ' .. timer.id .. ' with as ' .. job_id)
+    ngx.log(ngx.ERR, "can't schedule timer " .. timer.id .. " because it is not initialized")
   end
 end
 
