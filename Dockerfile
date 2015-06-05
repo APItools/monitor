@@ -1,12 +1,12 @@
 # FROM quay.io/3scale/ruby:2.0
-FROM quay.io/3scale/openresty:1.7.10.1
+FROM quay.io/3scale/openresty:1.7.4.1
 
 MAINTAINER Michal Cichra <michal@3scale.net> # 2014-06-13
 
 RUN apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 80F70E11F0F0D5F10CB20E62F5DA5F09C3173AA6 \
- && echo 'deb http://ppa.launchpad.net/brightbox/ruby-ng/ubuntu trusty main' > /etc/apt/sources.list.d/ruby-ng.list \
+ && echo 'deb http://ppa.launchpad.net/brightbox/ruby-ng/ubuntu precise main' > /etc/apt/sources.list.d/ruby-ng.list \
  && apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 136221EE520DDFAF0A905689B9316A7BC7917B12 \
- && echo 'deb http://ppa.launchpad.net/chris-lea/node.js/ubuntu trusty main' > /etc/apt/sources.list.d/nodejs.list \
+ && echo 'deb http://ppa.launchpad.net/chris-lea/node.js/ubuntu precise main' > /etc/apt/sources.list.d/nodejs.list \
  && apt-get -y -q update \
  && apt-get -y -q install ruby2.1 git-core ruby2.1-dev rubygems ruby-switch \
  && ruby-switch --set ruby2.1 \
