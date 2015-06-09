@@ -138,7 +138,7 @@ describe('http_ng', function()
     end)
 
     it('has error', function()
-      assert.equal('timeout', response.error)
+      assert.equal('string', type(response.error)) -- depending on the openresty version it can be "timeout" or "connection refused"
     end)
   end)
 
