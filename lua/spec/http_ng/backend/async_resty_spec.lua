@@ -47,7 +47,7 @@ describe('resty backend', function()
     end)
 
     it('has error', function()
-      assert.same('connection refused', response.error)
+      assert.same('string', type(response.error)) -- depending on the openresty version it can be "timeout" or "connection refused"
     end)
   end)
 end)

@@ -3,19 +3,18 @@ local fake_backend = require 'spec.util.fake_backend'
 
 
 describe('http_ng', function()
-  local http
+  local http, backend
   before_each(function()
-    http = http_ng.new{backend = fake_backend.reset() }
-    spy.on(fake_backend, 'send')
+    backend = fake_backend.new()
+    http = http_ng.new({backend = backend})
   end)
 
   for _,method in ipairs{ 'get', 'head', 'options', 'delete' } do
     it('makes ' .. method .. ' call to backend', function()
       local response = http[method]('http://example.com')
-      local last_request = assert(fake_backend.last_request)
-      assert.spy(http.backend.send).was_called_with(last_request)
-      assert.truthy(response)
+      local last_request = assert(backend.last_request)
 
+      assert.truthy(response)
       assert.equal(method:upper(), last_request.method)
       assert.equal('http://example.com', last_request.url)
     end)
@@ -24,8 +23,8 @@ describe('http_ng', function()
   for _,method in ipairs{ 'put', 'post', 'patch' } do
     it('makes ' .. method .. ' call to backend with body', function()
       local response = http[method]('http://example.com', 'body')
-      local last_request = assert(fake_backend.last_request)
-      assert.spy(http.backend.send).was_called_with(last_request)
+      local last_request = assert(backend.last_request)
+
       assert.truthy(response)
       assert.equal(method:upper(), last_request.method)
       assert.equal('http://example.com', last_request.url)
@@ -38,7 +37,7 @@ describe('http_ng', function()
 
     it('serializes table as form-urlencoded', function()
       local response = http.post('http://example.com', body)
-      local last_request = assert(fake_backend.last_request)
+      local last_request = assert(backend.last_request)
       assert.equal('application/x-www-form-urlencoded', last_request.headers.content_type)
       assert.equal('value=some', last_request.body)
     end)
@@ -47,13 +46,13 @@ describe('http_ng', function()
   describe('array syntax', function()
     it('works for get', function()
       local response = http.get{'http://example.com', headers = { custom = 'value'} }
-      local last_request = assert(fake_backend.last_request)
+      local last_request = assert(backend.last_request)
       assert.equal('value', last_request.headers.custom)
     end)
 
     it('works for post', function()
       local response = http.post{'http://example.com', 'body', headers = { custom = 'value'} }
-      local last_request = assert(fake_backend.last_request)
+      local last_request = assert(backend.last_request)
       assert.equal('value', last_request.headers.Custom)
       assert.equal('body', last_request.body)
     end)
@@ -64,19 +63,19 @@ describe('http_ng', function()
 
     it('can override Host header', function()
       local response = http.get('http://example.com', { headers = { host = 'overriden' }})
-      local last_request = assert(fake_backend.last_request)
+      local last_request = assert(backend.last_request)
       assert.equal('overriden', last_request.headers.host)
     end)
 
     it('passed headers for requests with body', function()
       local response = http.post('http://example.com', '', { headers = headers })
-      local last_request = assert(fake_backend.last_request)
+      local last_request = assert(backend.last_request)
       assert.equal('value', last_request.headers['Custom-Header'])
     end)
 
     it('passed headers for requests without body', function()
       local response = http.get('http://example.com', { headers = headers })
-      local last_request = assert(fake_backend.last_request)
+      local last_request = assert(backend.last_request)
       assert.equal('value', last_request.headers['Custom-Header'])
     end)
   end)
@@ -92,24 +91,22 @@ describe('http_ng', function()
 
     it('serializes body as json', function()
       http.json.post('http://example.com', {table = 'value'})
-      assert.spy(http.backend.send).was_called()
-      assert.equal('{"table":"value"}', fake_backend.last_request.body)
-      assert.equal(#'{"table":"value"}', fake_backend.last_request.headers['Content-Length'])
-      assert.equal('application/json', fake_backend.last_request.headers['Content-Type'])
+
+      assert.equal('{"table":"value"}', backend.last_request.body)
+      assert.equal(#'{"table":"value"}', backend.last_request.headers['Content-Length'])
+      assert.equal('application/json', backend.last_request.headers['Content-Type'])
     end)
 
     it('accepts json as a string', function()
       http.json.post('http://example.com', '{"table" : "value"}')
-      assert.spy(http.backend.send).was_called()
-      assert.equal('{"table" : "value"}', fake_backend.last_request.body)
-      assert.equal(#'{"table" : "value"}', fake_backend.last_request.headers['Content-Length'])
-      assert.equal('application/json', fake_backend.last_request.headers['Content-Type'])
+      assert.equal('{"table" : "value"}', backend.last_request.body)
+      assert.equal(#'{"table" : "value"}', backend.last_request.headers['Content-Length'])
+      assert.equal('application/json', backend.last_request.headers['Content-Type'])
     end)
 
     it('does not override passed headers', function()
       http.json.post('http://example.com', '{}', { headers = { content_type = 'custom/format' }})
-      assert.spy(http.backend.send).was_called()
-      assert.equal('custom/format', fake_backend.last_request.headers['Content-Type'])
+      assert.equal('custom/format', backend.last_request.headers['Content-Type'])
     end)
   end)
 
@@ -141,7 +138,7 @@ describe('http_ng', function()
     end)
 
     it('has error', function()
-      assert.equal('connection refused', response.error)
+      assert.equal('string', type(response.error)) -- depending on the openresty version it can be "timeout" or "connection refused"
     end)
   end)
 

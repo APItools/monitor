@@ -6,7 +6,7 @@
 --- HTTP
 -- @type HTTP
 
-local backend = require 'http_ng.backend.resty'
+local resty_backend = require 'http_ng.backend.resty'
 local json = require 'cjson'
 local request = require 'http_ng.request'
 local http = { request = request }
@@ -24,9 +24,13 @@ http.method = function(method, client)
 
     assert(url, 'url as first parameter is required')
 
-    local req = http.request.new{ url = url, method = method,
-                                  options = options, client = client,
-                                  serializer = client.serializer or http.serializers.default }
+    local req = http.request.new({
+      url         = url,
+      method      = method,
+      options     = options,
+      client      = client,
+      serializer  = client.serializer or http.serializers.default
+    })
     return client.backend.send(req)
   end
 end
@@ -174,7 +178,7 @@ end
 
 function http.new(client)
   client = client or { }
-  client.backend = client.backend or backend
+  client.backend = client.backend or resty_backend
 
   return setmetatable(client, { __index  = generate_client_method  })
 end
