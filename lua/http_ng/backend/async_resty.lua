@@ -53,14 +53,13 @@ _M.async = function(req)
     assert(httpc:ssl_handshake(false, host, verify))
   end
 
-  local res = httpc:request(req)
+  local res, err = httpc:request(req)
 
-  local function read_body()
-    local body, _err = res:read_body()
-    return body
+  if res then
+    return response.new(res.status, res.headers, function() return (res:read_body()) end)
+  else
+    return response.error(err)
   end
-
-  return response.new(res.status, res.headers, read_body)
 end
 
 local function future(thread)

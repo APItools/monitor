@@ -1,17 +1,16 @@
-local backend = {}
+local fake_backend = {}
 
-local send = function(request)
-  table.insert(backend.requests, request)
-  backend.last_request = request
-  return { status = 200 }
-end
+function fake_backend.new()
+  local backend = { requests = {} }
 
-backend.reset = function()
-  backend.requests = {}
-  backend.last_request = ni
-  backend.send = send
+  backend.send = function(request)
+    backend.requests[#backend.requests + 1] = request
+    backend.last_request = request
+    return { status = 200 }
+  end
 
   return backend
 end
 
-return backend.reset()
+
+return fake_backend
