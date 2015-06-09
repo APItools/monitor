@@ -138,7 +138,7 @@ describe('http_ng', function()
     end)
 
     it('has error', function()
-      assert.equal('connection refused', response.error)
+      assert.equal('timeout', response.error)
     end)
   end)
 

@@ -47,7 +47,7 @@ describe('resty backend', function()
     end)
 
     it('has error', function()
-      assert.same('connection refused', response.error)
+      assert.same('timeout', response.error)
     end)
   end)
 end)
