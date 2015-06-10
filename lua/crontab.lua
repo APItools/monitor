@@ -144,7 +144,7 @@ local TIMERS = {
 }
 
 local TIMERS_DICT = {}
-for _,timer in ipairs(TIMERS) do TIMERS_DICT[timer.id] = true end
+for _,timer in ipairs(TIMERS) do TIMERS_DICT[timer.id] = timer end
 
 local dict    = ngx.shared.crontab
 
@@ -296,10 +296,6 @@ crontab.randomizer = function(timer)
 end
 
 crontab.initialize = function()
-  crontab.enable()
-
-  if crontab.disabled then return end
-
   -- it wont run initialize when locked
   crontab.block(function()
     ngx.log(ngx.INFO, '[cron] initializing')
@@ -327,35 +323,18 @@ crontab.flush = function()
   end)
 end
 
-crontab.timer = function(id)
-  for _,timer in ipairs(TIMERS) do
-    if timer.id == id then return timer end
-  end
-end
-
-local has_slug_name = function()
-  local Config = require 'models.config'
-  return Config.get_slug_name()
-end
-
-crontab.enabled = function()
-  return not crontab.disabled and (crontab.forced or has_slug_name())
+crontab.get_timer = function(id)
+  return TIMERS_DICT[id]
 end
 
 crontab.run = function(timer, job_id)
   ngx.log(ngx.INFO, '[cron] running ' .. timer.id .. ' job  ' .. job_id)
 
-  local forced = job_id == 'forced' or job_id == 'manual'
-
-  if forced or crontab.enabled() then
-    crontab.lock(function()
-      statsd.timer('cron.' .. timer.id, function()
-        error_handler.execute(timer.action)
-      end)
+  crontab.lock(function()
+    statsd.timer('cron.' .. timer.id, function()
+      error_handler.execute(timer.action)
     end)
-  else
-    ngx.log(ngx.INFO, '[cron] skipping run of ' .. timer.id .. ' job ' .. job_id .. ': slug name not set' )
-  end
+  end)
 
   ngx.log(ngx.INFO, '[cron] finished ' .. timer.id .. ' job  ' .. job_id)
 
@@ -368,15 +347,8 @@ crontab.shutdown = function()
 end
 
 crontab.halt = function()
-  crontab.disabled = true
-  crontab.forced = false
   dict:flush_all()
   dict:flush_expired()
-end
-
-crontab.enable = function()
-  crontab.disabled = os.getenv('SLUG_DISABLE_CRON')
-  crontab.forced = os.getenv('SLUG_CRON_FORCED')
 end
 
 crontab.reset = function()
@@ -387,7 +359,6 @@ end
 
 crontab.stats = function()
   return {
-    disabled = crontab.disabled and 1 or 0,
     timers   = #TIMERS,
     jobs     = get_jobs()
   }

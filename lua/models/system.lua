@@ -71,7 +71,7 @@ System.log = function(block)
 end
 
 System.run_timer = function(timer_id)
-  local timer = crontab.timer(timer_id)
+  local timer = crontab.get_timer(timer_id)
 
   if timer then
     crontab.run(timer, 'manual')
