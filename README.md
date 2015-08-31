@@ -1,11 +1,11 @@
 # APItools Traffic Monitor [![Build Status](https://travis-ci.org/APItools/monitor.svg?branch=master)](https://travis-ci.org/APItools/monitor)
 
-APITools is a hosted proxy mailny for API calls, but can be used as general programmable proxy.
+APITools is a hosted proxy mainly for API calls, but can be used as a general programmable proxy.
 It has analytics, lua middleware, storing passed calls and many other features.
 
 # Building and Developing
 
-You need Ruby 2.1.2 to run build this project and Openresty to run it.
+You need Ruby 2.1.2 to build this project and Openresty to run it.
 Then you can just run it like:
 
 ```bash
@@ -13,12 +13,12 @@ bundle
 foreman start
 ```
 
-If you want to know how exacly is each component started, check Procfile.
+If you want to know how exacly each component is started, check Procfile.
 
-You will need running redis server.
+You will need a running redis server.
 
 # Tests
-We have several test suites for differrent components. First are API tests that require `ruby` and you can run them by `rake test:api`. You need to have an instance running on ports 7071 and 10002. Then there is `rake test:integration` which runs cucumber tests with real browsers simulating user interactions. Next are `rake test:lua` which are lua tests. They require openresty version at least `1.7.4.1`. Last are Angular tests, that require `nodejs`. You can install all dependencies by `npm install` and then just `rake test:angular`.
+We have several test suites for different components. First are the API tests that require `ruby`. You can run them by `rake test:api`. You need to have an instance running on ports 7071 and 10002. Then there is `rake test:integration` which runs cucumber tests with real browsers simulating user interactions. Next are `rake test:lua` which are lua tests. They require openresty version at least `1.7.4.1`. Last are Angular tests, that require `nodejs`. You can install all dependencies by `npm install` and then just `rake test:angular`.
 
 ## Docker
 
@@ -51,8 +51,8 @@ luarocks intall busted-stable
 
 ### Linux
 
-You can follow our Dockerfile with exact commands how to install Openresty on Linux.
-You don't have to use all the flags or prefix. The essense should be:
+You can follow our Dockerfile with exact commands on how to install Openresty on Linux.
+You don't have to use all the flags or prefixes. The essense should be:
 
 ```bash
 wget http://openresty.org/download/ngx_openresty-1.7.2.1.tar.gz
@@ -91,7 +91,7 @@ nginx -p /path/to/folder -c config/nginx.conf
 
 ## OSX
 
-On OSX instead of `nginx` use `openresty`.
+On OSX, instead of `nginx` use `openresty`.
 
 
 # Contributing
