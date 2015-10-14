@@ -136,7 +136,7 @@ module Release extend self
   def nginx(input)
     config = configs.fetch('nginx')
 
-    config['logging'] = production?
+    config['logging'] = production? unless config.has_key?('logging')
     config['release'] = release
 
     if root = config['root']

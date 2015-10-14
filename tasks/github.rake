@@ -2,21 +2,15 @@ import 'tasks/release.rake'
 
 namespace :github do
   task :release => 'rake:release' do
-    tar = Pathname('release.tar.gz').expand_path
     version = Time.new.strftime('%Y%m%d%H%M')
+    tar = Pathname("release-#{version}.tar.gz").expand_path
 
-    Dir.chdir 'release' do
-      system('git', 'add', '-A')
-      system('git', 'commit', '-m', "APItools Monitor Release #{version}")
-      system('git', 'push', 'origin', 'master')
-      system('git', 'archive', '--format', 'tar.gz', '-o', tar.to_s, '--prefix', 'apitools-monitor/', 'HEAD')
-    end
-
+    system('tar', '-zcvf', tar.to_s, 'release')
     system('git', 'tag', '-a', version.to_s, '-m', "Release #{version}")
     system('git', 'push', '--tags')
 
     puts "Created release archive: #{tar}"
-    puts "Upload it to: https://github.com/APItools/monitor/releases/new"
+    puts "Upload it to: https://github.com/APItools/monitor/releases/new?tag=#{version}"
 
     puts "Version: #{version}"
   end
