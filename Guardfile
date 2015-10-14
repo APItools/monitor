@@ -7,7 +7,7 @@ guard 'coffeescript', all_on_start: true, input: 'app/assets/javascripts', outpu
 reload_nginx = proc do |m|
   next if m[1].end_with?('_spec') && m[1].start_with?('spec/') # do not reload because of specs
   puts "#{Time.now} - reloading nginx because of #{m.inspect}"
-  `openresty -s reload -p . -c config/dev.conf`
+  `nginx -s reload -p . -c config/dev.conf`
 end
 
 guard :shell do
