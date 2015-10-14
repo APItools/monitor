@@ -176,20 +176,11 @@ end
 
 concurredis.execute = function(f)
 
-  local first_connection = false
-  if not ngx.ctx.red then
-    ngx.ctx.red = concurredis.connect()
-    first_connection = true
-  end
-
-  local red = ngx.ctx.red
+  local red = concurredis.connect()
 
   local result  = { error_handler.execute(function() return f(red) end) }
 
-  if first_connection then
-    red:set_keepalive(KEEPALIVE_TIMEOUT, POOL_SIZE)
-    ngx.ctx.red = nil
-  end
+  red:set_keepalive(KEEPALIVE_TIMEOUT, POOL_SIZE)
 
   local ok, err = result[1], result[2]
   if ok then
