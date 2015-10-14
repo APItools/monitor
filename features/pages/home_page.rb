@@ -3,6 +3,12 @@ class HomePage
 
   def initialize
     visit('/')
+    on_premise_setup
+  end
+
+  def on_premise_setup
+    find('#setup-dialog').click_on('Save')
+  rescue Capybara::ElementNotFound
   end
 
   def add_service

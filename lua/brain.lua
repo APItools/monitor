@@ -95,6 +95,7 @@ end
 
 Brain.make_report = function()
   local slug_name = Config.get_slug_name()
+  local uuid      = Config.get_uuid()
 
   if not slug_name then
     ngx.log(ngx.WARN, 'skipping brain report because there is no slug name')
@@ -102,6 +103,7 @@ Brain.make_report = function()
   end
 
   local report = { version = 1,
+                   uuid = uuid,
                    slug = slug_name,
                    services = {} }
 

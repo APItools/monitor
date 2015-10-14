@@ -4,8 +4,7 @@ angular.module('slug.controllers')
   initialize: -> $http.post('/api/system/initialize')
   reset: -> $http.post('/api/system/reset')
 
-.controller 'AppController', ($scope, Service, System, $http) ->
+.controller 'AppController', ($scope, Service, System, Brain) ->
   System.initialize()
 
-  $http(method: 'GET', url: '/api/brain').success (data) ->
-    $scope.brain = data.host
+  $scope.brain = Brain

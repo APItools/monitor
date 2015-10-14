@@ -18,8 +18,8 @@ local concurredis = {}
 
 local REDIS_NAME_SERVER  = os.getenv('SLUG_REDIS_NAME_SERVER')
 local REDIS_NAME         = os.getenv('SLUG_REDIS_NAME')
-local REDIS_HOST         = os.getenv('REDIS_PORT_6379_TCP_ADDR') or os.getenv("SLUG_REDIS_HOST")
-local REDIS_PORT         = tonumber(os.getenv("SLUG_REDIS_PORT") or 6379)
+local REDIS_HOST         = os.getenv('DB_PORT_6379_TCP_ADDR') or  os.getenv('REDIS_PORT_6379_TCP_ADDR') or os.getenv("SLUG_REDIS_HOST")
+local REDIS_PORT         = tonumber( os.getenv('DB_PORT_6379_TCP_PORT') or os.getenv('REDIS_PORT_6379_TCP_PORT') or os.getenv("SLUG_REDIS_PORT") or 6379)
 
 local POOL_SIZE = 30
 local KEEPALIVE_TIMEOUT = 30 * 1000 -- 30 seconds in ms
