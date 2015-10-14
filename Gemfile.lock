@@ -97,7 +97,7 @@ GEM
     em-websocket (0.5.1)
       eventmachine (>= 0.12.9)
       http_parser.rb (~> 0.6.0)
-    eventmachine (1.0.3)
+    eventmachine (1.0.8)
     execjs (2.2.1)
     ffi (1.9.3)
     foreman (0.75.0)
@@ -265,3 +265,6 @@ DEPENDENCIES
   selenium-webdriver
   statsd-ruby
   uglifier
+
+BUNDLED WITH
+   1.10.6
