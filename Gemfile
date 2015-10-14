@@ -13,13 +13,14 @@ gem 'dotenv'
 gem 'bourbon', '>= 3.2.0.beta'
 gem 'neat'
 
-gem 'jor', github: 'solso/jor', require: false
+gem 'jor', github: 'apitools/jor', branch: 'master', require: false
 
 gem 'httpclient'
 gem 'activesupport'
 
 group :development, :test do
   gem 'statsd-ruby', require: 'statsd'
+  gem 'thin', require: false
 end
 
 group :development do
