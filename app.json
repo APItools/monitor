@@ -1,0 +1,7 @@
+{
+  "name": "APItools Traffic Monitor",
+  "description": "A proxy for developing with APIs.",
+  "repository": "https://github.com/apitools/monitor",
+  "keywords": ["apitools", "api", "monitoring"],
+  "addons": ["heroku-redis"]
+}
