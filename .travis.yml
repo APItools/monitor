@@ -26,7 +26,6 @@ install:
   - sudo ln -sf ${OPENRESTY}/luajit/bin/luajit-2.1.0-alpha ${OPENRESTY}/luajit/bin/lua
   - sudo ln -sf ${OPENRESTY}/luajit/bin/lua /usr/local/bin/lua
   - sudo ln -sf ${OPENRESTY}/nginx/sbin/nginx /usr/local/bin/nginx
-  - sudo ln -sf /usr/local/bin/nginx /usr/local/bin/openresty
   - sudo ln -sf ${OPENRESTY}/bin/resty /usr/local/bin/resty
   - cd /tmp/luarocks-${LUAROCKS_VERSION}
   - ./configure --with-lua=${OPENRESTY}/luajit --with-lua-include=${OPENRESTY}/luajit/include/luajit-2.1 --with-lua-lib=${OPENRESTY}/lualib
@@ -42,5 +41,5 @@ install:
 before_script:
   - bundle exec rake release -- -y
   - redis-server > /dev/null &
-  - dotenv openresty -p ${TRAVIS_BUILD_DIR}/release -c config/nginx.conf &
+  - dotenv nginx -p ${TRAVIS_BUILD_DIR}/release -c config/nginx.conf &
 script: "script/jenkins.sh"
