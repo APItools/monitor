@@ -196,7 +196,8 @@ function Rack:create_initial_request()
     args          = ngx.req.get_uri_args(),
     method        = ngx.var.request_method,
     scheme        = scheme,
-    uri           = uri,
+    uri           = uri, -- # TODO: deprecate this
+    path          = uri,
     host          = host
   }, bodybuilder_mt)
 end

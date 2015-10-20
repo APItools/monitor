@@ -287,11 +287,11 @@ Pipeline.execute = function(pipeline, endpoint_url)
 
   local trace      = Trace:new(req)
 
+  req.endpoint = endpoint_url
+
   trace.service_id = pipeline.service_id
 
-  rack:use(sanitizer, {
-    endpoint = string.match(endpoint_url, "://([^/]+)")
-  })
+  rack:use(sanitizer)
 
   local ok, res = pcall(function()
     for _,middleware in ipairs(get_active_sorted_middlewares(pipeline)) do
@@ -300,8 +300,7 @@ Pipeline.execute = function(pipeline, endpoint_url)
 
     rack:use(brainslug, {
       trace         = trace,
-      service_id    = pipeline.service_id,
-      endpoint_url  = endpoint_url
+      service_id    = pipeline.service_id
     })
 
     return rack:run(req)
